@@ -4,6 +4,7 @@
   "description": "A Promise-based modal dialog helper",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src",
     "test": "echo No test yet"
   },
   "repository": {
@@ -28,6 +29,12 @@
   },
   "devDependencies": {
     "@types/webpack": "^2.1.0",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.2",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
     "webpack": "^2.2.0-rc.3"
   }
 }
