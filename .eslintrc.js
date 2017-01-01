@@ -5,6 +5,7 @@ module.exports = {
     sourceType: 'module'
   },
   extends: 'standard',
+  plugins: ['html'],
   rules: {
     'arrow-parens': 0,
     'generator-star-spacing': 0,
