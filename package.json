@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build/build.js",
     "dev": "node build/dev-server.js",
-    "lint": "eslint src",
+    "lint": "eslint src example",
     "test": "echo No test yet"
   },
   "repository": {
