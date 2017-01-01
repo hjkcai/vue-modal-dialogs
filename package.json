@@ -47,6 +47,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "express": "^4.14.0",
+    "html-webpack-plugin": "^2.25.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "vue-loader": "^10.0.2",
