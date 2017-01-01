@@ -4,18 +4,38 @@ import Vue from 'vue'
 import defaultsDeep from 'lodash/defaultsDeep'
 import { findIndex } from './util'
 
-export default function modalWrapperFactory (wrapperOptions) {
-  wrapperOptions = defaultsDeep(wrapperOptions, {
-    wrapperClass: 'modal-dialogs-wrapper',
-    transition: {
+// filter bad wrapper options and add default options
+function parseWrapperOptions (options) {
+  if (options.wrapper && typeof options.wrapper !== 'object') {
+    options.wrapper = undefined
+  }
+
+  if (options.zIndex === false) {
+    options.zIndex = {
+      value: null,
+      autoIncrement: false
+    }
+  } else if (options.zIndex && typeof options.zIndex !== 'object') {
+    options.zIndex = undefined
+  }
+
+  return defaultsDeep(options, {
+    wrapper: {
       tag: 'div',
-      name: 'modal-dialog'
+      class: 'modal-dialogs-wrapper',
+      transition: {
+        name: 'modal-dialog'
+      }
     },
     zIndex: {
       value: 1000,
       autoIncrement: true
     }
   })
+}
+
+export default function modalWrapperFactory (wrapperOptions) {
+  wrapperOptions = parseWrapperOptions(wrapperOptions)
 
   // an auto-increment id to indentify dialogs
   let id = 0
