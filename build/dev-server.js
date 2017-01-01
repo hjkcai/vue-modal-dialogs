@@ -1,9 +1,8 @@
 'use strict'
 
-const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
-const webpackConfig = require('./webpack.config')
+const webpackConfig = require('./config/example')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 
 const app = express()
@@ -15,7 +14,5 @@ app.use(webpackDevMiddleware(webpack(webpackConfig), {
     colors: true
   }
 }))
-
-app.use(express.static(path.resolve(__dirname, '../example')))
 
 app.listen(8080, () => console.log('Development server listening at 8080...\n'))

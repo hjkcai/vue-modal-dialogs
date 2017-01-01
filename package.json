@@ -4,7 +4,9 @@
   "description": "A Promise-based modal dialog helper",
   "main": "index.js",
   "scripts": {
-    "build": "node build/build.js",
+    "build": "npm run build:lib && npm run build:example",
+    "build:lib": "node build/build-lib.js",
+    "build:example": "node build/build-example.js",
     "dev": "node build/dev-server.js",
     "lint": "eslint src example",
     "test": "echo No test yet"
