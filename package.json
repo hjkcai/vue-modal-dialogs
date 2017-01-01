@@ -4,6 +4,7 @@
   "description": "A Promise-based modal dialog helper",
   "main": "index.js",
   "scripts": {
+    "dev": "node build/dev-server.js",
     "lint": "eslint src",
     "test": "echo No test yet"
   },
