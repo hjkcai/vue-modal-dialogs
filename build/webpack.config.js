@@ -31,17 +31,8 @@ if (process.env.NODE_ENV === 'production') {
     entry: path.resolve(__dirname, '../src/index.js'),
     output: {
       path: path.resolve(__dirname, '../dist'),
-      filename: 'vue-modal.js',
-      library: 'vue-modal',
-      libraryTarget: 'umd'
-    },
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        }
-      })
-    ]
+      library: 'vue-modal'
+    }
   }, config)
 } else {
   config = merge({
