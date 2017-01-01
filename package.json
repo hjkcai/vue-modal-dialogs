@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "A Promise-based modal dialog helper",
   "main": "index.js",
+  "typings": "typings/index.d.ts",
   "scripts": {
     "build": "npm run build:lib && npm run build:example",
     "build:lib": "node build/build-lib.js",
