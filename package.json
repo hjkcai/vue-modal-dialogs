@@ -25,5 +25,9 @@
   "homepage": "https://github.com/hjkcai/vue-modal#readme",
   "peerDependencies": {
     "vue": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@types/webpack": "^2.1.0",
+    "webpack": "^2.2.0-rc.3"
   }
 }
