@@ -1,0 +1,29 @@
+{
+  "name": "vue-modal",
+  "version": "0.0.0",
+  "description": "A Promise-based modal dialog helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo No test yet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hjkcai/vue-modal.git"
+  },
+  "keywords": [
+    "vue",
+    "modal",
+    "dialog",
+    "dialogs",
+    "promise"
+  ],
+  "author": "Jingkun Hua <huajingkun1214@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hjkcai/vue-modal/issues"
+  },
+  "homepage": "https://github.com/hjkcai/vue-modal#readme",
+  "peerDependencies": {
+    "vue": ">=2.0.0"
+  }
+}
