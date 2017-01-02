@@ -45,7 +45,7 @@ class VueModalDialog {
     }
 
     this.modalFunctions.push(options)
-    this.Vue.prototype[`$${name}`] = this.show.bind(undefined, name)
+    this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
   }
 
   show (name, ...args) {
