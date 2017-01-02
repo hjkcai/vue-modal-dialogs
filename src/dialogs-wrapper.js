@@ -98,7 +98,13 @@ export default function modalWrapperFactory (wrapperOptions) {
         })))
       }
 
-      return h('transition-group', wrapperOptions.transition, renderedDialogs)
+      return h('transition-group', {
+        class: wrapperOptions.wrapper.class,
+        props: {
+          tag: wrapperOptions.wrapper.tag,
+          ...wrapperOptions.wrapper.transition
+        }
+      }, renderedDialogs)
     }
   })
 }
