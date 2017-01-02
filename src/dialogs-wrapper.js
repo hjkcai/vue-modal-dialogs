@@ -1,8 +1,7 @@
 'use strict'
 
 import Vue from 'vue'
-import defaultsDeep from 'lodash/defaultsDeep'
-import { find, findIndex } from './util'
+import { find, findIndex, defaultsDeep } from './util'
 
 // filter bad wrapper options and add default options
 function parseWrapperOptions (options) {

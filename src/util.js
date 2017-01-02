@@ -32,3 +32,28 @@ export function findIndex (arr, comparator) {
 
   return -1
 }
+
+/**
+ * A simple defaultsDeep (like lodash) that works only on objects
+ *
+ * @export
+ * @param {Object[]} sources
+ * @returns Object
+ */
+export function defaultsDeep (...sources) {
+  let result = {}
+
+  sources.forEach(source => {
+    if (source === null || typeof source !== 'object') return
+
+    Object.keys(source).forEach(key => {
+      if (typeof source[key] === 'object' && (typeof result[key] === 'object' || result[key] === undefined)) {
+        result[key] = defaultsDeep(result[key], source[key])
+      } else if (result[key] === undefined) {
+        result[key] = source[key]
+      }
+    })
+  })
+
+  return result
+}
