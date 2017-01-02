@@ -1,6 +1,5 @@
 'use strict'
 
-import { find } from './util'
 import modalWrapperFactory from './dialogs-wrapper'
 
 class VueModalDialog {
@@ -8,11 +7,7 @@ class VueModalDialog {
     this.Vue = null
     this.debug = process.env.NODE_ENV === 'development'
     this.modalWrapper = null
-    this.modalFunctions = []
-  }
-
-  _findModalByName (name) {
-    return find(this.modalFunctions, item => item.name === name)
+    this.modalFunctions = {}
   }
 
   install (vue, options) {
@@ -39,24 +34,23 @@ class VueModalDialog {
     name = name.toString().trim()
 
     // make sure 'name' is unique
-    if (this._findModalByName(name)) {
+    if (this.modalFunctions.hasOwnProperty(name)) {
       if (this.debug) console.warn(`[vue-modal] Another modal function ${name} is already exist.`)
       return
     }
 
-    this.modalFunctions.push(options)
+    this.modalFunctions[name] = options
     this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
   }
 
   show (name, ...args) {
     return new Promise((resolve, reject) => {
-      const modal = this._findModalByName(name)
-      if (!modal) {
+      if (!this.modalFunctions.hasOwnProperty(name)) {
         if (this.debug) console.warn(`[vue-modal] Modal dialog ${name} is not found.`)
         return reject(new Error(`Modal dialog ${name} is not found.`))
       }
 
-      return this.modalWrapper.add(modal, ...args)
+      return this.modalWrapper.add(this.modalFunctions[name], ...args)
     })
   }
 }
