@@ -10,17 +10,17 @@ class VueModalDialog {
     this.modalFunctions = {}
   }
 
-  install (vue, options) {
+  install (Vue, options) {
     // export vue instance to global scope
     // so that we can easily modify its prototype
-    this.Vue = vue
+    this.Vue = Vue
 
     // create an anchor element for modal dialogs' wrapper
     const anchor = document.createElement('div')
     document.body.insertBefore(anchor, document.body.childNodes[0])
 
     // and mount the modal dialogs' wrapper on that anchor
-    const ModalWrapper = modalWrapperFactory(options)
+    const ModalWrapper = modalWrapperFactory(Vue, options)
     this.modalWrapper = new ModalWrapper()
     this.modalWrapper.$mount(anchor)
   }

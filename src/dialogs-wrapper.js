@@ -1,6 +1,5 @@
 'use strict'
 
-import Vue from 'vue'
 import { find, findIndex, defaultsDeep } from './util'
 
 // filter bad wrapper options and add default options
@@ -35,7 +34,7 @@ function parseWrapperOptions (options) {
   })
 }
 
-export default function modalWrapperFactory (wrapperOptions) {
+export default function modalWrapperFactory (Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions)
 
   // an auto-increment id to indentify dialogs
