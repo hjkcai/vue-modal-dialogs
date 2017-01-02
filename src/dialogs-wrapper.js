@@ -6,6 +6,8 @@ import { find, findIndex } from './util'
 
 // filter bad wrapper options and add default options
 function parseWrapperOptions (options) {
+  if (typeof options !== 'object') options = {}
+
   if (options.wrapper && typeof options.wrapper !== 'object') {
     options.wrapper = undefined
   }
