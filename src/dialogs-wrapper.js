@@ -101,7 +101,8 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         props: {
           tag: wrapperOptions.wrapper.tag,
           ...wrapperOptions.wrapper.transition
-        }
+        },
+        on: wrapperOptions.wrapper.transition
       }, renderedDialogs)
     }
   })
