@@ -51,25 +51,17 @@ export default function modalWrapperFactory (wrapperOptions) {
       // add a new modal dialog into this wrapper
       add (dialogOptions, ...args) {
         return new Promise((resolve, reject) => {
-          const dialog = {
-            id: id++,
+          this.dialogs.push({
+            id: id,
             resolve,
             reject,
-            options: dialogOptions
-          }
-
-          // prepare render options
-          dialog.renderOptions = defaultsDeep(dialog.options, {
-            key: dialog.id,
-            style: {
-              zIndex: wrapperOptions.zIndex.value
-            },
-            props: { args },
-            on: {
-              close: this.close.bind(this, id)
-            }
+            args,
+            options: dialogOptions,
+            zIndex: wrapperOptions.zIndex.value,
+            close: this.close.bind(this, id)
           })
 
+          ++id
           if (wrapperOptions.zIndex.autoIncrement) {
             ++wrapperOptions.zIndex.value
           }
@@ -92,7 +84,18 @@ export default function modalWrapperFactory (wrapperOptions) {
       let renderedDialogs = []
       for (let i = 0; i < this.dialogs.length; i++) {
         const dialog = this.dialogs[i]
-        renderedDialogs.push(h(dialog.options.component, dialog.renderOptions))
+        renderedDialogs.push(h(dialog.options.component, defaultsDeep({ component: null }, dialog.options, {
+          key: dialog.id,
+          style: {
+            zIndex: dialog.zIndex
+          },
+          props: {
+            args: dialog.args
+          },
+          on: {
+            close: dialog.close
+          }
+        })))
       }
 
       return h('transition-group', wrapperOptions.transition, renderedDialogs)
