@@ -50,7 +50,7 @@ class VueModalDialog {
         return reject(new Error(`Modal dialog ${name} is not found.`))
       }
 
-      return this.modalWrapper.add(this.modalFunctions[name], ...args)
+      resolve(this.modalWrapper.add(this.modalFunctions[name], ...args))
     })
   }
 }
