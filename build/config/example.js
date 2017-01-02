@@ -30,8 +30,8 @@ let config = {
             loader: 'vue-loader',
             options: {
               loaders: {
-                css: 'css-loader',
-                less: 'css-loader!less-loader'
+                css: 'vue-style-loader!css-loader',
+                less: 'vue-style-loader!css-loader!less-loader'
               },
               postcss: [
                 require('autoprefixer')({
@@ -56,7 +56,10 @@ let config = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     })
-  ]
+  ],
+  performance: {
+    hints: false
+  }
 }
 
 let HTMLconfig = {
