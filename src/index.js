@@ -4,6 +4,7 @@ import { find } from './util'
 import modalWrapperFactory from './dialogs-wrapper'
 
 let Vue = null
+let modalWrapper = null
 let modalFunctions = []
 
 function findModalByName (name) {
@@ -23,7 +24,8 @@ export function install (vue, options) {
 
   // and mount the modal dialogs' wrapper on that anchor
   const ModalWrapper = modalWrapperFactory(options)
-  new ModalWrapper().$mount(anchor)
+  modalWrapper = new ModalWrapper()
+  modalWrapper.$mount(anchor)
 }
 
 /**
@@ -35,20 +37,23 @@ export function use (name, options) {
   name = name.toString().trim()
 
   // make sure 'name' is unique
-  if (findModalByName(name) && debug) {
-    console.warn(`[vue-modal] Another modal function ${name} is already exist.`)
+  if (findModalByName(name)) {
+    if (debug) console.warn(`[vue-modal] Another modal function ${name} is already exist.`)
+    return
   }
 
   modalFunctions.push(options)
   Vue.prototype[`$${name}`] = show.bind(undefined, name)
 }
 
-export function show (name) {
+export function show (name, ...args) {
   return new Promise((resolve, reject) => {
-    if (!findModalByName(name) && debug) {
-      console.warn(`[vue-modal] Modal dialog ${name} is not found.`)
+    const modal = findModalByName(name)
+    if (!modal) {
+      if (debug) console.warn(`[vue-modal] Modal dialog ${name} is not found.`)
+      return reject(new Error(`Modal dialog ${name} is not found.`))
     }
 
-    // TODO
+    return modalWrapper.add(modal, ...args)
   })
 }

@@ -2,7 +2,7 @@
 
 import Vue from 'vue'
 import defaultsDeep from 'lodash/defaultsDeep'
-import { findIndex } from './util'
+import { find, findIndex } from './util'
 
 // filter bad wrapper options and add default options
 function parseWrapperOptions (options) {
@@ -49,13 +49,23 @@ export default function modalWrapperFactory (wrapperOptions) {
       // add a new modal dialog into this wrapper
       add (dialogOptions, ...args) {
         return new Promise((resolve, reject) => {
-          this.dialogs.push({
+          const dialog = {
             id: id++,
             resolve,
             reject,
-            args,
-            options: dialogOptions,
-            zIndex: wrapperOptions.zIndex.value
+            options: dialogOptions
+          }
+
+          // prepare render options
+          dialog.renderOptions = defaultsDeep(dialog.options, {
+            key: dialog.id,
+            style: {
+              zIndex: wrapperOptions.zIndex.value
+            },
+            props: { args },
+            on: {
+              close: this.close.bind(this, id)
+            }
           })
 
           if (wrapperOptions.zIndex.autoIncrement) {
@@ -67,10 +77,23 @@ export default function modalWrapperFactory (wrapperOptions) {
 
           return data
         })
+      },
+      // close a modal dialog by id
+      close (id, data) {
+        const dialog = find(this.dialogs, item => item.id === id)
+        if (dialog) {
+          dialog.resolve({ id, data })
+        }
       }
     },
     render (h) {
-      // TODO
+      let renderedDialogs = []
+      for (let i = 0; i < this.dialogs.length; i++) {
+        const dialog = this.dialogs[i]
+        renderedDialogs.push(h(dialog.options.component, dialog.renderOptions))
+      }
+
+      return h('transition-group', wrapperOptions.transition, renderedDialogs)
     }
   })
 }
