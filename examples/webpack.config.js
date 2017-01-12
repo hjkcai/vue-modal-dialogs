@@ -1,14 +1,22 @@
 'use strict'
 
+const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
 
-let config = {
-  entry: path.resolve(__dirname, '../../example/main.js'),
+module.exports = {
+  entry: fs.readdirSync(__dirname).reduce((entries, dir) => {
+    const fullDir = path.join(__dirname, dir)
+    const entry = path.join(fullDir, 'main.js')
+    if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
+      entries[dir] = entry
+    }
+
+    return entries
+  }, {}),
   output: {
-    filename: 'app.js',
-    path: path.resolve(__dirname, '../../dist/example'),
+    path: path.resolve(__dirname, '/__build__/'),
+    filename: '[name].js',
     publicPath: './'
   },
   module: {
@@ -19,9 +27,7 @@ let config = {
           'babel-loader',
           'eslint-loader'
         ],
-        exclude: [
-          path.resolve(__dirname, '../../node_modules')
-        ]
+        exclude: /node_modules/
       },
       {
         test: /\.vue$/,
@@ -55,12 +61,13 @@ let config = {
   },
   resolve: {
     alias: {
-      'vue-modal-dialogs': path.resolve(__dirname, '../../src')
+      'vue-modal-dialogs': path.resolve(__dirname, '../src')
     },
     extensions: ['.js', '.vue'],
     modules: ['node_modules']
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin('common'),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     })
@@ -69,30 +76,3 @@ let config = {
     hints: false
   }
 }
-
-let HTMLconfig = {
-  filename: 'index.html',
-  template: path.resolve(__dirname, '../../example/index.html'),
-  inject: true
-}
-
-if (process.env.NODE_ENV === 'production') {
-  HTMLconfig.minify = {
-    removeComments: true,
-    collapseWhitespace: true
-  }
-
-  config.plugins.push(
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
-  )
-}
-
-config.plugins.push(new HTMLWebpackPlugin(HTMLconfig))
-module.exports = config

@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
 
 process.env.NODE_ENV = 'production'
-const webpackBaseConfig = require('./config/lib')
+const webpackBaseConfig = require('./webpack.config')
 
 webpack([
 

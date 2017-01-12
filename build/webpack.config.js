@@ -4,9 +4,9 @@ const path = require('path')
 const webpack = require('webpack')
 
 let config = {
-  entry: path.resolve(__dirname, '../../src/index.js'),
+  entry: path.resolve(__dirname, '../src/index.js'),
   output: {
-    path: path.resolve(__dirname, '../../dist'),
+    path: path.resolve(__dirname, '../dist'),
     library: 'vue-modal'
   },
   module: {
@@ -18,7 +18,7 @@ let config = {
           'eslint-loader'
         ],
         exclude: [
-          path.resolve(__dirname, '../../node_modules')
+          path.resolve(__dirname, '../node_modules')
         ]
       }
     ]

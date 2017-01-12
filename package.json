@@ -5,10 +5,9 @@
   "main": "index.js",
   "typings": "typings/index.d.ts",
   "scripts": {
-    "build": "npm run build:lib && npm run build:example",
-    "build:lib": "node build/build-lib.js",
-    "build:example": "node build/build-example.js",
-    "dev": "node build/dev-server.js",
+    "build": "npm run build:lib",
+    "build:lib": "node build/build.js",
+    "dev": "node examples/dev-server.js",
     "lint": "eslint src example",
     "test": "echo No test yet"
   },
