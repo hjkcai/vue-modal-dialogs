@@ -3,7 +3,7 @@
 import dialogsWrapperFactory from './dialogs-wrapper'
 import { defaultsDeep } from './util'
 
-class VueModalDialog {
+class VueModalDialogs {
   constructor () {
     this.Vue = null
     this.debug = process.env.NODE_ENV === 'development'
@@ -76,4 +76,4 @@ class VueModalDialog {
   }
 }
 
-export default new VueModalDialog()
+export default new VueModalDialogs()
