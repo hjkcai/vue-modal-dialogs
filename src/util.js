@@ -4,22 +4,6 @@ import forOwn from 'for-own'
 import isObject from 'is-extendable'
 
 /**
- * Extract keys from a object into a new object
- *
- * @export
- * @param {Object} object
- * @param {string[]} keys
- */
-export function extractKeys (object, ...keys) {
-  let result = {}
-  keys.forEach(key => {
-    if (object[key] !== undefined) {
-      result[key] = object[key]
-    }
-  })
-}
-
-/**
  * Find the first item that matches the comparator
  *
  * @export

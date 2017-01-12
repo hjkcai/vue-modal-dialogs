@@ -16,28 +16,17 @@ declare module 'vue-modal' {
       inject?: boolean,
 
       /**
-       * Options of the wrapper element
+       * Render options of the wrapper element.
+       *
+       * This options is the same as VNode's class option.
+       * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
        */
       wrapper?: {
-        /**
-         * The tagname of the wrapper element.
-         * The default value is `div`.
-         */
-        tag?: string,
-
-        /**
-         * The class of the wrapper element.
-         * The default value is `modal-dialogs-wrapper`.
-         *
-         * This options is the same as VNode's class option.
-         * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
-         */
-        class?: any,
-
-        /**
-         * All properties and events from Vue's `transition-group` component
-         */
-        transition?: {
+        class?: Object | string[],
+        style?: Object,
+        attrs?: Object,
+        props: {
+          tag?: string,
           name?: string,
           appear?: boolean,
           css?: boolean,
@@ -51,7 +40,10 @@ declare module 'vue-modal' {
           leaveActiveClass?: string,
           appearClass?: string,
           appearActiveClass?: string,
-          appearToClass?: string,
+          appearToClass?: string
+        },
+        domProps: Object,
+        on: {
           beforeEnter?: TransitionEventHandler,
           enter?: TransitionEventHandler,
           afterEnter?: TransitionEventHandler,
@@ -61,7 +53,10 @@ declare module 'vue-modal' {
           beforeAppear?: TransitionEventHandler,
           appear?: TransitionEventHandler,
           afterAppear?: TransitionEventHandler
-        }
+        },
+        nativeOn: Object,
+        directives: Vue.VNodeDirective[],
+        ref: string
       }
 
       /**

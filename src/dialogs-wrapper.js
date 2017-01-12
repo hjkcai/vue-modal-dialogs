@@ -3,7 +3,6 @@
 import {
   find,
   findIndex,
-  extractKeys,
   defaultsDeep
 } from './util'
 
@@ -26,9 +25,9 @@ function parseWrapperOptions (options) {
 
   let result = defaultsDeep(options, {
     wrapper: {
-      tag: 'div',
       class: 'modal-dialogs-wrapper',
-      transition: {
+      props: {
+        tag: 'div',
         name: 'modal-dialog'
       }
     },
@@ -37,12 +36,6 @@ function parseWrapperOptions (options) {
       autoIncrement: true
     }
   })
-
-  // separate props and events of transition-group
-  result.wrapper.transition = {
-    props: extractKeys(result.wrapper.transition, 'name', 'appear', 'css', 'type', 'moveClass', 'enterClass', 'leaveClass', 'enterToClass', 'leaveToClass', 'enterActiveClass', 'leaveActiveClass', 'appearClass', 'appearActiveClass', 'appearToClass'),
-    on: extractKeys(result.wrapper.transition, 'beforeEnter', 'enter', 'afterEnter', 'beforeLeave', 'leave', 'afterLeave', 'beforeAppear', 'appear', 'afterAppear')
-  }
 
   return result
 }
@@ -112,14 +105,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         })))
       }
 
-      return h('transition-group', {
-        class: wrapperOptions.wrapper.class,
-        props: {
-          tag: wrapperOptions.wrapper.tag,
-          ...wrapperOptions.wrapper.transition.props
-        },
-        on: wrapperOptions.wrapper.transition.on
-      }, renderedDialogs)
+      return h('transition-group', wrapperOptions.wrapper.class, renderedDialogs)
     }
   })
 }
