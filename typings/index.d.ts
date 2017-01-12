@@ -6,6 +6,11 @@ declare module 'vue-modal' {
 
     export interface WrapperOptions {
       /**
+       * Mount element of the wrapper element
+       */
+      el?: HTMLElement | string,
+
+      /**
        * Options of the wrapper element
        */
       wrapper?: {

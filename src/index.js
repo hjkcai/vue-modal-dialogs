@@ -15,14 +15,21 @@ class VueModalDialog {
     // so that we can easily modify its prototype
     this.Vue = Vue
 
-    // create an anchor element for modal dialogs' wrapper
-    const anchor = document.createElement('div')
-    document.body.insertBefore(anchor, document.body.childNodes[0])
+    // A mount element for the modal dialogs' wrapper
+    let el = options.el
+    if (typeof el === 'string') {
+      el = document.querySelector(el)
+    }
+
+    if (el == null) {
+      el = document.createElement('div')
+      document.body.insertBefore(el, document.body.childNodes[0])
+    }
 
     // and mount the modal dialogs' wrapper on that anchor
     const DialogsWrapper = dialogsWrapperFactory(Vue, options)
     this.dialogsWrapper = new DialogsWrapper()
-    this.dialogsWrapper.$mount(anchor)
+    this.dialogsWrapper.$mount(el)
   }
 
   /**
