@@ -1,6 +1,7 @@
-declare module 'vue-modal' {
-  declare namespace VueModal {
-    import Vue from 'vue'
+declare module 'vue-modal-dialogs' {
+  import Vue from 'vue'
+
+  namespace VueModalDialogs {
 
     export type TransitionEventHandler = () => void
 
@@ -132,5 +133,5 @@ declare module 'vue-modal' {
     export function show (name: string, ...args: any[]): Promise<any>
   }
 
-  export = VueModal
+  export = VueModalDialogs
 }
