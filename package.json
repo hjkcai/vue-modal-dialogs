@@ -61,6 +61,8 @@
     "webpack-merge": "^2.0.0"
   },
   "dependencies": {
+    "for-own": "^0.1.4",
+    "is-extendable": "^0.1.1",
     "lodash": "^4.17.4"
   }
 }

@@ -1,5 +1,8 @@
 'use strict'
 
+import forOwn from 'for-own'
+import isObject from 'is-extendable'
+
 /**
  * Find the first item that matches the comparator
  *
@@ -34,26 +37,28 @@ export function findIndex (arr, comparator) {
 }
 
 /**
- * A simple defaultsDeep (like lodash) that works only on objects
+ * A simple defaultsDeep (like lodash) that works only on objects.
+ * Modified from https://github.com/jonschlinkert/defaults-deep
  *
  * @export
  * @param {Object[]} sources
- * @returns Object
+ * @returns {Object}
  */
 export function defaultsDeep (...sources) {
-  let result = {}
+  let target = sources[0] || {}
 
-  sources.forEach(source => {
-    if (source === null || typeof source !== 'object') return
-
-    Object.keys(source).forEach(key => {
-      if (typeof source[key] === 'object' && (typeof result[key] === 'object' || result[key] === undefined)) {
-        result[key] = defaultsDeep(result[key], source[key])
-      } else if (result[key] === undefined) {
-        result[key] = source[key]
+  function copy (target, current) {
+    forOwn(current, function (value, key) {
+      var val = target[key]
+      // add the missing property, or allow a null property to be updated
+      if (val == null) {
+        target[key] = value
+      } else if (isObject(val) && isObject(value)) {
+        defaultsDeep(val, value)
       }
     })
-  })
+  }
 
-  return result
+  sources.forEach(source => (source && copy(target, source)))
+  return target
 }
