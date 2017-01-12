@@ -1,13 +1,13 @@
 'use strict'
 
-import modalWrapperFactory from './dialogs-wrapper'
+import dialogsWrapperFactory from './dialogs-wrapper'
 
 class VueModalDialog {
   constructor () {
     this.Vue = null
     this.debug = process.env.NODE_ENV === 'development'
-    this.modalWrapper = null
-    this.modalFunctions = {}
+    this.dialogsWrapper = null
+    this.dialogFunctions = {}
   }
 
   install (Vue, options) {
@@ -20,9 +20,9 @@ class VueModalDialog {
     document.body.insertBefore(anchor, document.body.childNodes[0])
 
     // and mount the modal dialogs' wrapper on that anchor
-    const ModalWrapper = modalWrapperFactory(Vue, options)
-    this.modalWrapper = new ModalWrapper()
-    this.modalWrapper.$mount(anchor)
+    const DialogsWrapper = dialogsWrapperFactory(Vue, options)
+    this.dialogsWrapper = new DialogsWrapper()
+    this.dialogsWrapper.$mount(anchor)
   }
 
   /**
@@ -34,23 +34,23 @@ class VueModalDialog {
     name = name.toString().trim()
 
     // make sure 'name' is unique
-    if (this.modalFunctions.hasOwnProperty(name)) {
-      if (this.debug) console.warn(`[vue-modal] Another modal function ${name} is already exist.`)
+    if (this.dialogFunctions.hasOwnProperty(name)) {
+      if (this.debug) console.error(`[vue-modal-dialogs] Another modal function ${name} is already exist.`)
       return
     }
 
-    this.modalFunctions[name] = options
+    this.dialogFunctions[name] = options
     this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
   }
 
   show (name, ...args) {
     return new Promise((resolve, reject) => {
-      if (!this.modalFunctions.hasOwnProperty(name)) {
-        if (this.debug) console.warn(`[vue-modal] Modal dialog ${name} is not found.`)
+      if (!this.dialogFunctions.hasOwnProperty(name)) {
+        if (this.debug) console.error(`[vue-modal-dialogs] Modal dialog ${name} is not found.`)
         return reject(new Error(`Modal dialog ${name} is not found.`))
       }
 
-      resolve(this.modalWrapper.add(this.modalFunctions[name], ...args))
+      resolve(this.dialogsWrapper.add(this.dialogFunctions[name], ...args))
     })
   }
 }
