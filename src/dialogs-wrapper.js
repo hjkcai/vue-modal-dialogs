@@ -1,6 +1,11 @@
 'use strict'
 
-import { find, findIndex, defaultsDeep } from './util'
+import {
+  find,
+  findIndex,
+  extractKeys,
+  defaultsDeep
+} from './util'
 
 // filter bad wrapper options and add default options
 function parseWrapperOptions (options) {
@@ -19,7 +24,7 @@ function parseWrapperOptions (options) {
     options.zIndex = undefined
   }
 
-  return defaultsDeep(options, {
+  let result = defaultsDeep(options, {
     wrapper: {
       tag: 'div',
       class: 'modal-dialogs-wrapper',
@@ -32,6 +37,14 @@ function parseWrapperOptions (options) {
       autoIncrement: true
     }
   })
+
+  // separate props and events of transition-group
+  result.wrapper.transition = {
+    props: extractKeys(result.wrapper.transition, 'name', 'appear', 'css', 'type', 'moveClass', 'enterClass', 'leaveClass', 'enterToClass', 'leaveToClass', 'enterActiveClass', 'leaveActiveClass', 'appearClass', 'appearActiveClass', 'appearToClass'),
+    on: extractKeys(result.wrapper.transition, 'beforeEnter', 'enter', 'afterEnter', 'beforeLeave', 'leave', 'afterLeave', 'beforeAppear', 'appear', 'afterAppear')
+  }
+
+  return result
 }
 
 export default function modalWrapperFactory (Vue, wrapperOptions) {
@@ -103,9 +116,9 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         class: wrapperOptions.wrapper.class,
         props: {
           tag: wrapperOptions.wrapper.tag,
-          ...wrapperOptions.wrapper.transition
+          ...wrapperOptions.wrapper.transition.props
         },
-        on: wrapperOptions.wrapper.transition
+        on: wrapperOptions.wrapper.transition.on
       }, renderedDialogs)
     }
   })
