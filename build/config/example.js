@@ -47,7 +47,7 @@ let config = {
   },
   resolve: {
     alias: {
-      'vue-modal': path.resolve(__dirname, '../../src')
+      'vue-modal-dialogs': path.resolve(__dirname, '../../src')
     },
     extensions: ['.js', '.vue'],
     modules: ['node_modules']
