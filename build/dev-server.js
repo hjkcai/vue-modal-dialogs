@@ -10,7 +10,7 @@ const app = express()
 process.env.NODE_ENV = 'development'
 
 app.use(webpackDevMiddleware(webpack(webpackMerge(webpackConfig, {
-  devtool: 'eval-source-map'
+  devtool: 'source-map'
 })), {
   stats: {
     chunks: false,
