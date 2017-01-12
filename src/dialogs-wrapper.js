@@ -59,10 +59,12 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
             close: this.close.bind(this, id)
           })
 
-          ++id
+          ++id    // make sure id will never duplicate
           if (wrapperOptions.zIndex.autoIncrement) {
             ++wrapperOptions.zIndex.value
           }
+
+          /* this promise will be resolved when 'close' method is called */
         }).then(({ id, data }) => {
           const index = findIndex(this.dialogs, item => item.id === id)
           if (index > -1) this.dialogs.splice(index, 1)
@@ -74,6 +76,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
       close (id, data) {
         const dialog = find(this.dialogs, item => item.id === id)
         if (dialog) {
+          // resolve previously created promise in 'add' method
           dialog.resolve({ id, data })
         }
       }
