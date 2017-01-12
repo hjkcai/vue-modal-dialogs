@@ -1,6 +1,7 @@
 'use strict'
 
 import dialogsWrapperFactory from './dialogs-wrapper'
+import { defaultsDeep } from './util'
 
 class VueModalDialog {
   constructor () {
@@ -8,9 +9,15 @@ class VueModalDialog {
     this.debug = process.env.NODE_ENV === 'development'
     this.dialogsWrapper = null
     this.dialogFunctions = {}
+    this.inject = true
   }
 
   install (Vue, options) {
+    options = defaultsDeep(options, {
+      el: null,
+      inject: true
+    })
+
     // export vue instance to global scope
     // so that we can easily modify its prototype
     this.Vue = Vue
@@ -25,6 +32,10 @@ class VueModalDialog {
       el = document.createElement('div')
       document.body.insertBefore(el, document.body.childNodes[0])
     }
+
+    // determines if shortcut functions will be added
+    // into Vue's prototype
+    this.inject = options.inject
 
     // and mount the modal dialogs' wrapper on that anchor
     const DialogsWrapper = dialogsWrapperFactory(Vue, options)
@@ -47,7 +58,10 @@ class VueModalDialog {
     }
 
     this.dialogFunctions[name] = options
-    this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
+
+    if (this.inject) {
+      this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
+    }
   }
 
   show (name, ...args) {

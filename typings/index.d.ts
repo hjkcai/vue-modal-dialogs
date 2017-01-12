@@ -11,6 +11,11 @@ declare module 'vue-modal' {
       el?: HTMLElement | string,
 
       /**
+       * Determines if shortcut functions will be added into Vue's prototype
+       */
+      inject?: boolean,
+
+      /**
        * Options of the wrapper element
        */
       wrapper?: {
