@@ -38,3 +38,5 @@ jspm_packages
 
 # vscode files
 .vscode
+
+.DS_Store
