@@ -55,7 +55,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
       // add a new modal dialog into this wrapper
       add (dialogOptions, ...args) {
         return new Promise((resolve, reject) => {
-          this.dialogs.push({
+          this.dialogs.push(Object.freeze({
             id: id,
             resolve,
             reject,
@@ -63,7 +63,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
             close: this.close.bind(this, id)
-          })
+          }))
 
           ++id    // make sure id will never duplicate
           if (wrapperOptions.zIndex.autoIncrement) {
