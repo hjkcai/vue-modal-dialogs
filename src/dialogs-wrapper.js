@@ -91,18 +91,24 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
       let renderedDialogs = []
       for (let i = 0; i < this.dialogs.length; i++) {
         const dialog = this.dialogs[i]
-        renderedDialogs.push(h(dialog.options.component, defaultsDeep({ component: null }, dialog.options, {
-          key: dialog.id,
-          style: {
-            zIndex: dialog.zIndex
-          },
-          props: {
-            args: dialog.args
-          },
-          on: {
-            close: dialog.close
+
+        // map args to props
+        let props = { args: dialog.args }
+        dialog.options.args.forEach((arg, i) => { props[arg] = dialog.args[i] })
+
+        // render component
+        const renderOptions = defaultsDeep(
+          { args: null, component: null },        // clear extra properties otherwise vue will throw an error
+          dialog.options,                         // merge with user's dialog options
+          {                                       // and some default options
+            key: dialog.id,
+            style: { zIndex: dialog.zIndex },
+            props,
+            on: { close: dialog.close }
           }
-        })))
+        )
+
+        renderedDialogs.push(h(dialog.options.component, renderOptions))
       }
 
       return h('transition-group', wrapperOptions.wrapper.class, renderedDialogs)

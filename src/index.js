@@ -43,12 +43,7 @@ class VueModalDialogs {
     this.dialogsWrapper.$mount(el)
   }
 
-  /**
-   * Add a modal function into Vue.prototype
-   * so that you can access this function
-   * via `this.$<name>` from a Vue component.
-   */
-  use (name, options) {
+  use (name, component, ...args) {
     name = name.toString().trim()
 
     // make sure 'name' is unique
@@ -57,7 +52,12 @@ class VueModalDialogs {
       return
     }
 
-    this.dialogFunctions[name] = options
+    // store dialog options
+    if (args.length === 0) {
+      this.dialogFunctions[name] = component
+    } else {
+      this.dialogFunctions[name] = { component, args }
+    }
 
     if (this.inject) {
       this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
