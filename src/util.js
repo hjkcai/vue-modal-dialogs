@@ -45,7 +45,7 @@ export function findIndex (arr, comparator) {
  * @returns {Object}
  */
 export function defaultsDeep (...sources) {
-  let target = sources[0] || {}
+  let target = {}
 
   function copy (target, current) {
     forOwn(current, function (value, key) {
