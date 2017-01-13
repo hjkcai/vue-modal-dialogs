@@ -114,7 +114,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         renderedDialogs.push(h(dialog.options.component, renderOptions))
       }
 
-      return h('transition-group', wrapperOptions.wrapper.class, renderedDialogs)
+      return h('transition-group', wrapperOptions.wrapper, renderedDialogs)
     }
   })
 }
