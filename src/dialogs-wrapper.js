@@ -98,7 +98,6 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
 
         // render component
         const renderOptions = defaultsDeep(
-          { args: null, component: null },        // clear extra properties otherwise vue will throw an error
           dialog.options,                         // merge with user's dialog options
           {                                       // and some default options
             key: dialog.id,
@@ -107,6 +106,10 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
             on: { close: dialog.close }
           }
         )
+
+        // clear extra properties otherwise vue will throw an error
+        delete renderOptions.component
+        delete renderOptions.args
 
         renderedDialogs.push(h(dialog.options.component, renderOptions))
       }
