@@ -19,14 +19,14 @@ declare module 'vue-modal-dialogs' {
       /**
        * Render options of the wrapper element.
        *
-       * This options is the same as VNode's class option.
+       * This options is the same to VNode's render option.
        * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
        */
       wrapper?: {
         class?: Object | string[],
         style?: Object,
         attrs?: Object,
-        props: {
+        props?: {
           tag?: string,
           name?: string,
           appear?: boolean,
@@ -43,8 +43,8 @@ declare module 'vue-modal-dialogs' {
           appearActiveClass?: string,
           appearToClass?: string
         },
-        domProps: Object,
-        on: {
+        domProps?: Object,
+        on?: {
           beforeEnter?: TransitionEventHandler,
           enter?: TransitionEventHandler,
           afterEnter?: TransitionEventHandler,
@@ -55,9 +55,9 @@ declare module 'vue-modal-dialogs' {
           appear?: TransitionEventHandler,
           afterAppear?: TransitionEventHandler
         },
-        nativeOn: Object,
-        directives: Vue.VNodeDirective[],
-        ref: string
+        nativeOn?: Object,
+        directives?: Vue.VNodeDirective[],
+        ref?: string
       }
 
       /**
@@ -68,34 +68,53 @@ declare module 'vue-modal-dialogs' {
          * The initial value of `z-index`.
          * The default value is `1000`
          */
-        value: number,
+        value?: number,
 
         /**
          * Indicates if the `z-index` auto increses
          * when a new modal dialog is shown.
          * The default value is `true`
          */
-        autoIncrement: boolean
+        autoIncrement?: boolean
       }
     }
 
     /**
-     * Options to build a modal function
+     * Options to build a dialog function.
+     *
+     * This is almost all the same to the VNode's render options.
+     * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
      *
      * @export
-     * @interface ModalOptions
+     * @interface DialogRenderOptions
      */
-    export interface ModalOptions {
+    export interface DialogRenderOptions {
       /**
        * A Vue component that will be the 'template'
        * of a modal dialog
        *
        * @type {Vue.Component}
-       * @memberOf ModalOptions
+       * @memberOf DialogRenderOptions
        */
       component: Vue.Component,
 
-      props: {}
+      /**
+       * An array that maps the argument list to props
+       *
+       * @type {string[]}
+       * @memberOf DialogRenderOptions
+       */
+      args: string[],
+
+      class?: Object | string[],
+      style?: Object,
+      attrs?: Object,
+      props?: Object,
+      domProps?: Object,
+      on?: Object,
+      nativeOn?: Object,
+      directives?: Vue.VNodeDirective[],
+      ref?: string
     }
 
     /**
@@ -107,20 +126,27 @@ declare module 'vue-modal-dialogs' {
     export var debug: boolean
 
     /**
-     * Install vue-modal into Vue
+     * Install `vue-modal-dialogs` into Vue
      *
      * @export
      */
     export function install (vue: Vue, options: WrapperOptions): void
 
     /**
-     * Add a modal function into Vue.prototype
-     * so that you can access this function
-     * via `this.$<name>` from a Vue component
+     * Add a modal function
+     *
+     * @export
+     * @param {Vue.Component} component A Vue component that will be the 'template' of a modal dialog
+     * @param {string[]} args An array that maps the argument list to props
+     */
+    export function use (name: string, component: Vue.Component, ...args: string[]): void
+
+    /**
+     * Add a dialog function
      *
      * @export
      */
-    export function use (name: string, options: ModalOptions): void
+    export function use (name: string, options: DialogRenderOptions): void
 
     /**
      * Show a modal dialog
