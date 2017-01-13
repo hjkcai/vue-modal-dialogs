@@ -22,6 +22,9 @@ class VueModalDialogs {
     // so that we can easily modify its prototype
     this.Vue = Vue
 
+    // install `this` into vue
+    this.Vue.prototype.$dialogs = this
+
     // A mount element for the modal dialogs' wrapper
     let el = options.el
     if (typeof el === 'string') {
