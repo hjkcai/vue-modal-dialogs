@@ -4,8 +4,8 @@
       <h1>{{ title }}</h1>
       <p>{{ message }}</p>
       <div class="buttons">
-        <button @click="$emit('close', 'cancel')">Cancel</button>
-        <button @click="$emit('close', 'ok')">OK</button>
+        <button @click="close('cancel')">Cancel</button>
+        <button @click="close('ok')">OK</button>
       </div>
     </div>
   </div>
@@ -13,7 +13,14 @@
 
 <script>
   export default {
-    props: ['message', 'title']
+    props: ['message', 'title'],
+    methods: {
+      close (data) {
+        // close a dialog by emitting 'close' event with data in the 2nd arugment
+        // the data will be returned to the previously created Promise
+        this.$emit('close', data)
+      }
+    }
   }
 </script>
 
