@@ -139,14 +139,14 @@ declare module 'vue-modal-dialogs' {
      * @param {Vue.Component} component A Vue component that will be the 'template' of a modal dialog
      * @param {string[]} args An array that maps the argument list to props
      */
-    export function use (name: string, component: Vue.Component, ...args: string[]): void
+    export function add (name: string, component: Vue.Component, ...args: string[]): void
 
     /**
      * Add a dialog function
      *
      * @export
      */
-    export function use (name: string, options: DialogRenderOptions): void
+    export function add (name: string, options: DialogRenderOptions): void
 
     /**
      * Show a modal dialog

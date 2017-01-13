@@ -43,7 +43,7 @@ class VueModalDialogs {
     this.dialogsWrapper.$mount(el)
   }
 
-  use (name, component, ...args) {
+  add (name, component, ...args) {
     name = name.toString().trim()
 
     // make sure 'name' is unique
