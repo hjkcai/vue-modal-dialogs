@@ -61,7 +61,7 @@ declare module 'vue-modal-dialogs' {
       }
 
       /**
-       * Options of controlling `z-index` css property
+       * Options of controlling `z-index` css property of each dialog
        */
       zIndex?: {
         /**
