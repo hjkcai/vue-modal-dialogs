@@ -54,7 +54,7 @@ export function defaultsDeep (...sources) {
       if (val == null) {
         target[key] = value
       } else if (isObject(val) && isObject(value)) {
-        defaultsDeep(val, value)
+        target[key] = defaultsDeep(val, value)
       }
     })
   }
