@@ -27,9 +27,8 @@ webpack([
         minimize: true
       }),
       new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        }
+        compress: { warnings: false },
+        comments: false
       })
     ]
   }),

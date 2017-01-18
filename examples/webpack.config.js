@@ -24,7 +24,16 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-          'babel-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['es2015', { 'modules': false }],
+                'stage-2'
+              ],
+              plugins: ['transform-runtime']
+            }
+          },
           'eslint-loader'
         ],
         exclude: /node_modules/
