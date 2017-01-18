@@ -1,5 +1,7 @@
 'use strict'
 
+process.env.NODE_ENV = 'development'
+
 const express = require('express')
 const rewrite = require('express-urlrewrite')
 const webpack = require('webpack')
@@ -8,8 +10,6 @@ const webpackConfig = require('./webpack.config')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 
 const app = express()
-process.env.NODE_ENV = 'development'
-
 app.use(express.static(__dirname))
 app.use(rewrite('/*/*', '/__build__/$2'))
 
