@@ -62,3 +62,29 @@ export function defaultsDeep (...sources) {
   sources.forEach(source => (source && copy(target, source)))
   return target
 }
+
+/**
+ * Check if a JavaScript Object can be used as a Vue Component constructor
+ *
+ * @export
+ * @param {Object|Function} obj
+ * @returns {boolean}
+ */
+export function isVueComponent (obj) {
+  return (
+    obj != null &&
+    (typeof obj === 'object' || typeof obj === 'function')
+  ) && (
+    // must not a Vue instance
+    Object.getPrototypeOf(obj).constructor.name !== 'VueComponent'
+  ) && (
+    // result of Vue.extend
+    (typeof obj === 'function' && obj.name === 'VueComponent') ||
+
+    // import from a .vue file
+    Array.isArray(obj.staticRenderFns) ||
+
+    // has a render function
+    typeof obj.render === 'function'
+  )
+}
