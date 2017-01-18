@@ -1,7 +1,7 @@
 'use strict'
 
 import dialogsWrapperFactory from './dialogs-wrapper'
-import { defaultsDeep } from './util'
+import { defaultsDeep, isVueComponent } from './util'
 
 class VueModalDialogs {
   constructor () {
@@ -55,12 +55,12 @@ class VueModalDialogs {
       return
     }
 
-    // store dialog options
-    if (args.length === 0) {
-      this.dialogFunctions[name] = component
-    } else {
-      this.dialogFunctions[name] = { component, args }
-    }
+    this.dialogFunctions[name] = (() => {
+      if (args.length === 0) {
+        if (isVueComponent(component)) return { component, args: [] }
+        else return defaultsDeep(component, { component: 'div', args: [] })
+      } else return { component, args }
+    })()
 
     if (this.inject) {
       this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
