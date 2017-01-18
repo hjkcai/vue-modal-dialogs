@@ -133,7 +133,7 @@ declare module 'vue-modal-dialogs' {
     export function install (vue: Vue, options: WrapperOptions): void
 
     /**
-     * Add a modal function
+     * Add a dialog function
      *
      * @export
      * @param {Vue.Component} component A Vue component that will be the 'template' of a modal dialog
