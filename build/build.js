@@ -1,53 +1,90 @@
 'use strict'
 
-const webpack = require('webpack')
-const webpackMerge = require('webpack-merge')
+const fs = require('fs')
+const path = require('path')
+const rollup = require('rollup')
+const uglify = require('uglify-js')
 
-process.env.NODE_ENV = 'production'
-const webpackBaseConfig = require('./webpack.config')
+const buble = require('rollup-plugin-buble')
+const replace = require('rollup-plugin-replace')
+const commonjs = require('rollup-plugin-commonjs')
+const nodeResolve = require('rollup-plugin-node-resolve')
 
-webpack([
+const dist = path.resolve(__dirname, '../dist')
+if (!fs.existsSync(dist)) {
+  fs.mkdirSync(dist)
+}
 
-  // non-minified standalone
-  webpackMerge(webpackBaseConfig, {
-    output: {
-      filename: 'vue-modal.js',
-      libraryTarget: 'umd'
-    }
-  }),
+build([
+  {
+    suffix: '',
+    type: 'umd',
+    env: 'development'
+  },
+  {
+    suffix: 'min',
+    type: 'umd',
+    env: 'production'
+  },
+  {
+    suffix: 'common',
+    type: 'cjs'
+  }
+])
 
-  // minified standalone
-  webpackMerge(webpackBaseConfig, {
-    output: {
-      filename: 'vue-modal.min.js',
-      libraryTarget: 'umd'
-    },
-    plugins: [
-      new webpack.LoaderOptionsPlugin({
-        minimize: true
-      }),
-      new webpack.optimize.UglifyJsPlugin({
-        compress: { warnings: false },
-        comments: false
+function build (configs) {
+  let promise = Promise.resolve()
+  configs.forEach(config => {
+    promise = promise.then(() => {
+      const rollupConfig = {
+        entry: path.resolve(__dirname, '../src/index.js'),
+        plugins: [
+          nodeResolve(),
+          commonjs(),
+          buble()
+        ]
+      }
+
+      if (config.env) {
+        rollupConfig.plugins.push(replace({ 'process.env.NODE_ENV': JSON.stringify(config.env) }))
+      }
+
+      return rollup.rollup(rollupConfig)
+    }).then(bundle => {
+      const dest = path.join(dist, `vue-modal-dialogs${config.suffix ? `-${config.suffix}` : ''}.js`)
+      let result = bundle.generate({
+        format: config.type,
+        moduleName: 'VueModalDialogs'
       })
-    ]
-  }),
 
-  // non-minified commonjs (for development)
-  webpackMerge(webpackBaseConfig, {
-    output: {
-      filename: 'vue-modal.common.js',
-      library: '',
-      libraryTarget: 'commonjs'
-    }
-  })
+      if (config.suffix === 'min') {
+        result = uglify.minify(result.code, {
+          fromString: true,
+          output: {
+            screw_ie8: true,
+            ascii_only: true
+          },
+          compress: {
+            pure_funcs: ['makeMap']
+          }
+        })
+      }
 
-], function (err, stats) {
-  if (err) console.error(err)
-  stats.stats.forEach(function (stat) {
-    console.log(stat.toString({
-      chunks: false,
-      colors: true
-    }), '\n')
+      console.log(path.parse(dest).base, size(result.code))
+      return write(dest, result.code)
+    })
   })
-})
+}
+
+function write (dest, content) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(dest, content, err => {
+      if (err) reject(err)
+      else resolve()
+    })
+  })
+}
+
+function size (code) {
+  return (code.length / 1024).toFixed(2) + 'kb'
+}
