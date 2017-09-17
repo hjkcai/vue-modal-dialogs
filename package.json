@@ -28,9 +28,6 @@
     "url": "https://github.com/hjkcai/vue-modal-dialogs/issues"
   },
   "homepage": "https://github.com/hjkcai/vue-modal-dialogs#readme",
-  "peerDependencies": {
-    "vue": ">=2.0.0"
-  },
   "devDependencies": {
     "@types/express": "^4.0.34",
     "@types/webpack": "^2.1.0",
@@ -74,6 +71,6 @@
     "element-ui": "^1.4.4",
     "for-own": "^0.1.4",
     "is-extendable": "^0.1.1",
-    "lodash": "^4.17.4"
+    "vue": "^2.4.4"
   }
 }
