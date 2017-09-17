@@ -55,12 +55,18 @@ class VueModalDialogs {
       return
     }
 
-    this.dialogFunctions[name] = (() => {
-      if (args.length === 0) {
-        if (isVueComponent(component)) return { component, args: [] }
-        else return defaultsDeep(component, { component: 'div', args: [] })
-      } else return { component, args }
-    })()
+    // parse options
+    if (args.length === 0 && !isVueComponent(component)) {
+      args = component.args || []
+      component = component.component
+    }
+
+    if (!isVueComponent(component)) {
+      if (this.debug) console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor')
+      return
+    }
+
+    this.dialogFunctions[name] = { component, args }
 
     if (this.inject) {
       this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
