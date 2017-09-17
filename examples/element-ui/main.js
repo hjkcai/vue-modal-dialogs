@@ -29,7 +29,10 @@ Vue.use(dialogs, {
 
 // add dialogs
 dialogs.add('login', login)
-dialogs.add('msgbox', msgbox, 'message', 'title')
+dialogs.add('msgbox', {
+  component: msgbox,
+  args: ['message', 'title']
+})
 
 new Vue({     // eslint-disable-line no-new
   el: '#app',

@@ -27,7 +27,7 @@
     }),
     methods: {
       cancel () {
-        this.$emit('close', false)
+        this.$close(false)
       },
       async login () {
         // emulate an ajax delay
@@ -37,7 +37,7 @@
         // show nested dialogs
         if (this.username === 'admin' && this.password === 'admin') {
           await this.$dialogs.show('msgbox', 'Login successfully', 'Welcome')
-          this.$emit('close', true)
+          this.$close(true)
         } else {
           await this.$dialogs.show('msgbox', 'Wrong username or password', 'Sorry')
         }
