@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hjkcai/vue-modal.git"
+    "url": "git+https://github.com/hjkcai/vue-modal-dialogs.git"
   },
   "keywords": [
     "vue",
@@ -25,9 +25,9 @@
   "author": "Jingkun Hua <huajingkun1214@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hjkcai/vue-modal/issues"
+    "url": "https://github.com/hjkcai/vue-modal-dialogs/issues"
   },
-  "homepage": "https://github.com/hjkcai/vue-modal#readme",
+  "homepage": "https://github.com/hjkcai/vue-modal-dialogs#readme",
   "peerDependencies": {
     "vue": ">=2.0.0"
   },
