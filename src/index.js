@@ -47,6 +47,7 @@ class VueModalDialogs {
   }
 
   add (name, component, ...args) {
+    let inject = this.inject
     name = name.toString().trim()
 
     // make sure 'name' is unique
@@ -59,6 +60,10 @@ class VueModalDialogs {
     if (args.length === 0 && !isVueComponent(component)) {
       args = component.args || []
       component = component.component
+
+      if (typeof component.inject === 'boolean') {
+        inject = component.inject
+      }
     }
 
     if (!isVueComponent(component)) {
@@ -79,7 +84,7 @@ class VueModalDialogs {
       args
     }
 
-    if (this.inject) {
+    if (inject) {
       this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
     }
   }
