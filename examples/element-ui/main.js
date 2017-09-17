@@ -1,6 +1,7 @@
 'use strict'
 
 import Vue from 'vue'
+import App from './App'
 import login from './login'
 import msgbox from './msgbox'
 import dialogs from 'vue-modal-dialogs'
@@ -32,5 +33,5 @@ dialogs.add('msgbox', msgbox, 'message', 'title')
 
 new Vue({     // eslint-disable-line no-new
   el: '#app',
-  render: h => h(require('./App'))
+  render: h => h(App)
 })
