@@ -1,12 +1,8 @@
 'use strict'
 
-import {
-  find,
-  findIndex,
-  defaultsDeep
-} from './util'
+import { find, findIndex, defaultsDeep } from './util'
 
-// filter bad wrapper options and add default options
+/* Filter bad wrapper options and add default options */
 function parseWrapperOptions (options) {
   if (typeof options !== 'object') options = {}
 
@@ -40,6 +36,20 @@ function parseWrapperOptions (options) {
   return result
 }
 
+/** Return a copy of the original object without some specific keys */
+function objectWithoutKeys (obj, keys) {
+  return Object.keys(obj).reduce((newObj, key) => {
+    if (keys.indexOf(key) === -1) {
+      newObj[key] = obj[key]
+    }
+
+    return newObj
+  }, {})
+}
+
+/** Keys to remove in the dialog's render options */
+const CUSTOM_OPTIONS = ['component', 'args', 'inject']
+
 export default function modalWrapperFactory (Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions)
 
@@ -56,9 +66,8 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
       add (dialogOptions, ...args) {
         return new Promise((resolve, reject) => {
           this.dialogs.push(Object.freeze({
-            id: id,
+            id,
             resolve,
-            reject,
             args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
@@ -87,34 +96,27 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         }
       }
     },
-    render (h) {
-      let renderedDialogs = []
-      for (let i = 0; i < this.dialogs.length; i++) {
-        const dialog = this.dialogs[i]
-
+    render (createElement) {
+      return createElement('transition-group', wrapperOptions.wrapper, this.dialogs.map(dialog => {
         // map args to props
-        let props = { args: dialog.args }
-        dialog.options.args.forEach((arg, i) => { props[arg] = dialog.args[i] })
+        // dialog.options.args is the arguments map
+        // dialog.args are the real arguments the user have passed
+        const props = dialog.options.args.reduce((props, prop, i) => {
+          props[prop] = dialog.args[i]
+          return props
+        }, { args: dialog.args })
+
+        // merge the default render options with user's dialog options
+        const renderOptions = defaultsDeep(dialog.options, {
+          key: dialog.id,
+          style: { zIndex: dialog.zIndex },
+          props,
+          on: { close: dialog.close }
+        })
 
         // render component
-        const renderOptions = defaultsDeep(
-          dialog.options,                         // merge with user's dialog options
-          {                                       // and some default options
-            key: dialog.id,
-            style: { zIndex: dialog.zIndex },
-            props,
-            on: { close: dialog.close }
-          }
-        )
-
-        // clear extra properties otherwise vue will throw an error
-        delete renderOptions.component
-        delete renderOptions.args
-
-        renderedDialogs.push(h(dialog.options.component, renderOptions))
-      }
-
-      return h('transition-group', wrapperOptions.wrapper, renderedDialogs)
+        return createElement(dialog.options.component, objectWithoutKeys(renderOptions, CUSTOM_OPTIONS))
+      }))
     }
   })
 }
