@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Login" :value="true" :show-close="false" @close="cancel">
+  <el-dialog title="Login" :visible="true" @visible-change="$event || cancel()" :modal="false">
     <el-form>
       <el-form-item label="Username">
         <el-input v-model="username"></el-input>

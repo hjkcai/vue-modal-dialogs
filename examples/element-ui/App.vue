@@ -32,4 +32,8 @@
   .fade-enter, .fade-leave-active {
     opacity: 0;
   }
+
+  .el-dialog__wrapper {
+    background-color: rgba(0, 0, 0, 0.33);
+  }
 </style>
