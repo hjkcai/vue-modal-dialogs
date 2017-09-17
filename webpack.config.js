@@ -3,21 +3,28 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const examples = path.join(__dirname, 'examples')
+const entries = fs.readdirSync(examples).reduce((entries, dir) => {
+  const fullDir = path.join(examples, dir)
+  const entry = path.join(fullDir, 'main.js')
+  if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
+    entries[dir] = entry
+  }
+
+  return entries
+}, {})
 
 module.exports = {
-  entry: fs.readdirSync(__dirname).reduce((entries, dir) => {
-    const fullDir = path.join(__dirname, dir)
-    const entry = path.join(fullDir, 'main.js')
-    if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
-      entries[dir] = entry
-    }
-
-    return entries
-  }, {}),
+  entry: entries,
+  devServer: {
+    publicPath: '/'
+  },
   output: {
-    path: path.resolve(__dirname, '/__build__/'),
+    path: path.resolve(__dirname, 'docs'),
     filename: '[name].js',
-    publicPath: './'
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -70,7 +77,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue-modal-dialogs': path.resolve(__dirname, '../src')
+      'vue-modal-dialogs': path.resolve(__dirname, 'src')
     },
     extensions: ['.js', '.vue'],
     modules: ['node_modules']
@@ -79,7 +86,14 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin('common'),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-    })
+    }),
+    ...Object.keys(entries).map(entry => new HtmlWebpackPlugin({
+      filename: `${entry}/index.html`,
+      template: path.join(entries[entry], '../index.html'),
+      chunks: ['common', entry],
+      chunksSortMode: 'dependency',
+      inject: true
+    }))
   ],
   performance: {
     hints: false
