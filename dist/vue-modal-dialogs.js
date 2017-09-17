@@ -148,7 +148,7 @@ function isVueComponent (obj) {
 
 'use strict';
 
-// filter bad wrapper options and add default options
+/* Filter bad wrapper options and add default options */
 function parseWrapperOptions (options) {
   if (typeof options !== 'object') { options = {}; }
 
@@ -182,6 +182,20 @@ function parseWrapperOptions (options) {
   return result
 }
 
+/** Return a copy of the original object without some specific keys */
+function objectWithoutKeys (obj, keys) {
+  return Object.keys(obj).reduce(function (newObj, key) {
+    if (keys.indexOf(key) === -1) {
+      newObj[key] = obj[key];
+    }
+
+    return newObj
+  }, {})
+}
+
+/** Keys to remove in the dialog's render options */
+var CUSTOM_OPTIONS = ['component', 'args', 'inject'];
+
 function modalWrapperFactory (Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions);
 
@@ -204,7 +218,6 @@ function modalWrapperFactory (Vue, wrapperOptions) {
           this$1.dialogs.push(Object.freeze({
             id: id,
             resolve: resolve,
-            reject: reject,
             args: args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
@@ -236,38 +249,27 @@ function modalWrapperFactory (Vue, wrapperOptions) {
         }
       }
     },
-    render: function render (h) {
-      var this$1 = this;
-
-      var renderedDialogs = [];
-      var loop = function ( i ) {
-        var dialog = this$1.dialogs[i];
-
+    render: function render (createElement) {
+      return createElement('transition-group', wrapperOptions.wrapper, this.dialogs.map(function (dialog) {
         // map args to props
-        var props = { args: dialog.args };
-        dialog.options.args.forEach(function (arg, i) { props[arg] = dialog.args[i]; });
+        // dialog.options.args is the arguments map
+        // dialog.args are the real arguments the user have passed
+        var props = dialog.options.args.reduce(function (props, prop, i) {
+          props[prop] = dialog.args[i];
+          return props
+        }, { args: dialog.args });
+
+        // merge the default render options with user's dialog options
+        var renderOptions = defaultsDeep(dialog.options, {
+          key: dialog.id,
+          style: { zIndex: dialog.zIndex },
+          props: props,
+          on: { close: dialog.close }
+        });
 
         // render component
-        var renderOptions = defaultsDeep(
-          dialog.options,                         // merge with user's dialog options
-          {                                       // and some default options
-            key: dialog.id,
-            style: { zIndex: dialog.zIndex },
-            props: props,
-            on: { close: dialog.close }
-          }
-        );
-
-        // clear extra properties otherwise vue will throw an error
-        delete renderOptions.component;
-        delete renderOptions.args;
-
-        renderedDialogs.push(h(dialog.options.component, renderOptions));
-      };
-
-      for (var i = 0; i < this.dialogs.length; i++) loop( i );
-
-      return h('transition-group', wrapperOptions.wrapper, renderedDialogs)
+        return createElement(dialog.options.component, objectWithoutKeys(renderOptions, CUSTOM_OPTIONS))
+      }))
     }
   })
 }
@@ -320,6 +322,7 @@ VueModalDialogs.prototype.add = function add (name, component) {
     var args = [], len = arguments.length - 2;
     while ( len-- > 0 ) args[ len ] = arguments[ len + 2 ];
 
+  var inject = this.inject;
   name = name.toString().trim();
 
   // make sure 'name' is unique
@@ -332,6 +335,10 @@ VueModalDialogs.prototype.add = function add (name, component) {
   if (args.length === 0 && !isVueComponent(component)) {
     args = component.args || [];
     component = component.component;
+
+    if (typeof component.inject === 'boolean') {
+      inject = component.inject;
+    }
   }
 
   if (!isVueComponent(component)) {
@@ -352,7 +359,7 @@ VueModalDialogs.prototype.add = function add (name, component) {
     args: args
   };
 
-  if (this.inject) {
+  if (inject) {
     this.Vue.prototype[("$" + name)] = this.show.bind(this, name);
   }
 };
