@@ -98,6 +98,12 @@ declare module 'vue-modal-dialogs' {
       /** An array that maps the argument list to props */
       args: string[],
 
+      /**
+       * Indicates whether to inject dialog methods into Vue's prototype.
+       * This can override the global setting
+       */
+      inject?: boolean,
+
       class?: Object | string[],
       style?: Object,
       attrs?: Object,
