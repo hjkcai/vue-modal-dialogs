@@ -1,16 +1,20 @@
 {
   "name": "vue-modal",
   "version": "0.0.0",
-  "description": "A Promise-based modal dialog helper",
+  "description": "A Promise-based modal dialog helper for Vue.js",
   "main": "index.js",
   "typings": "typings/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "typings"
+  ],
   "scripts": {
     "build": "npm run build:lib && npm run build:example",
     "build:lib": "node build/build.js",
     "build:example": "webpack",
     "dev": "webpack-dev-server",
-    "lint": "eslint src example",
-    "test": "echo No test yet"
+    "lint": "eslint src example"
   },
   "repository": {
     "type": "git",
