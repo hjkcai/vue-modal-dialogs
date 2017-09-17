@@ -32,48 +32,35 @@ build([
   }
 ])
 
-function build (configs) {
-  let promise = Promise.resolve()
-  configs.forEach(config => {
-    promise = promise.then(() => {
-      const rollupConfig = {
-        entry: path.resolve(__dirname, '../src/index.js'),
-        plugins: [
-          nodeResolve(),
-          commonjs(),
-          buble()
-        ]
-      }
+async function build (configs) {
+  for (const config of configs) {
+    const rollupConfig = {
+      input: path.resolve(__dirname, '../src/index.js'),
+      plugins: [
+        nodeResolve(),
+        commonjs(),
+        buble()
+      ]
+    }
 
-      if (config.env) {
-        rollupConfig.plugins.push(replace({ 'process.env.NODE_ENV': JSON.stringify(config.env) }))
-      }
+    if (config.env) {
+      rollupConfig.plugins.push(replace({ 'process.env.NODE_ENV': JSON.stringify(config.env) }))
+    }
 
-      return rollup.rollup(rollupConfig)
-    }).then(bundle => {
-      const dest = path.join(dist, `vue-modal-dialogs${config.suffix ? `-${config.suffix}` : ''}.js`)
-      let result = bundle.generate({
-        format: config.type,
-        moduleName: 'VueModalDialogs'
-      })
-
-      if (config.suffix === 'min') {
-        result = uglify.minify(result.code, {
-          fromString: true,
-          output: {
-            screw_ie8: true,
-            ascii_only: true
-          },
-          compress: {
-            pure_funcs: ['makeMap']
-          }
-        })
-      }
-
-      console.log(path.parse(dest).base, size(result.code))
-      return write(dest, result.code)
+    const bundle = await rollup.rollup(rollupConfig)
+    const dest = path.join(dist, `vue-modal-dialogs${config.suffix ? `-${config.suffix}` : ''}.js`)
+    let result = await bundle.generate({
+      format: config.type,
+      name: 'VueModalDialogs'
     })
-  })
+
+    if (config.suffix === 'min') {
+      result = uglify.minify(result.code)
+    }
+
+    console.log(path.parse(dest).base, size(result.code))
+    await write(dest, result.code)
+  }
 }
 
 function write (dest, content) {
