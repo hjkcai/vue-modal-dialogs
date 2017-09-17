@@ -66,7 +66,18 @@ class VueModalDialogs {
       return
     }
 
-    this.dialogFunctions[name] = { component, args }
+    this.dialogFunctions[name] = {
+      // inject a `$close` function into dialog component
+      component: this.Vue.extend({
+        extends: component,
+        methods: {
+          $close (data) {
+            this.$emit('close', data)
+          }
+        }
+      }),
+      args
+    }
 
     if (this.inject) {
       this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
