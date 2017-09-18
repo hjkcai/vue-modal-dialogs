@@ -84,9 +84,12 @@ class VueModalDialogs {
       args
     }
 
+    const func = this.show.bind(this, name)
     if (inject) {
-      this.Vue.prototype[`$${name}`] = this.show.bind(this, name)
+      this.Vue.prototype[`$${name}`] = func
     }
+
+    return func
   }
 
   show (name, ...args) {

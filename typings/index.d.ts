@@ -13,12 +13,17 @@ declare module 'vue-modal-dialogs' {
 
     export interface PluginOptions {
       /**
-       * Mount element of the wrapper element
+       * Mount point of the wrapper element.
+       * vue-modal-dialogs automatically creates a new element if that element is not present.
+       *
+       * Defaults to `undefined`.
        */
       el?: HTMLElement | string,
 
       /**
-       * Determines if shortcut functions will be added into Vue's prototype
+       * Determines if shortcut functions will be added into Vue's prototype.
+       *
+       * Defaults to `true`.
        */
       inject?: boolean,
 
@@ -26,6 +31,7 @@ declare module 'vue-modal-dialogs' {
        * Render options of the wrapper element.
        *
        * This options is the same to VNode's render option.
+       * You can pass any props/events supported by the <transition-group> element.
        * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
        */
       wrapper?: {
@@ -66,20 +72,20 @@ declare module 'vue-modal-dialogs' {
         ref?: string
       }
 
-      /**
-       * Options of controlling `z-index` css property of each dialog
-       */
+      /** Options to control the `z-index` css property of each dialog */
       zIndex?: {
         /**
          * The initial value of `z-index`.
-         * The default value is `1000`
+         *
+         * Defaults to `1000`.
          */
         value?: number,
 
         /**
          * Indicates if the `z-index` auto increses
          * when a new modal dialog is shown.
-         * The default value is `true`
+         *
+         * Defaults to `true`.
          */
         autoIncrement?: boolean
       }
@@ -92,7 +98,7 @@ declare module 'vue-modal-dialogs' {
      * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
      */
     export interface DialogRenderOptions<T> {
-      /** A Vue component that will be the 'template' of a modal dialog */
+      /** A Vue component that will be the 'dialog component' of a modal dialog */
       component: DialogComponent<T>,
 
       /** An array that maps the argument list to props */
@@ -115,6 +121,10 @@ declare module 'vue-modal-dialogs' {
       ref?: string
     }
 
+    export interface DialogFunction<T> {
+      (...args: any[]): Promise<T>
+    }
+
     /**
      * Indicates if debug mode is turned on.
      * This results in some console warns to be shown
@@ -130,10 +140,10 @@ declare module 'vue-modal-dialogs' {
      * @param component A Vue component that will be the 'template' of a modal dialog
      * @param args An array that maps the argument list to props
      */
-    export function add<T> (name: string, component: DialogComponent<T>, ...args: string[]): void
+    export function add<T> (name: string, component: DialogComponent<T>, ...args: string[]): DialogFunction<T> | undefined
 
     /** Add a dialog function */
-    export function add<T> (name: string, options: DialogRenderOptions<T>): void
+    export function add<T> (name: string, options: DialogRenderOptions<T>): DialogFunction<T> | undefined
 
     /**
      * Show a modal dialog
