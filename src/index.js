@@ -89,6 +89,7 @@ class VueModalDialogs {
       this.Vue.prototype[`$${name}`] = func
     }
 
+    if (!this[name]) this[name] = func
     return func
   }
 
