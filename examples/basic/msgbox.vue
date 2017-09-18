@@ -18,7 +18,7 @@
       close (data) {
         // close a dialog by emitting 'close' event with data in the 2nd arugment
         // the data will be returned to the previously created Promise
-        this.$emit('close', data)
+        this.$close(data)
       }
     }
   }

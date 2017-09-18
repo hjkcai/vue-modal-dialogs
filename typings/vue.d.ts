@@ -1,8 +1,8 @@
 import Vue = require('vue')
-import VueModalDialogs = require('vue-modal-dialogs')
+import { ModalDialogsInstance } from 'vue-modal-dialogs'
 
 declare module "vue/types/vue" {
   interface Vue {
-    $dialogs: typeof VueModalDialogs
+    $dialogs: ModalDialogsInstance
   }
 }
