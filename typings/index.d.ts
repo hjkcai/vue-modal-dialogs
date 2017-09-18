@@ -123,7 +123,7 @@ declare module 'vue-modal-dialogs' {
     (...args: any[]): Promise<T>
   }
 
-  interface ModalDialogs {
+  export interface ModalDialogsInstance {
     [key: string]: DialogFunction<any> | any,
 
     /**
@@ -156,6 +156,6 @@ declare module 'vue-modal-dialogs' {
     show<T> (name: string, ...args: any[]): Promise<T>
   }
 
-  const modalDialogs: ModalDialogs
+  const modalDialogs: ModalDialogsInstance
   export default modalDialogs
 }
