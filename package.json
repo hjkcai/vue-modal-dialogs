@@ -1,8 +1,8 @@
 {
   "name": "vue-modal-dialogs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Promise-based modal dialog helper for Vue.js",
-  "main": "dist/vue-modal-dialogs-common.js",
+  "main": "dist/vue-modal-dialogs.common.js",
   "typings": "typings/index.d.ts",
   "files": [
     "dist",
