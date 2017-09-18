@@ -48,7 +48,7 @@ async function build (configs) {
     }
 
     const bundle = await rollup.rollup(rollupConfig)
-    const dest = path.join(dist, `vue-modal-dialogs${config.suffix ? `-${config.suffix}` : ''}.js`)
+    const dest = path.join(dist, `vue-modal-dialogs${config.suffix ? `.${config.suffix}` : ''}.js`)
     let result = await bundle.generate({
       format: config.type,
       name: 'VueModalDialogs'
