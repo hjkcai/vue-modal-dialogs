@@ -355,9 +355,13 @@ VueModalDialogs.prototype.add = function add (name, component) {
     args: args
   };
 
+  var func = this.show.bind(this, name);
   if (inject) {
-    this.Vue.prototype[("$" + name)] = this.show.bind(this, name);
+    this.Vue.prototype[("$" + name)] = func;
   }
+
+  if (!this.hasOwnProperty(name)) { this[name] = func; }
+  return func
 };
 
 VueModalDialogs.prototype.show = function show (name) {
