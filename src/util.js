@@ -19,24 +19,6 @@ export function find (arr, comparator) {
 }
 
 /**
- * Find the first item that matches the comparator
- * and return its index
- *
- * @export
- * @param {Array<any>} arr
- * @param {Function<boolean>} comparator
- */
-export function findIndex (arr, comparator) {
-  for (var i = 0; i < arr.length; i++) {
-    if (comparator(arr[i])) {
-      return i
-    }
-  }
-
-  return -1
-}
-
-/**
  * A simple defaultsDeep (like lodash) that works only on objects.
  * Modified from https://github.com/jonschlinkert/defaults-deep
  *

@@ -1,6 +1,6 @@
 'use strict'
 
-import { find, findIndex, defaultsDeep } from './util'
+import { find, defaultsDeep } from './util'
 
 /* Filter bad wrapper options and add default options */
 function parseWrapperOptions (options) {
@@ -54,7 +54,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions)
 
   // an auto-increment id to indentify dialogs
-  let id = 0
+  let _id = 0
 
   return Vue.extend({
     name: 'ModalDialogsWrapper',
@@ -64,26 +64,25 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
     methods: {
       // add a new modal dialog into this wrapper
       add (dialogOptions, ...args) {
+        const id = _id++    // the dialog's id
+        let index = -1      // the dialog's index in the dialogs array
+
+        // this promise will be resolved when 'close' method is called
         return new Promise((resolve, reject) => {
-          this.dialogs.push(Object.freeze({
+          index = this.dialogs.push(Object.freeze({
             id,
             resolve,
             args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
-            close: this.close.bind(this, id)
-          }))
+            close: this.close.bind(this, _id)
+          })) - 1
 
-          ++id    // make sure id will never duplicate
           if (wrapperOptions.zIndex.autoIncrement) {
             ++wrapperOptions.zIndex.value
           }
-
-          /* this promise will be resolved when 'close' method is called */
-        }).then(({ id, data }) => {
-          const index = findIndex(this.dialogs, item => item.id === id)
+        }).then(data => {
           if (index > -1) this.dialogs.splice(index, 1)
-
           return data
         })
       },
@@ -92,7 +91,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         const dialog = find(this.dialogs, item => item.id === id)
         if (dialog) {
           // resolve previously created promise in 'add' method
-          dialog.resolve({ id, data })
+          dialog.resolve(data)
         }
       }
     },
