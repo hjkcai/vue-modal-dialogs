@@ -3,10 +3,11 @@
 import dialogsWrapperFactory from './dialogs-wrapper'
 import { defaultsDeep, isVueComponent } from './util'
 
+const debug = process.env.NODE_ENV === 'development'
+
 class VueModalDialogs {
   constructor () {
     this.Vue = null
-    this.debug = process.env.NODE_ENV === 'development'
     this.dialogsWrapper = null
     this.dialogFunctions = {}
     this.inject = true
@@ -52,7 +53,7 @@ class VueModalDialogs {
 
     // make sure 'name' is unique
     if (this.dialogFunctions.hasOwnProperty(name)) {
-      if (this.debug) console.error(`[vue-modal-dialogs] Another modal function ${name} is already exist.`)
+      if (debug) console.error(`[vue-modal-dialogs] Another modal function ${name} is already exist.`)
       return
     }
 
@@ -67,7 +68,7 @@ class VueModalDialogs {
     }
 
     if (!isVueComponent(component)) {
-      if (this.debug) console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor')
+      if (debug) console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor')
       return
     }
 
@@ -96,7 +97,7 @@ class VueModalDialogs {
   show (name, ...args) {
     return new Promise((resolve, reject) => {
       if (!this.dialogFunctions.hasOwnProperty(name)) {
-        if (this.debug) console.error(`[vue-modal-dialogs] Modal dialog ${name} is not found.`)
+        if (debug) console.error(`[vue-modal-dialogs] Modal dialog ${name} is not found.`)
         return reject(new Error(`Modal dialog ${name} is not found.`))
       }
 
