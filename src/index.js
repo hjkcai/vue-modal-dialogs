@@ -60,11 +60,12 @@ class VueModalDialogs {
     // parse options
     if (args.length === 0 && !isVueComponent(component)) {
       args = component.args || []
-      component = component.component
 
       if (typeof component.inject === 'boolean') {
         inject = component.inject
       }
+
+      component = component.component
     }
 
     if (!isVueComponent(component)) {
