@@ -8594,12 +8594,13 @@ exports.f = {}.propertyIsEnumerable;
 
 
 
+var debug = "development" === 'development';
+
 var VueModalDialogs = function () {
   function VueModalDialogs() {
     __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, VueModalDialogs);
 
     this.Vue = null;
-    this.debug = "development" === 'development';
     this.dialogsWrapper = null;
     this.dialogFunctions = {};
     this.inject = true;
@@ -8652,22 +8653,23 @@ var VueModalDialogs = function () {
 
       // make sure 'name' is unique
       if (this.dialogFunctions.hasOwnProperty(name)) {
-        if (this.debug) console.error('[vue-modal-dialogs] Another modal function ' + name + ' is already exist.');
+        if (debug) console.error('[vue-modal-dialogs] Another modal function ' + name + ' is already exist.');
         return;
       }
 
       // parse options
-      if (args.length === 0 && !Object(__WEBPACK_IMPORTED_MODULE_4__util__["d" /* isVueComponent */])(component)) {
+      if (args.length === 0 && !Object(__WEBPACK_IMPORTED_MODULE_4__util__["c" /* isVueComponent */])(component)) {
         args = component.args || [];
-        component = component.component;
 
         if (typeof component.inject === 'boolean') {
           inject = component.inject;
         }
+
+        component = component.component;
       }
 
-      if (!Object(__WEBPACK_IMPORTED_MODULE_4__util__["d" /* isVueComponent */])(component)) {
-        if (this.debug) console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor');
+      if (!Object(__WEBPACK_IMPORTED_MODULE_4__util__["c" /* isVueComponent */])(component)) {
+        if (debug) console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor');
         return;
       }
 
@@ -8705,7 +8707,7 @@ var VueModalDialogs = function () {
         var _dialogsWrapper;
 
         if (!_this.dialogFunctions.hasOwnProperty(name)) {
-          if (_this.debug) console.error('[vue-modal-dialogs] Modal dialog ' + name + ' is not found.');
+          if (debug) console.error('[vue-modal-dialogs] Modal dialog ' + name + ' is not found.');
           return reject(new Error('Modal dialog ' + name + ' is not found.'));
         }
 
@@ -9259,9 +9261,8 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = find;
-/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
 /* harmony export (immutable) */ __webpack_exports__["a"] = defaultsDeep;
-/* harmony export (immutable) */ __webpack_exports__["d"] = isVueComponent;
+/* harmony export (immutable) */ __webpack_exports__["c"] = isVueComponent;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(142);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof__ = __webpack_require__(70);
@@ -9290,24 +9291,6 @@ function find(arr, comparator) {
       return arr[i];
     }
   }
-}
-
-/**
- * Find the first item that matches the comparator
- * and return its index
- *
- * @export
- * @param {Array<any>} arr
- * @param {Function<boolean>} comparator
- */
-function findIndex(arr, comparator) {
-  for (var i = 0; i < arr.length; i++) {
-    if (comparator(arr[i])) {
-      return i;
-    }
-  }
-
-  return -1;
 }
 
 /**
@@ -10358,7 +10341,7 @@ function modalWrapperFactory(Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions);
 
   // an auto-increment id to indentify dialogs
-  var id = 0;
+  var _id = 0;
 
   return Vue.extend({
     name: 'ModalDialogsWrapper',
@@ -10376,31 +10359,25 @@ function modalWrapperFactory(Vue, wrapperOptions) {
           args[_key - 1] = arguments[_key];
         }
 
+        var id = _id++; // the dialog's id
+        var index = -1; // the dialog's index in the dialogs array
+
+        // this promise will be resolved when 'close' method is called
         return new __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise___default.a(function (resolve, reject) {
-          _this.dialogs.push(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_freeze___default()({
+          index = _this.dialogs.push(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_freeze___default()({
             id: id,
             resolve: resolve,
             args: args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
-            close: _this.close.bind(_this, id)
-          }));
+            close: _this.close.bind(_this, _id)
+          })) - 1;
 
-          ++id; // make sure id will never duplicate
           if (wrapperOptions.zIndex.autoIncrement) {
             ++wrapperOptions.zIndex.value;
           }
-
-          /* this promise will be resolved when 'close' method is called */
-        }).then(function (_ref) {
-          var id = _ref.id,
-              data = _ref.data;
-
-          var index = Object(__WEBPACK_IMPORTED_MODULE_4__util__["c" /* findIndex */])(_this.dialogs, function (item) {
-            return item.id === id;
-          });
+        }).then(function (data) {
           if (index > -1) _this.dialogs.splice(index, 1);
-
           return data;
         });
       },
@@ -10412,7 +10389,7 @@ function modalWrapperFactory(Vue, wrapperOptions) {
         });
         if (dialog) {
           // resolve previously created promise in 'add' method
-          dialog.resolve({ id: id, data: data });
+          dialog.resolve(data);
         }
       }
     },

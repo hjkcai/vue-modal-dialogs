@@ -73,24 +73,6 @@ function find (arr, comparator) {
 }
 
 /**
- * Find the first item that matches the comparator
- * and return its index
- *
- * @export
- * @param {Array<any>} arr
- * @param {Function<boolean>} comparator
- */
-function findIndex (arr, comparator) {
-  for (var i = 0; i < arr.length; i++) {
-    if (comparator(arr[i])) {
-      return i
-    }
-  }
-
-  return -1
-}
-
-/**
  * A simple defaultsDeep (like lodash) that works only on objects.
  * Modified from https://github.com/jonschlinkert/defaults-deep
  *
@@ -200,7 +182,7 @@ function modalWrapperFactory (Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions);
 
   // an auto-increment id to indentify dialogs
-  var id = 0;
+  var _id = 0;
 
   return Vue.extend({
     name: 'ModalDialogsWrapper',
@@ -214,29 +196,25 @@ function modalWrapperFactory (Vue, wrapperOptions) {
         var args = [], len = arguments.length - 1;
         while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
 
+        var id = _id++;    // the dialog's id
+        var index = -1;      // the dialog's index in the dialogs array
+
+        // this promise will be resolved when 'close' method is called
         return new Promise(function (resolve, reject) {
-          this$1.dialogs.push(Object.freeze({
+          index = this$1.dialogs.push(Object.freeze({
             id: id,
             resolve: resolve,
             args: args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
-            close: this$1.close.bind(this$1, id)
-          }));
+            close: this$1.close.bind(this$1, _id)
+          })) - 1;
 
-          ++id;    // make sure id will never duplicate
           if (wrapperOptions.zIndex.autoIncrement) {
             ++wrapperOptions.zIndex.value;
           }
-
-          /* this promise will be resolved when 'close' method is called */
-        }).then(function (ref) {
-          var id = ref.id;
-          var data = ref.data;
-
-          var index = findIndex(this$1.dialogs, function (item) { return item.id === id; });
+        }).then(function (data) {
           if (index > -1) { this$1.dialogs.splice(index, 1); }
-
           return data
         })
       },
@@ -245,7 +223,7 @@ function modalWrapperFactory (Vue, wrapperOptions) {
         var dialog = find(this.dialogs, function (item) { return item.id === id; });
         if (dialog) {
           // resolve previously created promise in 'add' method
-          dialog.resolve({ id: id, data: data });
+          dialog.resolve(data);
         }
       }
     },
@@ -276,9 +254,10 @@ function modalWrapperFactory (Vue, wrapperOptions) {
 
 'use strict';
 
+var debug = "development" === 'development';
+
 var VueModalDialogs = function VueModalDialogs () {
   this.Vue = null;
-  this.debug = "development" === 'development';
   this.dialogsWrapper = null;
   this.dialogFunctions = {};
   this.inject = true;
@@ -327,22 +306,23 @@ VueModalDialogs.prototype.add = function add (name, component) {
 
   // make sure 'name' is unique
   if (this.dialogFunctions.hasOwnProperty(name)) {
-    if (this.debug) { console.error(("[vue-modal-dialogs] Another modal function " + name + " is already exist.")); }
+    if (debug) { console.error(("[vue-modal-dialogs] Another modal function " + name + " is already exist.")); }
     return
   }
 
   // parse options
   if (args.length === 0 && !isVueComponent(component)) {
     args = component.args || [];
-    component = component.component;
 
     if (typeof component.inject === 'boolean') {
       inject = component.inject;
     }
+
+    component = component.component;
   }
 
   if (!isVueComponent(component)) {
-    if (this.debug) { console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor'); }
+    if (debug) { console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor'); }
     return
   }
 
@@ -375,7 +355,7 @@ VueModalDialogs.prototype.show = function show (name) {
 
   return new Promise(function (resolve, reject) {
     if (!this$1.dialogFunctions.hasOwnProperty(name)) {
-      if (this$1.debug) { console.error(("[vue-modal-dialogs] Modal dialog " + name + " is not found.")); }
+      if (debug) { console.error(("[vue-modal-dialogs] Modal dialog " + name + " is not found.")); }
       return reject(new Error(("Modal dialog " + name + " is not found.")))
     }
 
