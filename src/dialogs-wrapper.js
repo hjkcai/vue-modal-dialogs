@@ -75,7 +75,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
             args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
-            close: this.close.bind(this, _id)
+            close: this.close.bind(this, id)
           })) - 1
 
           if (wrapperOptions.zIndex.autoIncrement) {
