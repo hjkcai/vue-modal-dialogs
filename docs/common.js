@@ -10370,7 +10370,7 @@ function modalWrapperFactory(Vue, wrapperOptions) {
             args: args,
             options: dialogOptions,
             zIndex: wrapperOptions.zIndex.value,
-            close: _this.close.bind(_this, _id)
+            close: _this.close.bind(_this, id)
           })) - 1;
 
           if (wrapperOptions.zIndex.autoIncrement) {
