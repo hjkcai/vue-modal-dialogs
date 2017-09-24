@@ -1,7 +1,7 @@
 'use strict'
 
 import dialogsWrapperFactory from './dialogs-wrapper'
-import { defaultsDeep, isVueComponent } from './util'
+import { isVueComponent } from './util'
 
 const debug = process.env.NODE_ENV === 'development'
 
@@ -14,10 +14,10 @@ class VueModalDialogs {
   }
 
   install (Vue, options) {
-    options = defaultsDeep(options, {
+    options = Object.assign({
       el: null,
       inject: true
-    })
+    }, options)
 
     // export vue instance to global scope
     // so that we can easily modify its prototype
@@ -37,8 +37,7 @@ class VueModalDialogs {
       document.body.insertBefore(el, document.body.childNodes[0])
     }
 
-    // determines if shortcut functions will be added
-    // into Vue's prototype
+    // determines if shortcut functions will be added into VueModalDialogs
     this.inject = options.inject
 
     // and mount the modal dialogs' wrapper on that anchor
