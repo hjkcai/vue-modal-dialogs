@@ -24,7 +24,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'docs'),
     filename: '[name].js',
-    publicPath: '/vue-modal-dialogs/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/vue-modal-dialogs/' : '/'
   },
   module: {
     rules: [
