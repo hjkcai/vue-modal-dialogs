@@ -3,30 +3,18 @@
 import dialogsWrapperFactory from './dialogs-wrapper'
 import { isVueComponent } from './util'
 
+let Vue = null
+let dialogsWrapper = null
 const debug = process.env.NODE_ENV === 'development'
 
-class VueModalDialogs {
-  constructor () {
-    this.Vue = null
-    this.dialogsWrapper = null
-    this.dialogFunctions = {}
-    this.inject = true
-  }
+// VueModalDialogs plugin installer
+export default {
+  makeDialog,
+  install (vue, options) {
+    Vue = vue
+    options = Object.assign({ el: null }, options)
 
-  install (Vue, options) {
-    options = Object.assign({
-      el: null,
-      inject: true
-    }, options)
-
-    // export vue instance to global scope
-    // so that we can easily modify its prototype
-    this.Vue = Vue
-
-    // install `this` into vue
-    this.Vue.prototype.$dialogs = this
-
-    // A mount element for the modal dialogs' wrapper
+    // A mount element for the DialogsWrapper component
     let el = options.el
     if (typeof el === 'string') {
       el = document.querySelector(el)
@@ -37,73 +25,49 @@ class VueModalDialogs {
       document.body.insertBefore(el, document.body.childNodes[0])
     }
 
-    // determines if shortcut functions will be added into VueModalDialogs
-    this.inject = options.inject
-
-    // and mount the modal dialogs' wrapper on that anchor
+    // Mount the DialogsWrapper component on `el`.
+    // Dialog components will be added into this wrapper.
     const DialogsWrapper = dialogsWrapperFactory(Vue, options)
-    this.dialogsWrapper = new DialogsWrapper()
-    this.dialogsWrapper.$mount(el)
-  }
-
-  add (name, component, ...args) {
-    let inject = this.inject
-    name = name.toString().trim()
-
-    // make sure 'name' is unique
-    if (this.dialogFunctions.hasOwnProperty(name)) {
-      if (debug) console.error(`[vue-modal-dialogs] Another modal function ${name} is already exist.`)
-      return
-    }
-
-    // parse options
-    if (args.length === 0 && !isVueComponent(component)) {
-      args = component.args || []
-
-      if (typeof component.inject === 'boolean') {
-        inject = component.inject
-      }
-
-      component = component.component
-    }
-
-    if (!isVueComponent(component)) {
-      if (debug) console.error('[vue-modal-dialogs]', component, 'is not a Vue component constructor')
-      return
-    }
-
-    this.dialogFunctions[name] = {
-      // inject a `$close` function into dialog component
-      component: this.Vue.extend({
-        extends: component,
-        methods: {
-          $close (data) {
-            this.$emit('close', data)
-          }
-        }
-      }),
-      args
-    }
-
-    const func = this.show.bind(this, name)
-    if (inject) {
-      this.Vue.prototype[`$${name}`] = func
-    }
-
-    if (!this.hasOwnProperty(name)) this[name] = func
-    return func
-  }
-
-  show (name, ...args) {
-    return new Promise((resolve, reject) => {
-      if (!this.dialogFunctions.hasOwnProperty(name)) {
-        if (debug) console.error(`[vue-modal-dialogs] Modal dialog ${name} is not found.`)
-        return reject(new Error(`Modal dialog ${name} is not found.`))
-      }
-
-      resolve(this.dialogsWrapper.add(this.dialogFunctions[name], ...args))
-    })
+    dialogsWrapper = new DialogsWrapper()
+    dialogsWrapper.$mount(el)
   }
 }
 
-export default new VueModalDialogs()
+// Dialog function maker
+export function makeDialog (options, ...props) {
+  let component
+  if (isVueComponent(options)) {
+    component = options
+  } else if (isVueComponent(options.component)) {
+    props = options.props
+    component = options.component
+  } else {
+    if (debug) console.error('[vue-modal-dialogs] No Vue component specified')
+    return
+  }
+
+  // Dialog component and props
+  const dialogConfig = {
+    props,
+
+    // Inject a `$close` function into dialog component
+    component: Vue.extend({
+      extends: component,
+      methods: {
+        $close (data) {
+          this.$emit('close', data)
+        }
+      }
+    })
+  }
+
+  // Return dialog function
+  return function (...args) {
+    if (dialogsWrapper) {
+      // Add dialog component into dialogsWrapper component
+      return dialogsWrapper.add(dialogConfig, ...args)
+    } else if (debug) {
+      console.error('[vue-modal-dialogs] Plugin not initialized. Please call Vue.use before calling dialog functions.')
+    }
+  }
+}

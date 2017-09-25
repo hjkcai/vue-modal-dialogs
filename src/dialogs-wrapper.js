@@ -1,6 +1,6 @@
 'use strict'
 
-import { find, defaultsDeep } from './util'
+import { find, findIndex, defaultsDeep } from './util'
 
 /* Filter bad wrapper options and add default options */
 function parseWrapperOptions (options) {
@@ -36,24 +36,10 @@ function parseWrapperOptions (options) {
   return result
 }
 
-/** Return a copy of the original object without some specific keys */
-function objectWithoutKeys (obj, keys) {
-  return Object.keys(obj).reduce((newObj, key) => {
-    if (keys.indexOf(key) === -1) {
-      newObj[key] = obj[key]
-    }
-
-    return newObj
-  }, {})
-}
-
-/** Keys to remove in the dialog's render options */
-const CUSTOM_OPTIONS = ['component', 'args', 'inject']
-
 export default function modalWrapperFactory (Vue, wrapperOptions) {
   wrapperOptions = parseWrapperOptions(wrapperOptions)
 
-  // an auto-increment id to indentify dialogs
+  // an auto-increment id to identify dialogs
   let _id = 0
 
   return Vue.extend({
@@ -64,27 +50,36 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
     methods: {
       // add a new modal dialog into this wrapper
       add (dialogOptions, ...args) {
-        const id = _id++    // the dialog's id
-        let index = -1      // the dialog's index in the dialogs array
+        // the unique id of this dialog
+        const id = _id++
 
-        // this promise will be resolved when 'close' method is called
-        return new Promise((resolve, reject) => {
-          index = this.dialogs.push(Object.freeze({
+        // the function for closing this dialog
+        const close = this.close.bind(this, id)
+
+        // this promise will be resolved when 'close' function is called
+        const promise = new Promise((resolve, reject) => {
+          this.dialogs.push(Object.freeze({
             id,
-            resolve,
             args,
-            options: dialogOptions,
-            zIndex: wrapperOptions.zIndex.value,
-            close: this.close.bind(this, id)
-          })) - 1
+            close,
+            promise,
+            resolve,
+            options: defaultsDeep(dialogOptions, { render: {} }),
+            zIndex: wrapperOptions.zIndex.value
+          }))
 
           if (wrapperOptions.zIndex.autoIncrement) {
             ++wrapperOptions.zIndex.value
           }
         }).then(data => {
+          const index = findIndex(this.dialogs, dialog => dialog.id === id)
           if (index > -1) this.dialogs.splice(index, 1)
           return data
         })
+
+        // inject 'close' function into this promise
+        promise.close = close
+        return promise
       },
       // close a modal dialog by id
       close (id, data) {
@@ -93,20 +88,22 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
           // resolve previously created promise in 'add' method
           dialog.resolve(data)
         }
+
+        return Promise.resolve(dialog ? dialog.promise : null)
       }
     },
     render (createElement) {
       return createElement('transition-group', wrapperOptions.wrapper, this.dialogs.map(dialog => {
         // map args to props
-        // dialog.options.args is the arguments map
+        // dialog.options.props is the arguments map
         // dialog.args are the real arguments the user have passed
-        const props = dialog.options.args.reduce((props, prop, i) => {
+        const props = dialog.options.props.reduce((props, prop, i) => {
           props[prop] = dialog.args[i]
           return props
         }, { args: dialog.args })
 
-        // merge the default render options with user's dialog options
-        const renderOptions = defaultsDeep(dialog.options, {
+        // merge the default render options with user's render options
+        const renderOptions = defaultsDeep(dialog.options.render, {
           key: dialog.id,
           style: { zIndex: dialog.zIndex },
           props,
@@ -114,7 +111,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
         })
 
         // render component
-        return createElement(dialog.options.component, objectWithoutKeys(renderOptions, CUSTOM_OPTIONS))
+        return createElement(dialog.options.component, renderOptions)
       }))
     }
   })
