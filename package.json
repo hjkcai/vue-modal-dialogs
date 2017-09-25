@@ -10,9 +10,9 @@
     "vue-modal-dialogs.d.ts"
   ],
   "scripts": {
-    "build": "npm run build:lib && npm run build:example",
-    "build:lib": "node build/build.js",
-    "build:example": "webpack",
+    "build": "NODE_ENV=production npm run build:lib && npm run build:example",
+    "build:lib": "NODE_ENV=production node build/build.js",
+    "build:example": "NODE_ENV=production webpack",
     "dev": "webpack-dev-server",
     "lint": "eslint src example"
   },
