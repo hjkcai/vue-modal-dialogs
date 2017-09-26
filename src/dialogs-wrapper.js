@@ -49,7 +49,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
     }),
     methods: {
       // add a new modal dialog into this wrapper
-      add (dialogOptions, ...args) {
+      add (dialogOptions, args) {
         // the unique id of this dialog
         const id = _id++
 

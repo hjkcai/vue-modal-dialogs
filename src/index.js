@@ -37,10 +37,10 @@ const VueModalDialogs = {
     }
 
     // Return dialog function
-    return function (...args) {
+    return function dialogFunction (...args) {
       if (dialogsWrapper) {
         // Add dialog component into dialogsWrapper component
-        return dialogsWrapper.add(dialogConfig, ...args)
+        return dialogsWrapper.add(dialogConfig, args)
       } else if (debug) {
         console.error('[vue-modal-dialogs] Plugin not initialized. Please call Vue.use before calling dialog functions.')
       }
