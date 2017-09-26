@@ -1,7 +1,8 @@
 'use strict'
 
-import dialogsWrapperFactory from './dialogs-wrapper'
+import diff from 'arr-diff'
 import { isVueComponent } from './util'
+import dialogsWrapperFactory from './dialogs-wrapper'
 
 let Vue = null
 let dialogsWrapper = null
@@ -28,7 +29,7 @@ const VueModalDialogs = {
       // Inject a `$close` function and pre-defined props into dialog component
       component: Vue.extend({
         extends: component,
-        props: ['dialogId', 'arguments'],
+        props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || [])),
         methods: {
           $close (data) {
             this.$emit('vue-modal-dialogs:close', data)
