@@ -74,7 +74,11 @@ export interface PluginOptions {
 /** A Vue component that registered as a dialog */
 export class DialogComponent<T> extends Vue {
   /** Close dialog */
-  $close (data: T): Promise<T>
+  $close (data: T): void
+}
+
+export interface DialogPromise<T> extends Promise<T> {
+  close (data: T): DialogPromise<T>
 }
 
 /** Options to build a dialog function */
@@ -95,7 +99,7 @@ export interface DialogOptions<T> {
 }
 
 export interface DialogFunction<T> {
-  (...args: any[]): Promise<T>
+  (...args: any[]): DialogPromise<T>
 }
 
 export interface ModalDialogsInstance {
