@@ -62,7 +62,7 @@ export interface PluginOptions {
     value?: number,
 
     /**
-     * Indicates if the `z-index` auto increses
+     * Indicates if the `z-index` auto increases
      * when a new modal dialog is shown.
      *
      * Defaults to `true`.
