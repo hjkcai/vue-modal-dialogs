@@ -95,12 +95,13 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
     render (createElement) {
       return createElement('transition-group', wrapperOptions.wrapper, this.dialogs.map(dialog => {
         // map args to props
-        // dialog.options.props is the arguments map
-        // dialog.args are the real arguments the user have passed
         const props = dialog.options.props.reduce((props, prop, i) => {
           props[prop] = dialog.args[i]
           return props
-        }, { args: dialog.args })
+        }, {
+          dialogId: dialog.id,
+          arguments: dialog.args
+        })
 
         // merge the default render options with user's render options
         const renderOptions = defaultsDeep(dialog.options.render, {

@@ -25,9 +25,10 @@ const VueModalDialogs = {
     const dialogConfig = {
       props,
 
-      // Inject a `$close` function into dialog component
+      // Inject a `$close` function and pre-defined props into dialog component
       component: Vue.extend({
         extends: component,
+        props: ['dialogId', 'arguments'],
         methods: {
           $close (data) {
             this.$emit('vue-modal-dialogs:close', data)

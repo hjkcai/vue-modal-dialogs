@@ -73,6 +73,12 @@ export interface PluginOptions {
 
 /** A Vue component that registered as a dialog */
 export class DialogComponent<T> extends Vue {
+  /** The unique id of this dialog */
+  readonly dialogId: number
+
+  /** The arguments array passed into the dialog function */
+  readonly arguments: any[]
+
   /** Close dialog */
   $close (data: T): void
 }
