@@ -69,6 +69,7 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
+    "arr-diff": "^4.0.0",
     "element-ui": "^1.4.4",
     "for-own": "^0.1.4",
     "is-extendable": "^0.1.1",
