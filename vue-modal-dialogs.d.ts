@@ -89,7 +89,7 @@ export interface DialogPromise<T> extends Promise<T> {
 
 /** Options to build a dialog function */
 export interface DialogOptions<T> {
-  /** A Vue component that will be the 'dialog component' of a modal dialog */
+  /** A Vue component that will be the 'dialog component' */
   component: DialogComponent<T>,
 
   /** An array that maps the argument list to props */
