@@ -107,7 +107,7 @@ export default function modalWrapperFactory (Vue, wrapperOptions) {
           key: dialog.id,
           style: { zIndex: dialog.zIndex },
           props,
-          on: { close: dialog.close }
+          on: { 'vue-modal-dialogs:close': dialog.close }
         })
 
         // render component

@@ -30,7 +30,7 @@ const VueModalDialogs = {
         extends: component,
         methods: {
           $close (data) {
-            this.$emit('close', data)
+            this.$emit('vue-modal-dialogs:close', data)
           }
         }
       })
