@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 83:
+/***/ 87:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__msgbox__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_modal_dialogs__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__msgbox__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_modal_dialogs__ = __webpack_require__(54);
 /// <reference path="../../typings/index.d.ts" />
 
 
@@ -17,12 +17,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-// use vue-modal-dialogs with default options
+// Use vue-modal-dialogs with default options
 __WEBPACK_IMPORTED_MODULE_0_vue__["default"].use(__WEBPACK_IMPORTED_MODULE_3_vue_modal_dialogs__["a" /* default */]);
 
-// add a 'msgbox'
-// with the template component 'msgbox' and two arguments: 'message', 'title'
-__WEBPACK_IMPORTED_MODULE_3_vue_modal_dialogs__["a" /* default */].add('msgbox', __WEBPACK_IMPORTED_MODULE_2__msgbox__["a" /* default */], 'message', 'title');
+// Make a dialog function with the template component 'msgbox' and two arguments: 'message', 'title'
+// and inject it into Vue's prototype
+__WEBPACK_IMPORTED_MODULE_0_vue__["default"].prototype.$msgbox = __WEBPACK_IMPORTED_MODULE_3_vue_modal_dialogs__["a" /* default */].makeDialog(__WEBPACK_IMPORTED_MODULE_2__msgbox__["a" /* default */], 'message', 'title');
 
 new __WEBPACK_IMPORTED_MODULE_0_vue__["default"]({ // eslint-disable-line no-new
   el: '#app',
@@ -33,18 +33,16 @@ new __WEBPACK_IMPORTED_MODULE_0_vue__["default"]({ // eslint-disable-line no-new
 
 /***/ }),
 
-/***/ 85:
+/***/ 89:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3375995a_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(90);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3375995a_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(94);
 function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(86)
+  __webpack_require__(90)
 }
-var normalizeComponent = __webpack_require__(17)
+var normalizeComponent = __webpack_require__(18)
 /* script */
 
 /* template */
@@ -62,62 +60,30 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "examples/basic/App.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] App.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3375995a", Component.options)
-  } else {
-    hotAPI.reload("data-v-3375995a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
 
 /***/ }),
 
-/***/ 86:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(87);
+var content = __webpack_require__(91);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(30)("55f1088c", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3375995a\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/less-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3375995a\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/less-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(32)("55f1088c", content, true);
 
 /***/ }),
 
-/***/ 87:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(21)();
+exports = module.exports = __webpack_require__(25)();
 // imports
 
 
@@ -129,7 +95,7 @@ exports.push([module.i, "\n#app > div {\n  margin: 8px 0;\n}\n#app input,\n#app 
 
 /***/ }),
 
-/***/ 89:
+/***/ 93:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -151,10 +117,8 @@ exports.push([module.i, "\n#app > div {\n  margin: 8px 0;\n}\n#app input,\n#app 
   }),
   methods: {
     showMessage() {
-      // creates a new dialog via `this.$<name>` shortcut
-      // this.$dialogs.show('msgbox', ...) also works
       this.$msgbox(this.message, this.title).then(result => {
-        // dialogs returns a `Promise`
+        // dialog function returns a `Promise`
         this.result = result; // so you can get its result from `then` function
       });
     }
@@ -163,7 +127,7 @@ exports.push([module.i, "\n#app > div {\n  margin: 8px 0;\n}\n#app input,\n#app 
 
 /***/ }),
 
-/***/ 90:
+/***/ 94:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -217,30 +181,21 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_vm._v("Show Message")])]), _vm._v(" "), _c('div', [_vm._v(_vm._s(_vm.result))])])
 }
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3375995a", esExports)
-  }
-}
 
 /***/ }),
 
-/***/ 91:
+/***/ 95:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_msgbox_vue__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d7520270_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_msgbox_vue__ = __webpack_require__(95);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_msgbox_vue__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d7520270_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_msgbox_vue__ = __webpack_require__(99);
 function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(92)
+  __webpack_require__(96)
 }
-var normalizeComponent = __webpack_require__(17)
+var normalizeComponent = __webpack_require__(18)
 /* script */
 
 /* template */
@@ -258,62 +213,30 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "examples/basic/msgbox.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] msgbox.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d7520270", Component.options)
-  } else {
-    hotAPI.reload("data-v-d7520270", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
 
 /***/ }),
 
-/***/ 92:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(93);
+var content = __webpack_require__(97);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(30)("7f65fe1c", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d7520270\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/less-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./msgbox.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d7520270\",\"scoped\":false,\"hasInlineConfig\":true}!../../node_modules/less-loader/index.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./msgbox.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(32)("7f65fe1c", content, true);
 
 /***/ }),
 
-/***/ 93:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(21)();
+exports = module.exports = __webpack_require__(25)();
 // imports
 
 
@@ -325,7 +248,7 @@ exports.push([module.i, "\n.msgbox-wrapper {\n  position: fixed;\n  left: 0;\n  
 
 /***/ }),
 
-/***/ 94:
+/***/ 98:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -344,7 +267,13 @@ exports.push([module.i, "\n.msgbox-wrapper {\n  position: fixed;\n  left: 0;\n  
 //
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['message', 'title'],
+  props: {
+    title: Number,
+    another: {
+      type: Number,
+      required: true
+    }
+  },
   methods: {
     close(data) {
       // close a dialog by emitting 'close' event with data in the 2nd arugment
@@ -356,7 +285,7 @@ exports.push([module.i, "\n.msgbox-wrapper {\n  position: fixed;\n  left: 0;\n  
 
 /***/ }),
 
-/***/ 95:
+/***/ 99:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -382,16 +311,9 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_vm._v("OK")])])])])
 }
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-d7520270", esExports)
-  }
-}
 
 /***/ })
 
-},[83]);
+},[87]);
