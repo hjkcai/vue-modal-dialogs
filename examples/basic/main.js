@@ -4,14 +4,14 @@
 import Vue from 'vue'
 import App from './App'
 import msgbox from './msgbox'
-import dialogs from 'vue-modal-dialogs'
+import ModalDialogs from 'vue-modal-dialogs'
 
-// use vue-modal-dialogs with default options
-Vue.use(dialogs)
+// Use vue-modal-dialogs with default options
+Vue.use(ModalDialogs)
 
-// add a 'msgbox'
-// with the template component 'msgbox' and two arguments: 'message', 'title'
-dialogs.add('msgbox', msgbox, 'message', 'title')
+// Make a dialog function with the template component 'msgbox' and two arguments: 'message', 'title'
+// and inject it into Vue's prototype
+Vue.prototype.$msgbox = ModalDialogs.makeDialog(msgbox, 'message', 'title')
 
 new Vue({     // eslint-disable-line no-new
   el: '#app',

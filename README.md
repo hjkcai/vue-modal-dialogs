@@ -6,7 +6,9 @@ Dialogs are a typical and essential user interaction in interactive applications
 
 # Demo
 
-Comes later...
+[Basic](https://hjkcai.github.io/vue-modal-dialogs/basic)
+
+More demos are on their way...
 
 # Features
 

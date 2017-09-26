@@ -16,10 +16,8 @@
     }),
     methods: {
       showMessage () {
-        // creates a new dialog via `this.$<name>` shortcut
-        // this.$dialogs.show('msgbox', ...) also works
         this.$msgbox(this.message, this.title)
-        .then(result => {         // dialogs returns a `Promise`
+        .then(result => {         // dialog function returns a `Promise`
           this.result = result    // so you can get its result from `then` function
         })
       }

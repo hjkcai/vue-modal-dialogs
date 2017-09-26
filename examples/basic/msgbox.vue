@@ -13,7 +13,13 @@
 
 <script>
   export default {
-    props: ['message', 'title'],
+    props: {
+      title: Number,
+      another: {
+        type: Number,
+        required: true
+      }
+    },
     methods: {
       close (data) {
         // close a dialog by emitting 'close' event with data in the 2nd arugment
