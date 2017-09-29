@@ -9395,6 +9395,7 @@ module.exports = function listToStyles (parentId, list) {
 //
 //
 //
+//
 
 
 
@@ -11758,7 +11759,19 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_vm._m(0), _vm._v(" "), _c('article', [_c('message-box'), _vm._v(" "), _c('confirm'), _vm._v(" "), _c('login')], 1)])
 }
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('header', [_c('h1', [_vm._v("vue-modal-dialogs")]), _vm._v(" "), _c('p', [_vm._v("A light-weighted Vue.js helper for developers to use dialogs easily by the advantage of Promise.")]), _vm._v(" "), _c('div', {
+  return _c('header', [_c('h1', [_vm._v("vue-modal-dialogs")]), _vm._v(" "), _c('p', {
+    staticStyle: {
+      "margin-bottom": "8px"
+    }
+  }, [_vm._v("A light-weighted Vue.js helper for developers to use dialogs easily by the advantage of Promise.")]), _vm._v(" "), _c('p', {
+    staticStyle: {
+      "margin-top": "8px"
+    }
+  }, [_vm._v("Made with ❤️ by "), _c('a', {
+    attrs: {
+      "href": "https://github.com/hjkcai"
+    }
+  }, [_vm._v("hjkcai")])]), _vm._v(" "), _c('div', {
     staticClass: "github-buttons"
   }, [_c('a', {
     staticClass: "github-button",

@@ -3,6 +3,8 @@
     <header>
       <h1>vue-modal-dialogs</h1>
       <p>A light-weighted Vue.js helper for developers to use dialogs easily by the advantage of Promise.</p>
+      <p>Tip: Open Vue Devtool to see what is happening</p>
+      <p>Made with ❤️ by <a href="https://github.com/hjkcai">hjkcai</a></p>
       <div class="github-buttons">
         <a class="github-button" href="https://github.com/hjkcai/vue-modal-dialogs" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star hjkcai/vue-modal-dialogs on GitHub">Star</a>
         <a class="github-button" href="https://github.com/hjkcai/vue-modal-dialogs/fork" data-icon="octicon-repo-forked" data-size="large" aria-label="Fork hjkcai/vue-modal-dialogs on GitHub">Fork</a>
@@ -22,6 +24,7 @@
   import MessageBox from './sections/message-box'
 
   export default {
+    name: 'IndexPage',
     components: {
       Login,
       Confirm,
@@ -61,13 +64,17 @@
     text-align: center;
 
     h1 {
-      margin: 0;
+      margin-bottom: 24px;
       font-family: Inconsolata, monospace;
       font-weight: normal;
     }
 
     p {
-      margin: 24px 0;
+      margin: 8px 0;
+    }
+
+    .github-buttons {
+      margin-top: 24px;
     }
 
     iframe + iframe {
