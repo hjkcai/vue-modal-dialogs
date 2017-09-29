@@ -12,16 +12,16 @@ More demos are on their way...
 
 # Features
 
-✅ Light weighted (~1kb min+gzip)
-✅ Promise based
-✅ Functional programming
-✅ Full customizable
-✅ Place everything you want into that dialog
+* ✅ Light weighted (~1kb min+gzip)
+* ✅ Promise based
+* ✅ Functional programming
+* ✅ Full customizable
+* ✅ Place everything you want into that dialog
 
-Features below is not provided. You can achieve them by yourself:
+Features below is *not* provided. You can achieve them by yourself:
 
-❌ Pre-defined dialog style
-❌ Shortcut function in Vue's prototype
+* ❌ Pre-defined dialog style
+* ❌ Shortcut function in Vue's prototype
 
 # Installation
 
