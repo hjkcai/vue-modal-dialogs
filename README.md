@@ -4,11 +4,8 @@ Dialogs are a typical and essential user interaction in interactive applications
 
 `vue-modal-dialogs` is a super light-weighted library aimed to help developers to easily use dialogs by the advantage of [Vue.js](https://vuejs.org), [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
 
-# Demo
+[Check demo here!](https://hjkcai.github.io/vue-modal-dialogs)
 
-[Basic](https://hjkcai.github.io/vue-modal-dialogs/basic)
-
-More demos are on their way...
 
 # Features
 
