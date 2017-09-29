@@ -1,23 +1,15 @@
 'use strict'
 
-const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const examples = path.join(__dirname, 'examples')
-const entries = fs.readdirSync(examples).reduce((entries, dir) => {
-  const fullDir = path.join(examples, dir)
-  const entry = path.join(fullDir, 'main.js')
-  if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
-    entries[dir] = entry
-  }
-
-  return entries
-}, {})
 
 module.exports = {
-  entry: entries,
+  entry: {
+    app: path.join(examples, 'main.js')
+  },
   devServer: {
     publicPath: '/'
   },
@@ -35,7 +27,12 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: [
-                ['es2015', { 'modules': false }],
+                ['env', {
+                  'modules': false,
+                  'targets': {
+                    'browsers': ['> 1%', 'last 2 versions', 'not ie <= 8']
+                  }
+                }],
                 'stage-2'
               ],
               plugins: ['transform-runtime']
@@ -83,17 +80,16 @@ module.exports = {
     modules: ['node_modules']
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('common'),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
-    ...Object.keys(entries).map(entry => new HtmlWebpackPlugin({
-      filename: `${entry}/index.html`,
-      template: path.join(entries[entry], '../index.html'),
-      chunks: ['common', entry],
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.join(examples, 'index.html'),
+      chunks: ['app'],
       chunksSortMode: 'dependency',
       inject: true
-    }))
+    })
   ],
   performance: {
     hints: false
