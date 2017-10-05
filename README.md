@@ -1,11 +1,10 @@
+[中文文档](https://huajingkun.com/articles/vue-modal-dialogs) | [Check demo here!](https://hjkcai.github.io/vue-modal-dialogs)
+
 # Introduction
 
 Dialogs are a typical and essential user interaction in interactive applications. But implementing dialogs are not an easy thing in front-end web development.
 
 `vue-modal-dialogs` is a super light-weighted library aimed to help developers to easily use dialogs by the advantage of [Vue.js](https://vuejs.org), [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
-
-[Check demo here!](https://hjkcai.github.io/vue-modal-dialogs)
-
 
 # Features
 
@@ -100,7 +99,7 @@ You can have a few options here:
 ```typescript
 interface PluginOptions {
   /**
-   * Mount point of the wrapper element.
+   * Mount point of the wrapper element. All dialogs will be inside this wrapper.
    * vue-modal-dialogs automatically creates a new element if that element is not present.
    *
    * Defaults to `undefined`.
@@ -111,12 +110,16 @@ interface PluginOptions {
    * Render options of the wrapper element.
    *
    * This options is the same to VNode's render option.
-   * You can pass any props/events supported by the <transition-group> element.
+   * You can pass any props/events supported by the <transition-group> component.
    * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
    */
   wrapper?: WrapperRenderOptions
 
-  /** Options to control the `z-index` css property of each dialog */
+  /**
+   * Options to control the `z-index` css property of each dialog.
+   * This feature guarantees that the newer dialog is always on the top of the older dialogs.
+   * You can disable this feature by setting this option to `false`.
+   */
   zIndex?: {
     /**
      * The initial value of `z-index`.
@@ -135,31 +138,6 @@ interface PluginOptions {
   }
 }
 ```
-
-## Dialog component
-
-This component will be shown later when you call the dialog function. Here you need to decide how your dialog looks like. You just need to add props to this component and then dialog arguments can be retrieved from props.
-
-```javascript
-export default {
-  // Here are two dialog arguments. You can use these props as normal props.
-  props: ['title', 'content'],
-  ...
-}
-```
-
-A `$close` method will be added into this component automatically. Call this method with data when you are done (e.g. user pressing the OK button). It will close the current dialog component and resolve the previous created Promise.
-
-```javascript
-this.$close(data)       // data is optional
-```
-
-Additionally, two props will always be available in every dialog component:
-
-1. `arguments`: This is an array containing everything you passed in the dialog function.
-2. `dialogId`: A unique ID of current dialog. This is an internal data of `vue-modal-dialogs`.
-
-You can make several dialog components and then use them for making dialog functions.
 
 ## Dialog function
 
@@ -194,14 +172,14 @@ interface DialogOptions {
    * This is the same to the VNode's render options.
    * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
    */
-  render: Vue.VNodeData
+  render?: Vue.VNodeData
 }
 ```
 
 The `props` option is very important. **It maps the arguments of the dialog function to the props of the dialog component**. For example, if `props` is set to `['title', 'content']`, then you call the dialog function like this:
 
 ```javascript
-dialogFunction('This is title', 'This is content')
+dialogFunction('This is title', 'This is content', 'Extra argument')
 ```
 
 The dialog component will receive these props:
@@ -210,14 +188,45 @@ The dialog component will receive these props:
 {
   title: 'This is title',       // 1st argument
   content: 'This is content',   // 2nd argument
-  arguments: ['This is title', 'This is content'],     // store all arguments (it will always be there)
-  dialogId: 0                   // A unique ID of current dialog.
+  dialogId: 0,                  // A unique ID of current dialog
+  // stores all arguments
+  arguments: ['This is title', 'This is content', 'Extra argument']
 }
 ```
 
-These props will be defined automatically without validating. If you want to validate these props, just define them by yourself with validation.
-
 Note that `makeDialog` function is a *pure function* and a *higher-order function*. It does not modify the original component but generate a new components that *extends* the original one. You can use the original component everywhere else as-is. See [https://vuejs.org/v2/api/#extends](https://vuejs.org/v2/api/#extends) for more information.
+
+## Dialog component
+
+Dialog components will be shown later when you call the dialog function. Here you need to decide how your dialog looks like.
+
+Typically there are some arguments passed into the dialog function. They can be easily retrieved from props. These props will be defined *automatically*. If you want to [validate these props](https://vuejs.org/v2/guide/components#Prop-Validation), just define them by yourself with some validation.
+
+```javascript
+export default {
+  // Here are two dialog arguments. You can use these props as normal props.
+  // In fact, vue-modal-dialogs has already defined these props for you.
+  // You may not define these props unless you want to do some validation.
+  props: {
+    title: String,
+    content: String
+  },
+  ...
+}
+```
+
+Additionally, two props will always be available in every dialog component:
+
+1. `arguments`: This is an array containing everything you passed in the dialog function.
+2. `dialogId`: A unique ID of current dialog. This is an internal data of `vue-modal-dialogs`.
+
+A `$close` method will be added into this component automatically. Call this method with data when you are done (e.g. user pressing the OK button). It will close the current dialog component and resolve the previous created Promise.
+
+```javascript
+this.$close(data)       // data is optional
+```
+
+You can make several dialog components and then use them for making dialog functions.
 
 # Contribution
 
