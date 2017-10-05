@@ -45,11 +45,16 @@
 </script>
 
 <style lang="less">
-  .login input {
-    display: block;
+  .login .message-text {
+    display: flex;
+    flex-direction: column;
 
-    &:first-child {
-      margin-bottom: 16px;
+    input {
+      width: auto;
+
+      &:first-child {
+        margin-bottom: 16px;
+      }
     }
   }
 </style>

@@ -149,6 +149,7 @@
     padding: 0 16px;
     border: 0;
     border-radius: 2px;
+    flex-shrink: 0;
     text-transform: uppercase;
     color: white;
     background-color: #2196F3;
@@ -199,6 +200,7 @@
   .message-content {
     padding: 32px;
     border-radius: 2px;
+    margin: 0 16px;
     background-color: white;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.33);
   }
