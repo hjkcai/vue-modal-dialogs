@@ -18,6 +18,7 @@ module.exports = {
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production' ? '/vue-modal-dialogs/' : '/'
   },
+  devtool: 'sourcemap',
   module: {
     rules: [
       {
