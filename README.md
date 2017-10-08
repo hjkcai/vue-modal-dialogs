@@ -1,4 +1,4 @@
-[中文文档](https://huajingkun.com/articles/vue-modal-dialogs) | [Check demo here!](https://hjkcai.github.io/vue-modal-dialogs)
+[中文文档](https://huajingkun.com/article/vue-modal-dialogs) | [Check demo here!](https://hjkcai.github.io/vue-modal-dialogs)
 
 # Introduction
 
