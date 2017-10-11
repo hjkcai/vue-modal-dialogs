@@ -9525,7 +9525,7 @@ var VueModalDialogs = {
     // Mount the DialogsWrapper component on `el`.
     // Dialog components will be added into this wrapper.
     var DialogsWrapper = Object(__WEBPACK_IMPORTED_MODULE_5__dialogs_wrapper__["a" /* default */])(Vue, options);
-    dialogsWrapper = new DialogsWrapper();
+    dialogsWrapper = new DialogsWrapper(options.wrapperComponentOptions);
     dialogsWrapper.$mount(el);
   },
 
