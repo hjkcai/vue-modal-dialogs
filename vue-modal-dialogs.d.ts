@@ -20,6 +20,11 @@ export interface PluginOptions {
   wrapper?: Vue.VNodeData
 
   /**
+   * Component options of the dialog wrapper component.
+   */
+  wrapperComponentOptions?: Vue.ComponentOptions<Vue>
+
+  /**
    * Options to control the `z-index` css property of each dialog.
    * This feature guarantees that the newer dialog is always on the top of the older dialogs.
    * You can disable this feature by setting this option to `false`.

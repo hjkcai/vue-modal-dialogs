@@ -28,7 +28,7 @@ var VueModalDialogs = {
     // Mount the DialogsWrapper component on `el`.
     // Dialog components will be added into this wrapper.
     var DialogsWrapper = dialogsWrapperFactory(Vue, options)
-    dialogsWrapper = new DialogsWrapper()
+    dialogsWrapper = new DialogsWrapper(options.wrapperComponentOptions)
     dialogsWrapper.$mount(el)
   },
   makeDialog: makeDialog
