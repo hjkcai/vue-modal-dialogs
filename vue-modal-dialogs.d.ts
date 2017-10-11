@@ -1,39 +1,6 @@
 import Vue from 'vue'
 export as namespace VueModalDialogs
 
-export type TransitionEventHandler = () => void
-
-interface WrapperRenderOptions extends Vue.VNodeData {
-  props?: {
-    tag?: string,
-    name?: string,
-    appear?: boolean,
-    css?: boolean,
-    type?: string,
-    moveClass?: string,
-    enterClass?: string,
-    leaveClass?: string,
-    enterToClass?: string,
-    leaveToClass?: string,
-    enterActiveClass?: string,
-    leaveActiveClass?: string,
-    appearClass?: string,
-    appearActiveClass?: string,
-    appearToClass?: string
-  },
-  on?: {
-    beforeEnter?: TransitionEventHandler,
-    enter?: TransitionEventHandler,
-    afterEnter?: TransitionEventHandler,
-    beforeLeave?: TransitionEventHandler,
-    leave?: TransitionEventHandler,
-    afterLeave?: TransitionEventHandler,
-    beforeAppear?: TransitionEventHandler,
-    appear?: TransitionEventHandler,
-    afterAppear?: TransitionEventHandler
-  }
-}
-
 export interface PluginOptions {
   /**
    * Mount point of the wrapper element. All dialogs will be inside this wrapper.
@@ -50,7 +17,7 @@ export interface PluginOptions {
    * You can pass any props/events supported by the <transition-group> component.
    * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
    */
-  wrapper?: WrapperRenderOptions
+  wrapper?: Vue.VNodeData
 
   /**
    * Options to control the `z-index` css property of each dialog.
