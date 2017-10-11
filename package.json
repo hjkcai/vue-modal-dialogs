@@ -41,6 +41,7 @@
     "babel-eslint": "^7.1.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-env": "^1.6.0",
     "babel-preset-stage-2": "^6.18.0",
     "css-loader": "^0.26.1",
     "eslint": "^3.12.2",
@@ -69,10 +70,10 @@
   },
   "dependencies": {
     "arr-diff": "^4.0.0",
-    "babel-preset-env": "^1.6.0",
-    "element-ui": "^1.4.4",
     "for-own": "^0.1.4",
-    "is-extendable": "^0.1.1",
-    "vue": "^2.4.4"
+    "is-extendable": "^0.1.1"
+  },
+  "peerDependencies": {
+    "vue": "^2.0.0"
   }
 }
