@@ -3,6 +3,34 @@
 /** All dialog wrappers */
 export const wrappers = {}
 
+/**
+ * Map props definition to args.
+ *
+ * If the name of the first prop is one of the keys of the first argument,
+ * that argument will be ignored.
+ *
+ * e.g. `makeDialog(component, 'title')({ title: 'some title' })`.
+ * The `title` will be `'some title'` but the object `{ title: 'some title' }`.
+ * This will be less ambiguous.
+ *
+ * @param {string[]} props
+ * @param {any[]} args
+ */
+function collectProps (props, args) {
+  return props.reduce((propsData, prop, i) => {
+    if (
+      (i !== 0 && args[i] !== undefined) ||
+      typeof args[0] !== 'object' ||
+      args[0][props[0]] === undefined
+    ) {
+      propsData[prop] = args[i]
+    }
+
+    return propsData
+  }, {})
+}
+
+/** DialogsWrapper component */
 export default {
   name: 'DialogsWrapper',
   props: {
@@ -46,20 +74,9 @@ export default {
       },
       this.dialogIds.map(dialogId => {
         const dialog = this.dialogs[dialogId]
-
-        // Map args to props
-        const props = dialog.props.reduce((props, prop, i) => {
-          props[prop] = dialog.args[i]
-          return props
-        }, {
-          dialogId,
-          arguments: dialog.args
-        })
-
-        // Render component
         return createElement(dialog.component, {
           key: dialog.id,
-          props,
+          props: dialog.propsData,
           on: { 'vue-modal-dialogs:close': dialog.close }
         })
       })
@@ -80,9 +97,25 @@ export default {
       // This promise will be resolved when 'close' function is called
       const promise = new Promise(res => { resolve = res })
 
+      // Prepare the props of the dialog component
+      const defaultPropsData = {
+        dialogId: id,
+        arguments: args
+      }
+
+      // If the first argument of the dialog function is an object,
+      // use it as a part of the propsData
+      const firstArgObject = typeof args[0] === 'object' ? args[0] : {}
+      const propsData = Object.assign(
+        {},
+        defaultPropsData,
+        firstArgObject,
+        collectProps(options.props, args)
+      )
+
       // Add this dialog to `this.dialogs`,
       // and inject 'close' function into `promise`
-      promise.close = this.pushDialog({ id, args, promise, resolve, ...options })
+      promise.close = this.pushDialog({ id, propsData, promise, resolve, ...options })
 
       return promise
     },
