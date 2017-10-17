@@ -1,119 +1,115 @@
 'use strict'
 
-import { find, findIndex, defaultsDeep } from './util'
+/** All dialog wrappers */
+export const wrappers = {}
 
-/* Filter bad wrapper options and add default options */
-function parseWrapperOptions (options) {
-  if (typeof options !== 'object') options = {}
-
-  if (options.wrapper && typeof options.wrapper !== 'object') {
-    options.wrapper = undefined
-  }
-
-  if (options.zIndex === false) {
-    options.zIndex = {
-      value: null,
-      autoIncrement: false
-    }
-  } else if (options.zIndex && typeof options.zIndex !== 'object') {
-    options.zIndex = undefined
-  }
-
-  let result = defaultsDeep(options, {
-    wrapper: {
-      class: 'modal-dialogs-wrapper',
-      props: {
-        tag: 'div',
-        name: 'modal-dialog'
-      }
+export default {
+  name: 'DialogsWrapper',
+  props: {
+    name: {
+      type: String,
+      default: 'default',
+      validator: value => value
     },
-    zIndex: {
-      value: 1000,
-      autoIncrement: true
+    transitionName: String
+  },
+  data: () => ({
+    /** An auto-increment id */
+    id: 0,
+    /** All dialogs to render. Dialog render options is stored here */
+    dialogs: {}
+  }),
+  computed: {
+    dialogIds () {
+      return Object.keys(this.dialogs)
     }
-  })
+  },
+  created () {
+    if (process.env.NODE_ENV !== 'production') {
+      if (wrappers[this.name]) {
+        console.error(`[vue-modal-dialogs] The wrapper '${this.name}' is already exist. Please make sure that every wrapper has a unique name.`)
+      }
+    }
 
-  return result
-}
-
-export default function modalWrapperFactory (Vue, wrapperOptions) {
-  wrapperOptions = parseWrapperOptions(wrapperOptions)
-
-  // an auto-increment id to identify dialogs
-  let _id = 0
-
-  return Vue.extend({
-    name: 'ModalDialogsWrapper',
-    data: () => ({
-      dialogs: []
-    }),
-    methods: {
-      // add a new modal dialog into this wrapper
-      add (dialogOptions, args) {
-        // the unique id of this dialog
-        const id = _id++
-
-        // the function for closing this dialog
-        const close = this.close.bind(this, id)
-
-        // this promise will be resolved when 'close' function is called
-        const promise = new Promise((resolve, reject) => {
-          this.dialogs.push(Object.freeze({
-            id,
-            args,
-            close,
-            promise,
-            resolve,
-            options: defaultsDeep(dialogOptions, { render: {} }),
-            zIndex: wrapperOptions.zIndex.value
-          }))
-
-          if (wrapperOptions.zIndex.autoIncrement) {
-            ++wrapperOptions.zIndex.value
-          }
-        }).then(data => {
-          const index = findIndex(this.dialogs, dialog => dialog.id === id)
-          if (index > -1) this.dialogs.splice(index, 1)
-          return data
-        })
-
-        // inject 'close' function into this promise
-        promise.close = close
-        return promise
+    // Expose wrapper component
+    if (!wrappers[this.name]) {
+      wrappers[this.name] = this
+    }
+  },
+  render (createElement) {
+    // Render the wrapper as transition-group
+    return createElement(
+      'transition-group',
+      {
+        props: Object.assign({}, this.$attrs, { name: this.transitionName }),
+        on: this.$listeners
       },
-      // close a modal dialog by id
-      close (id, data) {
-        const dialog = find(this.dialogs, item => item.id === id)
-        if (dialog) {
-          // resolve previously created promise in 'add' method
-          dialog.resolve(data)
-        }
+      this.dialogIds.map(dialogId => {
+        const dialog = this.dialogs[dialogId]
 
-        return Promise.resolve(dialog ? dialog.promise : null)
-      }
-    },
-    render (createElement) {
-      return createElement('transition-group', wrapperOptions.wrapper, this.dialogs.map(dialog => {
-        // map args to props
-        const props = dialog.options.props.reduce((props, prop, i) => {
+        // Map args to props
+        const props = dialog.props.reduce((props, prop, i) => {
           props[prop] = dialog.args[i]
           return props
         }, {
-          dialogId: dialog.id,
+          dialogId,
           arguments: dialog.args
         })
 
-        // merge the default render options with user's render options
-        const renderOptions = defaultsDeep(dialog.options.render, {
+        // Render component
+        return createElement(dialog.component, {
           key: dialog.id,
-          style: { zIndex: dialog.zIndex },
           props,
           on: { 'vue-modal-dialogs:close': dialog.close }
         })
+      })
+    )
+  },
+  methods: {
+    /**
+     * Add a new dialog into this wrapper
+     *
+     * @private
+     * @param {Object} options Dialog options created in the `makeDialog` function
+     * @param {any[]} args Arguments from the dialog function
+     */
+    add (options, args) {
+      const id = this.id++
+      let resolve
 
-        // render component
-        return createElement(dialog.options.component, renderOptions)
-      }))
+      // This promise will be resolved when 'close' function is called
+      const promise = new Promise(res => { resolve = res })
+
+      // Add this dialog to `this.dialogs`,
+      // and inject 'close' function into `promise`
+      promise.close = this.pushDialog({ id, args, promise, resolve, ...options })
+
+      return promise
+    },
+
+    /**
+     * Add a dialog to `this.dialogs`
+     *
+     * @private
+     * @param {Object} renderOptions Dialog render options generated in the `add` method
+     * @returns {Function} A callback function to close the dialog
+     */
+    pushDialog (renderOptions) {
+      // Resolve previously created promise in 'add' method
+      renderOptions.close = data => {
+        renderOptions.resolve(data)
+        return renderOptions.promise
+      }
+
+      // Remove the dialog after it is closed
+      renderOptions.promise = renderOptions.promise.then(data => {
+        this.$delete(this.dialogs, renderOptions.id)
+      })
+
+      // Use Object.freeze to prevent vue from observing renderOptions
+      this.$set(this.dialogs, renderOptions.id, Object.freeze(renderOptions))
+
+      return renderOptions.close
     }
-  })
+  }
 }
