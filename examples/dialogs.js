@@ -7,14 +7,8 @@ import Login from './dialogs/login'
 import Confirm from './dialogs/confirm'
 import MessageBox from './dialogs/message-box'
 
-// Initialize ModalDialogs with 'fade' transition
-Vue.use(ModalDialogs, {
-  wrapper: {
-    props: {
-      name: 'fade'
-    }
-  }
-})
+// Initialize ModalDialogs
+Vue.use(ModalDialogs)
 
 // Make serval dialog functions
 export const login = makeDialog(Login)

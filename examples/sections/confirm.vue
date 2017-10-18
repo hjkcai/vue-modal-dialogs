@@ -18,8 +18,13 @@
   export default {
     methods: {
       async ask () {
+        // call dialog function with data in the arguments
         if (await this.$confirm('Oh my user', '😊 Would you like to star vue-modal-dialogs?')) {
-          if (await this.$confirm('That is great!', '😀 Go to github page now?')) {
+          // call dialog function with data in one object
+          if (await this.$confirm({
+            title: 'That is great!',
+            content: '😀 Go to github page now?'
+          })) {
             window.location = 'https://github.com/hjkcai/vue-modal-dialogs'
           } else {
             await messageBox('😊 Feel free to do it later')

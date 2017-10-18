@@ -15,6 +15,7 @@
       <confirm></confirm>
       <login></login>
     </article>
+    <dialogs-wrapper transition-name="fade" @enter="transitionEnter"></dialogs-wrapper>
   </main>
 </template>
 
@@ -29,6 +30,11 @@
       Login,
       Confirm,
       MessageBox
+    },
+    methods: {
+      transitionEnter () {
+        console.log('`enter` event of the `transition-group` component has been fired.')
+      }
     }
   }
 </script>
@@ -203,6 +209,7 @@
     margin: 0 16px;
     background-color: white;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.33);
+    display: block;
   }
 
   .confirm {
