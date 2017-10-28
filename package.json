@@ -74,16 +74,14 @@
     "sinon-chai": "^2.14.0",
     "style-loader": "^0.13.1",
     "uglify-js": "^3.1.0",
-    "vue-loader": "^13.0.4",
+    "vue": "^2.5.2",
+    "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.3",
-    "vue-template-compiler": "^2.4.4",
+    "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
     "arr-diff": "^4.0.0"
-  },
-  "peerDependencies": {
-    "vue": "^2.0.0"
   }
 }
