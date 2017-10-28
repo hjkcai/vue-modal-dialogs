@@ -81,9 +81,7 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
-    "arr-diff": "^4.0.0",
-    "for-own": "^0.1.4",
-    "is-extendable": "^0.1.1"
+    "arr-diff": "^4.0.0"
   },
   "peerDependencies": {
     "vue": "^2.0.0"
