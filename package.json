@@ -13,7 +13,8 @@
     "build:lib": "NODE_ENV=production buble --no modules src -o dist",
     "build:example": "NODE_ENV=production webpack",
     "dev": "webpack-dev-server",
-    "lint": "eslint src example"
+    "lint": "eslint src example",
+    "test": "NODE_ENV=test BABEL_ENV=test karma start test/karma.conf.js --single-run"
   },
   "repository": {
     "type": "git",
@@ -78,6 +79,7 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.2",
+    "vue-test-utils": "^1.0.0-beta.3",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   },

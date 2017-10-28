@@ -5740,6 +5740,12 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "http://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
+vue-test-utils@^1.0.0-beta.3:
+  version "1.0.0-beta.3"
+  resolved "http://registry.npm.taobao.org/vue-test-utils/download/vue-test-utils-1.0.0-beta.3.tgz#363b57bf93014a7278e5afcae00face071a92777"
+  dependencies:
+    lodash "^4.17.4"
+
 vue@^2.5.2:
   version "2.5.2"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.5.2.tgz#fd367a87bae7535e47f9dc5c9ec3b496e5feb5a4"
