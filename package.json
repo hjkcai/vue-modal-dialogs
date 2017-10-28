@@ -33,9 +33,6 @@
   },
   "homepage": "https://github.com/hjkcai/vue-modal-dialogs#readme",
   "devDependencies": {
-    "@types/express": "^4.0.34",
-    "@types/webpack": "^2.1.0",
-    "@types/webpack-merge": "0.0.4",
     "autoprefixer": "^6.6.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
