@@ -64,7 +64,7 @@ module.exports = {
       'vue-modal-dialogs': path.resolve(__dirname, 'src')
     },
     extensions: ['.js', '.vue'],
-    modules: ['node_modules']
+    modules: ['examples', 'node_modules']
   },
   plugins: [
     new webpack.DefinePlugin({
