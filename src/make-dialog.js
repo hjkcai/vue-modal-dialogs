@@ -3,7 +3,7 @@
 import diff from 'arr-diff'
 import { wrappers } from './dialogs-wrapper'
 
-export function isVueConstructor (obj) {
+function isVueConstructor (obj) {
   if (obj != null) {
     const type = typeof obj
     if (type === 'object') {
