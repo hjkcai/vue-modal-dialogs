@@ -14,7 +14,7 @@
     "build:example": "NODE_ENV=production webpack",
     "dev": "webpack-dev-server",
     "lint": "eslint src example",
-    "test": "NODE_ENV=test BABEL_ENV=test karma start test/karma.conf.js --single-run"
+    "test": "NODE_ENV=production BABEL_ENV=test karma start test/karma.conf.js --single-run"
   },
   "repository": {
     "type": "git",
