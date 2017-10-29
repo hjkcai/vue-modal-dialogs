@@ -3,15 +3,42 @@
 import diff from 'arr-diff'
 import { wrappers } from './dialogs-wrapper'
 
+export function isVueConstructor (obj) {
+  if (obj != null) {
+    const type = typeof obj
+    if (type === 'object') {
+      return typeof obj.render === 'function' || typeof obj.template === 'string'
+    } else if (type === 'function') {
+      return isVueConstructor(obj.options)
+    }
+
+    return false
+  }
+}
+
 /** Dialog function maker */
 export default function makeDialog (options, ...props) {
+  if (options == null) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[vue-modal-dialogs] Dialog options cannot be null or undefined')
+    }
+
+    return null
+  }
+
   let wrapper = 'default'
   let component = options
 
-  if (options.component) {
+  if (isVueConstructor(options.component)) {
     component = options.component
-    wrapper = options.wrapper
+    wrapper = options.wrapper || wrapper
     props = options.props || []
+  } else if (!isVueConstructor(options)) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[vue-modal-dialogs] No Vue component constructor is passed into makeDialog function')
+    }
+
+    return null
   }
 
   // Dialog component and props
