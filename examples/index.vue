@@ -1,5 +1,6 @@
 <template>
   <main id="vue-modal-dialogs">
+    <dialogs-wrapper tag="div" transition-name="fade" @enter="transitionEnter"></dialogs-wrapper>
     <header>
       <h1>vue-modal-dialogs</h1>
       <p>A light-weighted Vue.js helper for developers to use dialogs easily by the advantage of Promise.</p>
@@ -15,7 +16,6 @@
       <confirm></confirm>
       <login></login>
     </article>
-    <dialogs-wrapper transition-name="fade" @enter="transitionEnter"></dialogs-wrapper>
   </main>
 </template>
 
