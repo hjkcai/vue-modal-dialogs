@@ -39,7 +39,22 @@ export default {
       default: 'default',
       validator: value => value
     },
-    transitionName: String
+    transitionName: String,
+    appear: Boolean,
+    appearActiveClass: String,
+    appearClass: String,
+    appearToClass: String,
+    css: Boolean,
+    duration: String,
+    enterActiveClass: String,
+    enterClass: String,
+    enterToClass: String,
+    leaveActiveClass: String,
+    leaveClass: String,
+    leaveToClass: String,
+    moveClass: String,
+    tag: String,
+    type: String
   },
   data: () => ({
     /** An auto-increment id */
@@ -69,7 +84,10 @@ export default {
     return createElement(
       'transition-group',
       {
-        props: Object.assign({}, this.$attrs, { name: this.transitionName }),
+        props: Object.assign(
+          { ...this.$attrs, ...this.$props },
+          { name: this.transitionName }
+        ),
         on: this.$listeners
       },
       this.dialogIds.map(dialogId => {
