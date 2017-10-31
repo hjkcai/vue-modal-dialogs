@@ -82,8 +82,8 @@ export default {
     return createElement(
       'transition-group',
       {
-        props: Object.assign(
-          { ...this.$attrs, ...this.$props },
+        props: Object.assign({},
+          this.$attrs, this.$props,
           { name: this.transitionName }
         ),
         on: this.$listeners
