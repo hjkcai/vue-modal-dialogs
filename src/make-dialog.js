@@ -65,6 +65,8 @@ export default function makeDialog (options, ...props) {
     } else if (process.env.NODE_ENV !== 'production') {
       const message = `[vue-modal-dialogs] Wrapper ${wrapper} is not found. Make sure that you have added <dialogs-wrapper wrapper-name="${wrapper}" /> component somewhere in your project.`
       return Promise.reject(new Error(message))
+    } else {
+      return Promise.reject()
     }
   }
 }
