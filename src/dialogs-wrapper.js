@@ -57,6 +57,8 @@ export default {
     type: String
   },
   data: () => ({
+    /** An auto-increment id */
+    id: 0,
     /** All dialogs to render. Dialog render options is stored here */
     dialogs: {}
   }),
