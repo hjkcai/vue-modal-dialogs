@@ -10,7 +10,7 @@ export const wrappers = {}
  * that argument will be ignored.
  *
  * e.g. `makeDialog(component, 'title')({ title: 'some title' })`.
- * The `title` will be `'some title'` but the object `{ title: 'some title' }`.
+ * The `title` will be `'some title'`, not the object `{ title: 'some title' }`.
  * This will be less ambiguous.
  *
  * @param {string[]} props
