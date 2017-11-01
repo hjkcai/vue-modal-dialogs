@@ -131,11 +131,7 @@ export default {
         collectProps(options.props, args)
       )
 
-      // Add this dialog to `this.dialogs`,
-      // and inject 'close' function into `promise`
-      promise.close = this.pushDialog({ id, propsData, promise, resolve, ...options })
-
-      return promise
+      return this.pushDialog({ id, propsData, promise, resolve, ...options })
     },
 
     /**
@@ -143,7 +139,7 @@ export default {
      *
      * @private
      * @param {Object} renderOptions Dialog render options generated in the `add` method
-     * @returns {Function} A callback function to close the dialog
+     * @returns {Promise} The promise
      */
     pushDialog (renderOptions) {
       // Resolve previously created promise in 'add' method
@@ -155,12 +151,16 @@ export default {
       // Remove the dialog after it is closed
       renderOptions.promise = renderOptions.promise.then(data => {
         this.$delete(this.dialogs, renderOptions.id)
+        return data
       })
+
+      // Inject 'close' function into `promise`
+      renderOptions.promise.close = renderOptions.close
 
       // Use Object.freeze to prevent vue from observing renderOptions
       this.$set(this.dialogs, renderOptions.id, Object.freeze(renderOptions))
 
-      return renderOptions.close
+      return renderOptions.promise
     }
   }
 }
