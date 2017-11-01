@@ -1,5 +1,8 @@
 <template>
-  <div class="test" @click="$close">TEST!</div>
+  <div class="test" @click="$close">
+    <span class="title">{{ title }}</span>
+    <span class="content">{{ content }}</span>
+  </div>
 </template>
 
 <style>
