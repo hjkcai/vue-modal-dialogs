@@ -1,9 +1,8 @@
 'use strict'
 
 import Vue from 'vue'
-Vue.config.devtools = true
-
 import Index from './index'
+Vue.config.devtools = true
 
 new Vue({
   render (h) {
