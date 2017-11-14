@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { Component, ComponentOptions, VNodeData } from 'vue'
 export as namespace VueModalDialogs
 
 export interface PluginOptions {
@@ -17,12 +17,12 @@ export interface PluginOptions {
    * You can pass any props/events supported by the <transition-group> component.
    * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
    */
-  wrapper?: Vue.VNodeData
+  wrapper?: VNodeData
 
   /**
    * Component options of the dialog wrapper component.
    */
-  wrapperComponentOptions?: Vue.ComponentOptions<Vue>
+  wrapperComponentOptions?: ComponentOptions<Vue>
 
   /**
    * Options to control the `z-index` css property of each dialog.
@@ -77,7 +77,7 @@ export interface DialogOptions<T> {
    * This is the same to the VNode's render options.
    * See https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
    */
-  render?: Vue.VNodeData
+  render?: VNodeData
 }
 
 export interface DialogFunction<T> {
@@ -89,7 +89,7 @@ export interface ModalDialogsInstance {
   install (vue: typeof Vue, options?: PluginOptions): void,
 
   /** Create a dialog function */
-  makeDialog<T> (component: Vue.Component, ...props: string[]): DialogFunction<T>,
+  makeDialog<T> (component: Component, ...props: string[]): DialogFunction<T>,
 
   /** Create a dialog function */
   makeDialog<T> (options: DialogOptions<T>): DialogFunction<T>
@@ -99,7 +99,7 @@ declare const modalDialogs: ModalDialogsInstance
 export default modalDialogs
 
 /** Create a dialog function */
-export function makeDialog<T> (component: Vue.Component, ...props: string[]): DialogFunction<T>
+export function makeDialog<T> (component: Component, ...props: string[]): DialogFunction<T>
 
 /** Create a dialog function */
 export function makeDialog<T> (options: DialogOptions<T>): DialogFunction<T>
