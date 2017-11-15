@@ -14,10 +14,10 @@ export interface DialogComponent<ReturnType> extends Vue {
   readonly arguments: any[]
 
   /** Close dialog */
-  $close (data: ReturnType): void
+  $close (data: ReturnType): DialogPromise<ReturnType>
 }
 
-export type Component<ReturnType, PropsDef> = ComponentOptions<DialogComponent<ReturnType> & PropsDef> | VueConstructor
+export type Component<ReturnType, PropsDef> = ComponentOptions<Vue, DialogComponent<ReturnType> & PropsDef> | VueConstructor
 
 /** Options to build a dialog function */
 export interface DialogOptions<ReturnType, PropsDef> {
