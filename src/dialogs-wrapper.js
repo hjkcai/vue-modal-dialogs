@@ -131,7 +131,7 @@ export default {
         collectProps(options.props, args)
       )
 
-      return this.pushDialog({ id, propsData, promise, resolve, ...options })
+      return this.pushDialog(Object.assign({ id, propsData, promise, resolve }, ...options))
     },
 
     /**
