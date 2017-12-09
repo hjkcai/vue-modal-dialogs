@@ -6,26 +6,16 @@ export const wrappers = {}
 /**
  * Map props definition to args.
  *
- * If the name of the first prop is one of the keys of the first argument,
- * that argument will be ignored.
- *
- * e.g. `makeDialog(component, 'title')({ title: 'some title' })`.
- * The `title` will be `'some title'`, not the object `{ title: 'some title' }`.
- * This will be less ambiguous.
- *
  * @param {string[]} props
  * @param {any[]} args
  */
 function collectProps (props, args) {
-  return props.reduce((propsData, prop, i) => {
-    if (
-      (i !== 0 && args[i] !== undefined) ||
-      typeof args[0] !== 'object' ||
-      args[0][props[0]] === undefined
-    ) {
-      propsData[prop] = args[i]
-    }
+  if (props.length === 0 && args[0] && typeof args[0] === 'object') {
+    return args[0]
+  }
 
+  return props.reduce((propsData, prop, i) => {
+    propsData[prop] = args[i]
     return propsData
   }, {})
 }
@@ -59,6 +49,7 @@ export default {
   data: () => ({
     /** An auto-increment id */
     id: 0,
+
     /** All dialogs to render. Dialog render options is stored here */
     dialogs: {}
   }),
@@ -116,22 +107,12 @@ export default {
       const promise = new Promise(res => { resolve = res })
 
       // Prepare the props of the dialog component
-      const defaultPropsData = {
+      const propsData = Object.assign({
         dialogId: id,
         arguments: args
-      }
+      }, collectProps(options.props, args))
 
-      // If the first argument of the dialog function is an object,
-      // use it as a part of the propsData
-      const firstArgObject = typeof args[0] === 'object' ? args[0] : {}
-      const propsData = Object.assign(
-        {},
-        defaultPropsData,
-        firstArgObject,
-        collectProps(options.props, args)
-      )
-
-      return this.pushDialog(Object.assign({ id, propsData, promise, resolve }, ...options))
+      return this.pushDialog(Object.assign({ id, propsData, promise, resolve }, options))
     },
 
     /**
