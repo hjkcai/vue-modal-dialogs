@@ -48,7 +48,7 @@ export default function makeDialog (options, ...props) {
     // Inject a `$close` function and pre-defined props into dialog component
     component: {
       extends: component,
-      props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || [])),
+      props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || (component.options && component.options.props) || [])),
       methods: {
         $close (data) {
           this.$emit('vue-modal-dialogs:close', data)
