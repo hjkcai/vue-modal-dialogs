@@ -32,8 +32,8 @@ export interface DialogOptions<ReturnType, PropsDef> {
 }
 
 interface DialogFunction<ReturnType = any, PropsDef extends object = {}> {
-  (...args: any[]): DialogPromise<ReturnType>
   (data?: PropsDef): DialogPromise<ReturnType>
+  (...args: any[]): DialogPromise<ReturnType>
 }
 
 export declare function makeDialog<
