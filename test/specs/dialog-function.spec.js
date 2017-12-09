@@ -1,5 +1,6 @@
 'use strict'
 
+import Vue from 'vue'
 import * as sinon from 'sinon'
 import * as VueTest from 'vue-test-utils'
 import { wrappers } from 'vue-modal-dialogs/dialogs-wrapper'
@@ -77,9 +78,11 @@ describe('Dialog function', function () {
       await nextTick()
       expect(wrapper.contains('.test')).to.be.true
 
-      promise.close()
-      await promise
+      const data = {}
+      promise.close(data)
+      expect(await promise).to.be.equal(data)
 
+      await new Promise(r => setTimeout(r, 200))      // wait for transition ends
       expect(wrapper.contains('.test')).to.be.false
     })
   })
@@ -144,11 +147,23 @@ describe('Dialog function', function () {
       })
     })
 
-    it('data object', async function () {
-      testFunction({
-        title: 'title',
-        content: 'content'
+    it('object', async function () {
+      const testObj = { title: 'title', content: 'content' }
+      testFunction(testObj)
+      await nextTick()
+
+      const props = getDialogComponentVm()._props
+      expect(props).to.deep.equal({
+        dialogId: 0,
+        arguments: [testObj],
+        title: testObj,
+        content: undefined
       })
+    })
+
+    it('data object', async function () {
+      const component = Vue.extend({ props: ['title', 'content'], extends: TestComponent })
+      makeDialog(component)({ title: 'title', content: 'content' })
       await nextTick()
 
       const props = getDialogComponentVm()._props
