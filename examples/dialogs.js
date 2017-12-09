@@ -12,7 +12,7 @@ Vue.use(ModalDialogs)
 
 // Make serval dialog functions
 export const login = makeDialog(Login)
-export const confirm = makeDialog(Confirm, 'title', 'content')
+export const confirm = makeDialog(Confirm)
 export const messageBox = makeDialog(MessageBox, 'content')
 
 // You can install dialog functions into Vue's prototype

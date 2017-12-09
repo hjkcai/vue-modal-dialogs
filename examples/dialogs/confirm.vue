@@ -13,6 +13,10 @@
 
 <script>
   export default {
+    props: {
+      title: String,
+      content: String
+    },
     methods: {
       ok () {
         // Close confirm dialog and send 'true' to its caller
