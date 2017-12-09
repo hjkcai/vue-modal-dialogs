@@ -6,7 +6,7 @@ export interface DialogPromise<ReturnType> extends Promise<ReturnType> {
   close (data: ReturnType): DialogPromise<ReturnType>
 }
 
-export interface DialogComponent<ReturnType> extends Vue {
+export declare class DialogComponent<ReturnType> extends Vue {
   /** The unique id of this dialog */
   readonly dialogId: number
 

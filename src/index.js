@@ -1,7 +1,8 @@
 'use strict'
 
-export const makeDialog = require('./make-dialog').default
-export const DialogsWrapper = require('./dialogs-wrapper').default
+import Vue from 'vue'
+import makeDialog from './make-dialog'
+import DialogsWrapper from './dialogs-wrapper'
 
 const VueModalDialogs = {
   /** VueModalDialogs plugin installer */
@@ -9,8 +10,14 @@ const VueModalDialogs = {
     Vue.component('DialogsWrapper', DialogsWrapper)
   },
   makeDialog,
-  DialogsWrapper
+  DialogsWrapper,
+  DialogComponent: Vue
 }
 
 VueModalDialogs.default = VueModalDialogs
 export default VueModalDialogs
+export {
+  makeDialog,
+  DialogsWrapper,
+  Vue as DialogComponent
+}
