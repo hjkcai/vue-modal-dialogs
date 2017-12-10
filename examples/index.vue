@@ -3,13 +3,15 @@
     <dialogs-wrapper tag="div" transition-name="fade" @enter="transitionEnter"></dialogs-wrapper>
     <header>
       <h1>vue-modal-dialogs</h1>
+      <p style="margin: -12px 0 32px">Every dialog is just a Promise!</p>
       <p>A light-weighted Vue.js helper for developers to use dialogs easily by the advantage of Promise.</p>
       <p>Tip: Open Vue Devtool to see what is happening</p>
-      <p>Made with ❤️ by <a href="https://github.com/hjkcai">hjkcai</a></p>
       <div class="github-buttons">
         <a class="github-button" href="https://github.com/hjkcai/vue-modal-dialogs" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star hjkcai/vue-modal-dialogs on GitHub">Star</a>
         <a class="github-button" href="https://github.com/hjkcai/vue-modal-dialogs/fork" data-icon="octicon-repo-forked" data-size="large" aria-label="Fork hjkcai/vue-modal-dialogs on GitHub">Fork</a>
       </div>
+      <p>Please star 🌟 this project if you like it!</p>
+      <p>Made with ❤️ by <a href="https://github.com/hjkcai">hjkcai</a></p>
     </header>
     <article>
       <message-box></message-box>
@@ -76,6 +78,7 @@
       margin-bottom: 24px;
       font-family: Inconsolata, monospace;
       font-weight: normal;
+      font-size: 40px;
     }
 
     p {
@@ -83,7 +86,7 @@
     }
 
     .github-buttons {
-      margin-top: 24px;
+      margin-top: 32px;
     }
 
     iframe + iframe {
