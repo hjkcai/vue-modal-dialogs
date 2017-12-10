@@ -239,6 +239,8 @@ The `wrapper` option specifies which dialogs wrapper to put the dialog component
 The default value is `default` (it is the same to the default value of the `name` prop
 of the dialogs wrapper component). In most cases you do not need to set this option.
 
+The promise from the dialog function will reject only when the specified wrapper is not found.
+
 Note that `makeDialog` function is a *pure function* and a *higher-order function*.
 It does not modify the original component but generate a new components that
 *extends* the original one. You can use the original component everywhere else as-is.
