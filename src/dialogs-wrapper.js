@@ -51,9 +51,7 @@ export default {
     }
 
     // Expose wrapper component
-    if (!wrappers[this.name]) {
-      wrappers[this.name] = this
-    }
+    wrappers[this.name] = this
   },
   render (createElement) {
     // Render the wrapper as transition-group

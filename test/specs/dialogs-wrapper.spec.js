@@ -29,18 +29,17 @@ describe('Dialogs wrapper', function () {
     expect(wrappers.test).to.equal(vm)
   })
 
-  it('should not override the existing wrapper entry', function () {
+  it('should override the existing wrapper entry', async function () {
     const vmTest = VueTest.mount(DialogsWrapper, {
       propsData: { name: 'test' }
     }).vm
+    expect(wrappers.test).to.equal(vmTest)
 
     // add again
     const vmTest1 = VueTest.mount(DialogsWrapper, {
       propsData: { name: 'test' }
     }).vm
-
-    expect(wrappers.test).to.equal(vmTest)
-    expect(wrappers.test).not.to.equal(vmTest1)
+    expect(wrappers.test).to.equal(vmTest1)
   })
 
   it('should pass properties to the <transition-group> component', function () {
