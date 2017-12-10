@@ -17,7 +17,7 @@ export declare class DialogComponent<ReturnType> extends Vue {
   $close (data: ReturnType): DialogPromise<ReturnType>
 }
 
-export type Component<ReturnType, PropsDef> = ComponentOptions<Vue, DialogComponent<ReturnType> & PropsDef> | VueConstructor
+export type Component<ReturnType, PropsDef> = ComponentOptions<DialogComponent<ReturnType> & PropsDef> | VueConstructor
 
 /** Options to build a dialog function */
 export interface DialogOptions<ReturnType, PropsDef> {
@@ -32,7 +32,7 @@ export interface DialogOptions<ReturnType, PropsDef> {
 }
 
 interface DialogFunction<ReturnType = any, PropsDef extends object = {}> {
-  (data?: PropsDef): DialogPromise<ReturnType>
+  (data?: Partial<PropsDef>): DialogPromise<ReturnType>
   (...args: any[]): DialogPromise<ReturnType>
 }
 
@@ -48,7 +48,7 @@ export declare function makeDialog<
   PropsDef extends object = {}
 > (
   component: Component<ReturnType, PropsDef>
-): (data?: PropsDef) => DialogPromise<ReturnType>
+): (data?: Partial<PropsDef>) => DialogPromise<ReturnType>
 
 export declare function makeDialog<
   ReturnType = any,
