@@ -8,7 +8,7 @@ const examples = path.join(__dirname, 'examples')
 
 module.exports = {
   entry: {
-    app: path.join(examples, 'main.js')
+    app: path.join(examples, 'main.ts')
   },
   devServer: {
     publicPath: '/'
@@ -36,6 +36,7 @@ module.exports = {
             loader: 'vue-loader',
             options: {
               loaders: {
+                ts: 'ts-loader',
                 css: 'vue-style-loader!css-loader',
                 less: 'vue-style-loader!css-loader!less-loader'
               },
@@ -45,9 +46,15 @@ module.exports = {
                 })
               ]
             }
-          },
-          'eslint-loader'
+          }
         ]
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
       },
       {
         test: /\.css$/,
@@ -63,7 +70,7 @@ module.exports = {
     alias: {
       'vue-modal-dialogs': path.resolve(__dirname, 'src')
     },
-    extensions: ['.js', '.vue'],
+    extensions: ['.js', '.ts', '.vue'],
     modules: ['examples', 'node_modules']
   },
   plugins: [

@@ -15,6 +15,7 @@
       <message-box></message-box>
       <confirm></confirm>
       <login></login>
+      <confirm-ts></confirm-ts>
     </article>
   </main>
 </template>
@@ -22,6 +23,7 @@
 <script>
   import Login from './sections/login'
   import Confirm from './sections/confirm'
+  import ConfirmTs from './sections/confirm-ts'
   import MessageBox from './sections/message-box'
 
   export default {
@@ -29,6 +31,7 @@
     components: {
       Login,
       Confirm,
+      ConfirmTs,
       MessageBox
     },
     methods: {
