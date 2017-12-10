@@ -368,6 +368,22 @@ makeDialog<ConfirmData>(SomeComponent)
 makeDialog<ConfirmData, boolean>(SomeComponent)
 ```
 
+# Migration from 1.x
+
+Here are two major breaking changes:
+
+1. An HTML element is inserted into the DOM automatically in 1.x.
+    Then I create a new root Vue instance on it. This causes critical problem
+    when using vue-modal-dialogs with vuex, vue-i18n, etc.
+
+    Remove all options in `Vue.use(ModalDialogs, ...)` and
+    add a `<dialogs-wrapper>` component into the root component, typically `App.vue`,
+    of your project.
+
+2. CSS z-index control are completely removed. If you need to control it,
+    do it yourself. The `dialogId` prop can be used as an auto-increment z-index
+    value. Bind it to your dialog component.
+
 # Contribution
 
 ## Run development server
