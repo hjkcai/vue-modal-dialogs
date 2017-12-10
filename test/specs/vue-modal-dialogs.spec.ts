@@ -20,7 +20,7 @@ describe('TypeScript', function () {
     vm.dialogId
     vm.arguments
 
-    makeDialog(TestTsx)().then(noop, noop),
+    makeDialog(TestTsx)().then(noop<boolean>(), noop),
     makeDialog<boolean>(TestTsx)().then(noop<boolean>(), noop),
     makeDialog<boolean, boolean>(TestTsx, 'test')(true).then(noop<boolean>(), noop),
     makeDialog<boolean, { test: string }>({
