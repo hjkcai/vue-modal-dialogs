@@ -7,6 +7,7 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
       "vue-modal-dialogs": ["vue-modal-dialogs.d.ts"]

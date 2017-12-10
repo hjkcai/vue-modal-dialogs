@@ -6,11 +6,17 @@
 </template>
 
 <script lang="ts">
-export default {
+  import { DialogComponent } from 'vue-modal-dialogs'
+  import { Prop, Component } from 'vue-property-decorator'
 
-}
+  @Component({})
+  export default class ConfirmTs extends DialogComponent<boolean> {
+    @Prop({ type: String, default: 'test' })
+    title: String
+
+    @Prop() content: String
+  }
 </script>
-
 
 <style>
   .fade-enter-active, .fade-leave-active {

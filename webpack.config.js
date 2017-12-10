@@ -50,11 +50,16 @@ module.exports = {
         ]
       },
       {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        options: {
-          appendTsSuffixTo: [/\.vue$/]
-        }
+        test: /\.tsx?$/,
+        use: [
+          'babel-loader',
+          {
+            loader: 'ts-loader',
+            options: {
+              appendTsSuffixTo: [/\.vue$/]
+            }
+          }
+        ]
       },
       {
         test: /\.css$/,
@@ -70,7 +75,7 @@ module.exports = {
     alias: {
       'vue-modal-dialogs': path.resolve(__dirname, 'src')
     },
-    extensions: ['.js', '.ts', '.vue'],
+    extensions: ['.js', '.ts', '.tsx', '.vue'],
     modules: ['examples', 'node_modules']
   },
   plugins: [

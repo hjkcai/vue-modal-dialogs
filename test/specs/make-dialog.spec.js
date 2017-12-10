@@ -33,6 +33,16 @@ describe('makeDialog', function () {
       const result = makeDialog(require('../components/test.vue').default)
       expect(result).to.be.a('function')
     })
+
+    it('imported from a .vue file using TypeScript as its script', function () {
+      const result = makeDialog(require('../components/test-ts.vue').default)
+      expect(result).to.be.a('function')
+    })
+
+    it('imported from a .tsx component', function () {
+      const result = makeDialog(require('../components/test-tsx.tsx').default)
+      expect(result).to.be.a('function')
+    })
   })
 
   describe('should return null if no valid component passed', function () {

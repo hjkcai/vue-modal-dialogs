@@ -210,5 +210,16 @@ describe('Dialog function', function () {
       expect(vm.title).to.equal('test')
       expect(vm._props).to.have.own.property('content')
     })
+
+    it('@Prop decorator from vue-property-decorator', async function () {
+      const dialogFunction = makeDialog(require('../components/test-ts.vue').default, 'title')
+
+      dialogFunction()
+      await nextTick()
+
+      const vm = getDialogComponentVm()
+      expect(vm.title).to.equal('test')
+      expect(vm._props).to.have.own.property('content')
+    })
   })
 })
