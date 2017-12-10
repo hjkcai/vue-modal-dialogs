@@ -22,8 +22,8 @@
     content: string
   }
 
-  const confirmByArgs = makeDialog<boolean, string, string>(Confirm, 'title', 'content')
-  const confirmByDataObject = makeDialog<boolean, ConfirmData>(Confirm)
+  const confirmByArgs = makeDialog<string, string, boolean>(Confirm, 'title', 'content')
+  const confirmByDataObject = makeDialog<ConfirmData, boolean>(Confirm)
 
   @Component({})
   export default class ComfirmTsSection extends Vue {
