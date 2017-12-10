@@ -62,11 +62,12 @@ export default function makeDialog (options, ...props) {
     if (wrappers[wrapper]) {
       // Add dialog component into dialogsWrapper component
       return wrappers[wrapper].add(dialogOptions, args)
-    } else if (process.env.NODE_ENV !== 'production') {
-      const message = `[vue-modal-dialogs] Wrapper ${wrapper} is not found. Make sure that you have added <dialogs-wrapper wrapper-name="${wrapper}" /> component somewhere in your project.`
-      return Promise.reject(new Error(message))
     } else {
-      return Promise.reject()
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(`[vue-modal-dialogs] Wrapper ${wrapper} is not found. Make sure that you have added <dialogs-wrapper wrapper-name="${wrapper}" /> component somewhere in your project.`)
+      }
+
+      return Promise.reject(new TypeError(`Undefined reference to wrapper ${wrapper}`))
     }
   }
 }
