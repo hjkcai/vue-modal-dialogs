@@ -72,6 +72,9 @@ export default {
   mounted () {
     this.$children[0].$on('after-leave', (...args) => console.log(args))
   },
+  beforeDestroy () {
+    delete wrappers[this.name]
+  },
   render (createElement) {
     const on = Object.assign({}, this.$listeners)
     let afterLeave = on['after-leave'] || (() => { /* noop */ })
