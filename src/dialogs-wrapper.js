@@ -69,9 +69,6 @@ export default {
     // Expose wrapper component
     wrappers[this.name] = this
   },
-  mounted () {
-    this.$children[0].$on('after-leave', (...args) => console.log(args))
-  },
   beforeDestroy () {
     delete wrappers[this.name]
   },
