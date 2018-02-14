@@ -79,52 +79,40 @@ export default {
      * Add a new dialog into this wrapper
      *
      * @private
-     * @param {Object} options Dialog options created in the `makeDialog` function
+     * @param {Object} dialogOptions Dialog options created in the `makeDialog` function
      * @param {any[]} args Arguments from the dialog function
      */
-    add (options, args) {
+    add (dialogOptions, args) {
       const id = this.id++
       let resolve
 
       // This promise will be resolved when 'close' function is called
       const promise = new Promise(res => { resolve = res })
+        // Remove the dialog after it is closed
+        .then(data => {
+          this.$delete(this.dialogs, renderOptions.id)
+          return data
+        })
+
+      // Magic 'resolve' outside the promise
+      const close = promise.close = data => {
+        resolve(data)
+        return promise
+      }
 
       // Prepare the props of the dialog component
       const propsData = Object.assign({
         dialogId: id,
         arguments: args
-      }, collectProps(options.props, args))
+      }, collectProps(dialogOptions.props, args))
 
-      return this.pushDialog(Object.assign({ id, propsData, promise, resolve }, options))
-    },
-
-    /**
-     * Add a dialog to `this.dialogs`
-     *
-     * @private
-     * @param {Object} renderOptions Dialog render options generated in the `add` method
-     * @returns {Promise} The promise
-     */
-    pushDialog (renderOptions) {
-      // Resolve previously created promise in 'add' method
-      renderOptions.close = data => {
-        renderOptions.resolve(data)
-        return renderOptions.promise
-      }
-
-      // Remove the dialog after it is closed
-      renderOptions.promise = renderOptions.promise.then(data => {
-        this.$delete(this.dialogs, renderOptions.id)
-        return data
-      })
-
-      // Inject 'close' function into `promise`
-      renderOptions.promise.close = renderOptions.close
+      // Build detailed render options
+      const renderOptions = Object.assign({ id, propsData, promise, resolve, close }, dialogOptions)
 
       // Use Object.freeze to prevent vue from observing renderOptions
       this.$set(this.dialogs, renderOptions.id, Object.freeze(renderOptions))
 
-      return renderOptions.promise
+      return promise
     }
   }
 }
