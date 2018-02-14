@@ -49,6 +49,10 @@ export default function makeDialog (options, ...props) {
     component: {
       extends: component,
       props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || (component.options && component.options.props) || [])),
+      created () {
+        // See dialogs-wrapper.js:97
+        dialogOptions.createdCallback(this)
+      },
       methods: {
         $close (data) {
           this.$emit('vue-modal-dialogs:close', data)

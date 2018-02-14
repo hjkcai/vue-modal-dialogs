@@ -94,6 +94,10 @@ export default {
           return data
         })
 
+      // Get Vue component instance for full control of the dialog component
+      const componentPromise = new Promise(res => { dialogOptions.createdCallback = res })
+      promise.getComponent = () => componentPromise
+
       // Magic 'resolve' outside the promise
       const close = promise.close = data => {
         resolve(data)
