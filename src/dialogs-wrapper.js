@@ -53,16 +53,29 @@ export default {
     // Expose wrapper component
     wrappers[this.name] = this
   },
+  mounted () {
+    this.$children[0].$on('after-leave', (...args) => console.log(args))
+  },
   render (createElement) {
+    const on = Object.assign({}, this.$listeners)
+    let afterLeave = on['after-leave'] || (() => { /* noop */ })
+
+    // Modify the 'after-leave' event
+    on['after-leave'] = el => {
+      // Resolve the transition promise
+      el.$afterLeave()
+      afterLeave(el)
+    }
+
     // Render the wrapper as transition-group
     return createElement(
       'transition-group',
       {
+        on,
         props: Object.assign({},
           this.$options.propsData,
           { name: this.transitionName }
-        ),
-        on: this.$listeners
+        )
       },
       this.dialogIds.map(dialogId => {
         const dialog = this.dialogs[dialogId]
@@ -97,6 +110,11 @@ export default {
       // Get Vue component instance for full control of the dialog component
       const componentPromise = new Promise(res => { dialogOptions.createdCallback = res })
       promise.getComponent = () => componentPromise
+
+      // Create a promise that resolves after its transition ends
+      promise.transition = componentPromise
+        .then(component => new Promise(res => { component.$el.$afterLeave = res }))
+        .then(() => promise)
 
       // Magic 'resolve' outside the promise
       const close = promise.close = data => {
