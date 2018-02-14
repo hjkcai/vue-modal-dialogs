@@ -29,7 +29,23 @@ export default {
       default: 'default',
       validator: value => value
     },
-    transitionName: String
+    transitionName: String,
+    tag: String,
+    appear: Boolean,
+    css: Boolean,
+    mode: String,
+    type: String,
+    moveClass: String,
+    enterClass: String,
+    leaveClass: String,
+    enterToClass: String,
+    leaveToClass: String,
+    enterActiveClass: String,
+    leaveActiveClass: String,
+    appearClass: String,
+    appearActiveClass: String,
+    appearToClass: String,
+    duration: [Number, String, Object]
   },
   data: () => ({
     /** An auto-increment id */
