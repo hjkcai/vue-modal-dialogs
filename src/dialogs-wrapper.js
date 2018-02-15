@@ -150,10 +150,10 @@ export default {
       // Wait until async component is resolved
       dialogOptions.component.then(component => {
         // Build detailed render options
-        const renderOptions = Object.assign({}, dialogOptions, { id, propsData, component, promise, resolve, close })
+        const renderOptions = Object.freeze({ id, propsData, component, close })
 
         // Use Object.freeze to prevent vue from observing renderOptions
-        this.$set(this.dialogs, renderOptions.id, Object.freeze(renderOptions))
+        this.$set(this.dialogs, id, renderOptions)
       })
 
       return promise
