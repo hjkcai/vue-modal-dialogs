@@ -98,7 +98,10 @@ export default {
         return createElement(dialog.component, {
           key: dialog.id,
           props: dialog.propsData,
-          on: { 'vue-modal-dialogs:close': dialog.close }
+          on: {
+            'vue-modal-dialogs:close': dialog.close,
+            'vue-modal-dialogs:error': dialog.error
+          }
         })
       })
     )
@@ -113,10 +116,10 @@ export default {
      */
     add (dialogOptions, args) {
       const id = this.id++
-      let resolve
+      let resolve, reject
 
       // This promise will be resolved when 'close' function is called
-      const userPromise = new Promise(res => { resolve = res })
+      const userPromise = new Promise((res, rej) => { resolve = res; reject = rej })
         // Remove the dialog after it is closed
         .then(data => {
           this.$delete(this.dialogs, id)
@@ -135,11 +138,9 @@ export default {
         .then(component => new Promise(res => { component.$el.$afterLeave = res }))
         .then(() => promise)
 
-      // Magic 'resolve' outside the promise
-      const close = promise.close = data => {
-        resolve(data)
-        return promise
-      }
+      // Magic 'resolve' and 'reject' outside the promise
+      const close = promise.close = data => resolve(data) || promise
+      const error = promise.error = data => reject(data) || promise
 
       // Prepare the props of the dialog component
       const propsData = Object.assign({
@@ -150,7 +151,7 @@ export default {
       // Wait until async component is resolved
       dialogOptions.component.then(component => {
         // Build detailed render options
-        const renderOptions = Object.freeze({ id, propsData, component, close })
+        const renderOptions = Object.freeze({ id, propsData, component, close, error })
 
         // Use Object.freeze to prevent vue from observing renderOptions
         this.$set(this.dialogs, id, renderOptions)

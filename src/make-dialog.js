@@ -59,6 +59,9 @@ export default function makeDialog (options, ...props) {
       methods: {
         $close (data) {
           this.$emit('vue-modal-dialogs:close', data)
+        },
+        $error (data) {
+          this.$emit('vue-modal-dialogs:error', data)
         }
       }
     }))
