@@ -53,7 +53,7 @@ export default function makeDialog (options, ...props) {
       extends: component.default || component,
       props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || (component.options && component.options.props) || [])),
       created () {
-        // See dialogs-wrapper.js:97
+        // See dialogs-wrapper.js:130
         dialogOptions.createdCallback(this)
       },
       methods: {
