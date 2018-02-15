@@ -116,12 +116,15 @@ export default {
       let resolve
 
       // This promise will be resolved when 'close' function is called
-      const promise = new Promise(res => { resolve = res })
+      const userPromise = new Promise(res => { resolve = res })
         // Remove the dialog after it is closed
         .then(data => {
-          this.$delete(this.dialogs, renderOptions.id)
+          this.$delete(this.dialogs, id)
           return data
         })
+
+      // This promise will be returned to user
+      const promise = dialogOptions.component.then(() => userPromise)
 
       // Get Vue component instance for full control of the dialog component
       const componentPromise = new Promise(res => { dialogOptions.createdCallback = res })
@@ -144,11 +147,14 @@ export default {
         arguments: args
       }, collectProps(dialogOptions.props, args))
 
-      // Build detailed render options
-      const renderOptions = Object.assign({ id, propsData, promise, resolve, close }, dialogOptions)
+      // Wait until async component is resolved
+      dialogOptions.component.then(component => {
+        // Build detailed render options
+        const renderOptions = Object.assign({}, dialogOptions, { id, propsData, component, promise, resolve, close })
 
-      // Use Object.freeze to prevent vue from observing renderOptions
-      this.$set(this.dialogs, renderOptions.id, Object.freeze(renderOptions))
+        // Use Object.freeze to prevent vue from observing renderOptions
+        this.$set(this.dialogs, renderOptions.id, Object.freeze(renderOptions))
+      })
 
       return promise
     }

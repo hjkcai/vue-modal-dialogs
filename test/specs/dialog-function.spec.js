@@ -12,7 +12,8 @@ describe('Dialog function', function () {
   const testFunction = makeDialog(TestComponent, 'title', 'content')
 
   function nextTick () {
-    return wrapper.vm.$nextTick()
+    // Wait 20ms to ensure the component promise is resolved
+    return new Promise(resolve => setTimeout(resolve, 20))
   }
 
   function getDialogComponentVm (index = 0) {

@@ -7,7 +7,9 @@ function isVueConstructor (obj) {
   if (obj != null) {
     const type = typeof obj
     if (type === 'object') {
-      return typeof obj.render === 'function' || typeof obj.template === 'string'
+      return typeof obj.then === 'function' ||
+        typeof obj.render === 'function' ||
+        typeof obj.template === 'string'
     } else if (type === 'function') {
       return isVueConstructor(obj.options)
     }
@@ -46,8 +48,9 @@ export default function makeDialog (options, ...props) {
     props,
 
     // Inject a `$close` function and pre-defined props into dialog component
-    component: {
-      extends: component,
+    // Async component is resolved here
+    component: Promise.resolve(component).then(component => ({
+      extends: component.default || component,
       props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || (component.options && component.options.props) || [])),
       created () {
         // See dialogs-wrapper.js:97
@@ -58,7 +61,7 @@ export default function makeDialog (options, ...props) {
           this.$emit('vue-modal-dialogs:close', data)
         }
       }
-    }
+    }))
   }
 
   // Return dialog function
