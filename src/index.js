@@ -1,23 +1,24 @@
 'use strict'
 
 import Vue from 'vue'
-import makeDialog from './make-dialog'
-import DialogsWrapper from './dialogs-wrapper'
+import { create } from './create'
+import DialogsWrapper from './wrapper'
 
-const VueModalDialogs = {
-  /** VueModalDialogs plugin installer */
-  install (Vue, options) {
-    Vue.component('DialogsWrapper', DialogsWrapper)
-  },
-  makeDialog,
-  DialogsWrapper,
-  DialogComponent: Vue
-}
-
-VueModalDialogs.default = VueModalDialogs
-export default VueModalDialogs
 export {
-  makeDialog,
+  create,
   DialogsWrapper,
   Vue as DialogComponent
+}
+
+/** vue-modal-dialogs plugin installer */
+export function install (Vue, options) {
+  Vue.component('DialogsWrapper', DialogsWrapper)
+}
+
+export function makeDialog (...args) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error('[vue-modal-dialogs] makeDialog function is deprecated. Use ModalDialogs.create instead.')
+  }
+
+  return create(...args)
 }

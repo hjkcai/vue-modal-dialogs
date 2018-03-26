@@ -3,8 +3,8 @@
 import { wrappers } from './dialogs-wrapper'
 import { isVueConstructor, generateDialogData } from './utils'
 
-/** Dialog function maker */
-export default function makeDialog (options, ...props) {
+/** Create a dialog function */
+export function create (options, ...props) {
   if (options == null) {
     if (process.env.NODE_ENV !== 'production') {
       console.error('[vue-modal-dialogs] Dialog options cannot be null or undefined')
