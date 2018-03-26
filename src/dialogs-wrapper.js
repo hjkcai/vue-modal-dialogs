@@ -119,10 +119,8 @@ export default {
 
       // This promise will be resolved when 'close' function is called
       const dataPromise = new Promise((res, rej) => { resolve = res; reject = rej })
-        .then(data => {
-          this.remove(id)
-          return data
-        })
+        .then(data => { this.remove(id); return data })
+        .catch(reason => { this.remove(id); throw reason })
 
       // This promise will be returned to user
       const promise = dialogData.component.then(() => dataPromise)
