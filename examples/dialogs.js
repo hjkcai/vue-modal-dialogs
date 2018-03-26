@@ -1,7 +1,7 @@
 'use strict'
 
 import Vue from 'vue'
-import ModalDialogs, { makeDialog } from 'vue-modal-dialogs'
+import * as ModalDialogs from 'vue-modal-dialogs'
 
 import Login from './dialogs/login'
 import Confirm from './dialogs/confirm'
@@ -11,9 +11,9 @@ import MessageBox from './dialogs/message-box'
 Vue.use(ModalDialogs)
 
 // Make serval dialog functions
-export const login = makeDialog(Login)
-export const confirm = makeDialog(Confirm)
-export const messageBox = makeDialog(MessageBox, 'content')
+export const login = ModalDialogs.create(Login)
+export const confirm = ModalDialogs.create(Confirm)
+export const messageBox = ModalDialogs.create(MessageBox, 'content')
 
 // You can install dialog functions into Vue's prototype
 Vue.prototype.$confirm = confirm

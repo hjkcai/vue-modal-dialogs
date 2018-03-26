@@ -14,7 +14,7 @@
 
 <script lang="ts">
   import Confirm from '../dialogs/confirm-ts.vue'
-  import { makeDialog } from 'vue-modal-dialogs'
+  import { create } from 'vue-modal-dialogs'
   import { Vue, Component } from 'vue-property-decorator'
 
   interface ConfirmData {
@@ -22,8 +22,8 @@
     content: string
   }
 
-  const confirmByArgs = makeDialog<string, string, boolean>(Confirm, 'title', 'content')
-  const confirmByDataObject = makeDialog<ConfirmData, boolean>(Confirm)
+  const confirmByArgs = create<string, string, boolean>(Confirm, 'title', 'content')
+  const confirmByDataObject = create<ConfirmData, boolean>(Confirm)
 
   @Component({})
   export default class ComfirmTsSection extends Vue {
