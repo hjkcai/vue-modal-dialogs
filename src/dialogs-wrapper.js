@@ -1,24 +1,13 @@
 'use strict'
 
+import {
+  noop,
+  collectProps,
+  transitionGroupProps
+} from './utils'
+
 /** All dialog wrappers */
 export const wrappers = {}
-
-/**
- * Map props definition to args.
- *
- * @param {string[]} props
- * @param {any[]} args
- */
-function collectProps (props, args) {
-  if (props.length === 0 && args[0] && typeof args[0] === 'object') {
-    return args[0]
-  }
-
-  return props.reduce((propsData, prop, i) => {
-    propsData[prop] = args[i]
-    return propsData
-  }, {})
-}
 
 /** DialogsWrapper component */
 export default {
@@ -30,22 +19,7 @@ export default {
       validator: value => value
     },
     transitionName: String,
-    tag: String,
-    appear: Boolean,
-    css: Boolean,
-    mode: String,
-    type: String,
-    moveClass: String,
-    enterClass: String,
-    leaveClass: String,
-    enterToClass: String,
-    leaveToClass: String,
-    enterActiveClass: String,
-    leaveActiveClass: String,
-    appearClass: String,
-    appearActiveClass: String,
-    appearToClass: String,
-    duration: [Number, String, Object]
+    ...transitionGroupProps
   },
   data: () => ({
     /** An auto-increment id */
@@ -73,19 +47,19 @@ export default {
     wrappers[this.name] = undefined
   },
   render (createElement) {
-    const on = Object.assign({}, this.$listeners)
+    const on = { ...this.$listeners }
 
     // Modify the 'after-leave' event for the transition promise
-    const afterLeave = on['after-leave'] || (() => { /* noop */ })
+    const afterLeave = on['after-leave'] || noop
     on['after-leave'] = el => {
       el.$afterLeave()
       afterLeave(el)
     }
 
-    const props = Object.assign({},
-      this.$options.propsData,
-      { name: this.transitionName }
-    )
+    const props = {
+      ...this.$options.propsData,
+      name: this.transitionName
+    }
 
     const children = this.dialogIds.map(dialogId => {
       const dialog = this.dialogs[dialogId]
@@ -128,10 +102,11 @@ export default {
         .then(() => dataPromise)
 
       const finalPromise = dialogData.component.then(component => {
-        const propsData = Object.assign({
+        const propsData = {
           dialogId: id,
-          arguments: args
-        }, collectProps(dialogData.props, args))
+          arguments: args,
+          ...collectProps(dialogData.props, args)
+        }
 
         // Use Object.freeze to prevent Vue from observing renderOptions
         const renderOptions = Object.freeze({ id, propsData, component, close, error })

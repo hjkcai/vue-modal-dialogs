@@ -1,22 +1,7 @@
 'use strict'
 
-import diff from 'arr-diff'
 import { wrappers } from './dialogs-wrapper'
-
-function isVueConstructor (obj) {
-  if (obj != null) {
-    const type = typeof obj
-    if (type === 'object') {
-      return typeof obj.then === 'function' ||
-        typeof obj.render === 'function' ||
-        typeof obj.template === 'string'
-    } else if (type === 'function') {
-      return isVueConstructor(obj.options)
-    }
-
-    return false
-  }
-}
+import { isVueConstructor, generateDialogData } from './utils'
 
 /** Dialog function maker */
 export default function makeDialog (options, ...props) {
@@ -43,31 +28,7 @@ export default function makeDialog (options, ...props) {
     return null
   }
 
-  // Dialog component and props
-  const dialogData = {
-    props,
-
-    // Inject a `$close` function and pre-defined props into dialog component
-    // Async component is resolved here
-    component: Promise.resolve(component).then(component => ({
-      extends: component.default || component,
-      props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || (component.options && component.options.props) || [])),
-      created () {
-        // Resolves componentPromise that is created in DialogsWrapper.add()
-        dialogData.createdCallback(this)
-      },
-      methods: {
-        $close (data) {
-          this.$emit('vue-modal-dialogs:close', data)
-        },
-        $error (data) {
-          this.$emit('vue-modal-dialogs:error', data)
-        }
-      }
-    }))
-  }
-
-  // Return dialog function
+  const dialogData = generateDialogData(props, component)
   return function dialogFunction (...args) {
     if (wrappers[wrapper]) {
       // Add dialog component into dialogsWrapper component
