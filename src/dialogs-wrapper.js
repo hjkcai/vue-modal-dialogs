@@ -115,24 +115,19 @@ export default {
      */
     add (dialogData, args) {
       const id = this.id++
-      let resolve, reject
+      let close, error
 
       // This promise will be resolved when 'close' function is called
-      const dataPromise = new Promise((res, rej) => { resolve = res; reject = rej })
+      const dataPromise = new Promise((res, rej) => { close = res; error = rej })
         .then(data => { this.remove(id); return data })
         .catch(reason => { this.remove(id); throw reason })
 
-      // This promise will be returned to user
-      const promise = dialogData.component.then(() => dataPromise)
-
-      const close = data => { resolve(data); return promise }
-      const error = data => { reject(data); return promise }
       const componentPromise = new Promise(res => { dialogData.createdCallback = res })
 
-      // Create a promise that resolves after the dialog's leave transition ends
+      // This promise will be resolves after the dialog's leave transition ends
       const transitionPromise = componentPromise
         .then(component => new Promise(res => { component.$el.$afterLeave = res }))
-        .then(() => promise)
+        .then(() => dataPromise)
 
       const propsData = Object.assign({
         dialogId: id,
@@ -146,7 +141,7 @@ export default {
         this.$set(this.dialogs, id, renderOptions)
       })
 
-      return Object.assign(promise, {
+      return Object.assign(dialogData.component.then(() => dataPromise), {
         close,
         error,
         transition: transitionPromise,
