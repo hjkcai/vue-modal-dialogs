@@ -123,10 +123,10 @@ export default {
         .catch(reason => { this.remove(id); throw reason })
 
       // It will be resolved after the component instance is created
-      const componentPromise = new Promise(res => { dialogData.createdCallback = res })
+      const instancePromise = new Promise(res => { dialogData.createdCallback = res })
 
       // It will be resolves after the dialog's leave transition ends
-      const transitionPromise = componentPromise
+      const transitionPromise = instancePromise
         .then(component => new Promise(res => { component.$el.$afterLeave = res }))
         .then(() => dataPromise)
 
@@ -149,7 +149,7 @@ export default {
         close,
         error,
         transition: transitionPromise,
-        getComponent: () => componentPromise
+        getInstance: () => instancePromise
       })
     },
 
