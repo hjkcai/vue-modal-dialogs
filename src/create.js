@@ -1,6 +1,6 @@
 'use strict'
 
-import { wrappers } from './dialogs-wrapper'
+import { wrappers } from './wrapper'
 import { isVueConstructor, generateDialogData } from './utils'
 
 /** Create a dialog function */
