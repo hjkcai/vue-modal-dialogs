@@ -82,28 +82,25 @@ export default {
       afterLeave(el)
     }
 
-    // Render the wrapper as transition-group
-    return createElement(
-      'transition-group',
-      {
-        on,
-        props: Object.assign({},
-          this.$options.propsData,
-          { name: this.transitionName }
-        )
-      },
-      this.dialogIds.map(dialogId => {
-        const dialog = this.dialogs[dialogId]
-        return createElement(dialog.component, {
-          key: dialog.id,
-          props: dialog.propsData,
-          on: {
-            'vue-modal-dialogs:close': dialog.close,
-            'vue-modal-dialogs:error': dialog.error
-          }
-        })
-      })
+    const props = Object.assign({},
+      this.$options.propsData,
+      { name: this.transitionName }
     )
+
+    const children = this.dialogIds.map(dialogId => {
+      const dialog = this.dialogs[dialogId]
+      return createElement(dialog.component, {
+        key: dialog.id,
+        props: dialog.propsData,
+        on: {
+          'vue-modal-dialogs:close': dialog.close,
+          'vue-modal-dialogs:error': dialog.error
+        }
+      })
+    })
+
+    // Render the wrapper as transition-group
+    return createElement('transition-group', { on, props }, children)
   },
   methods: {
     /**
