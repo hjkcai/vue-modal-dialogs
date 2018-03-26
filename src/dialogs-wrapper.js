@@ -148,7 +148,7 @@ export default {
       return Object.assign(finalPromise, {
         close,
         error,
-        transition: transitionPromise,
+        transition: () => transitionPromise,
         getInstance: () => instancePromise
       })
     },
