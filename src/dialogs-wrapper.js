@@ -2,6 +2,8 @@
 
 import {
   noop,
+  CLOSE_EVENT,
+  ERROR_EVENT,
   collectProps,
   transitionGroupProps
 } from './utils'
@@ -62,14 +64,16 @@ export default {
     }
 
     const children = this.dialogIds.map(dialogId => {
-      const dialog = this.dialogs[dialogId]
-      return createElement(dialog.component, {
-        key: dialog.id,
-        props: dialog.propsData,
-        on: {
-          'vue-modal-dialogs:close': dialog.close,
-          'vue-modal-dialogs:error': dialog.error
-        }
+      const data = this.dialogs[dialogId]
+
+      const on = {}
+      on[CLOSE_EVENT] = data.close
+      on[ERROR_EVENT] = data.error
+
+      return createElement(data.component, {
+        on,
+        key: data.id,
+        props: data.propsData
       })
     })
 

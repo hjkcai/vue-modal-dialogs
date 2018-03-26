@@ -4,6 +4,9 @@ import diff from 'arr-diff'
 
 export function noop () { /* nothing */ }
 
+export const CLOSE_EVENT = 'vue-modal-dialogs:close'
+export const ERROR_EVENT = 'vue-modal-dialogs:error'
+
 export const transitionGroupProps = {
   tag: String,
   appear: Boolean,
@@ -65,10 +68,10 @@ export function generateDialogData (props, component) {
       },
       methods: {
         $close (data) {
-          this.$emit('vue-modal-dialogs:close', data)
+          this.$emit(CLOSE_EVENT, data)
         },
         $error (data) {
-          this.$emit('vue-modal-dialogs:error', data)
+          this.$emit(ERROR_EVENT, data)
         }
       }
     }))
