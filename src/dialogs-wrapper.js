@@ -117,31 +117,35 @@ export default {
       const id = this.id++
       let close, error
 
-      // This promise will be resolved when 'close' function is called
+      // It will be resolved when 'close' function is called
       const dataPromise = new Promise((res, rej) => { close = res; error = rej })
         .then(data => { this.remove(id); return data })
         .catch(reason => { this.remove(id); throw reason })
 
+      // It will be resolved after the component instance is created
       const componentPromise = new Promise(res => { dialogData.createdCallback = res })
 
-      // This promise will be resolves after the dialog's leave transition ends
+      // It will be resolves after the dialog's leave transition ends
       const transitionPromise = componentPromise
         .then(component => new Promise(res => { component.$el.$afterLeave = res }))
         .then(() => dataPromise)
 
-      const propsData = Object.assign({
-        dialogId: id,
-        arguments: args
-      }, collectProps(dialogData.props, args))
+      const finalPromise = dialogData.component.then(component => {
+        const propsData = Object.assign({
+          dialogId: id,
+          arguments: args
+        }, collectProps(dialogData.props, args))
 
-      // Render after the async component is resolved
-      dialogData.component.then(component => {
-        // Use Object.freeze to prevent vue from observing renderOptions
+        // Use Object.freeze to prevent Vue from observing renderOptions
         const renderOptions = Object.freeze({ id, propsData, component, close, error })
+
+        // Finally render the dialog component
         this.$set(this.dialogs, id, renderOptions)
+
+        return dataPromise
       })
 
-      return Object.assign(dialogData.component.then(() => dataPromise), {
+      return Object.assign(finalPromise, {
         close,
         error,
         transition: transitionPromise,
