@@ -1,9 +1,12 @@
 import Vue, { ComponentOptions } from 'vue'
 import { VueConstructor, Vue as _Vue, ExtendedVue } from 'vue/types/vue'
-export as namespace VueModalDialogs
+export as namespace ModelDialogs
 
 export interface DialogPromise<ReturnType> extends Promise<ReturnType> {
-  close (data: ReturnType): DialogPromise<ReturnType>
+  close (data: ReturnType): void,
+  error (reason: any): void,
+  transition (): Promise<ReturnType>,
+  getInstance (): Promise<DialogComponent<ReturnType>>
 }
 
 export declare class DialogComponent<ReturnType> extends Vue {
@@ -13,17 +16,22 @@ export declare class DialogComponent<ReturnType> extends Vue {
   /** The arguments array passed into the dialog function */
   readonly arguments: any[]
 
-  /** Close dialog */
-  $close (data: ReturnType): DialogPromise<ReturnType>
+  /** Resolve the promise and close the dialog */
+  $close (data: ReturnType): void
+
+  /** Reject the promise and close the dialog */
+  $error (reason: any): void
 }
 
-interface DialogComponentConstructor<ReturnType> {
+export interface DialogComponentConstructor<ReturnType> {
   new (): DialogComponent<ReturnType>
 }
 
-export type Component<ReturnType, PropsDef> = DialogComponentConstructor<ReturnType> |
+export type Component<ReturnType, PropsDef> = (
+  DialogComponentConstructor<ReturnType> |
   ComponentOptions<DialogComponent<ReturnType> & PropsDef> |
   VueConstructor
+)
 
 /** Options to build a dialog function */
 export interface DialogOptions<ReturnType, PropsDef> {
@@ -37,26 +45,26 @@ export interface DialogOptions<ReturnType, PropsDef> {
   wrapper: string[]
 }
 
-interface DialogFunction<ReturnType = any, PropsDef extends object = {}> {
+export interface DialogFunction<ReturnType = any, PropsDef extends object = {}> {
   (data?: Partial<PropsDef>): DialogPromise<ReturnType>
   (...args: any[]): DialogPromise<ReturnType>
 }
 
-export declare function makeDialog<
+export declare function create<
   PropsDef extends object = {},
   ReturnType = any
 > (
   options: DialogOptions<ReturnType, PropsDef>
 ): DialogFunction<ReturnType, PropsDef>
 
-export declare function makeDialog<
+export declare function create<
   PropsDef extends object = {},
   ReturnType = any
 > (
   component: Component<ReturnType, PropsDef>
 ): (data?: Partial<PropsDef>) => DialogPromise<ReturnType>
 
-export declare function makeDialog<
+export declare function create<
   Arg1 = any,
   ReturnType = any,
   PropsDef extends object = {}
@@ -65,7 +73,7 @@ export declare function makeDialog<
   prop1: string
 ): (arg1: Arg1) => DialogPromise<ReturnType>
 
-export declare function makeDialog<
+export declare function create<
   Arg1 = any,
   Arg2 = any,
   ReturnType = any,
@@ -76,7 +84,7 @@ export declare function makeDialog<
   prop2: string
 ): (arg1: Arg1, arg2: Arg2) => DialogPromise<ReturnType>
 
-export declare function makeDialog<
+export declare function create<
   Arg1 = any,
   Arg2 = any,
   Arg3 = any,
@@ -89,7 +97,7 @@ export declare function makeDialog<
   prop3: string
 ): (arg1: Arg1, arg2: Arg2, arg3: Arg3) => DialogPromise<ReturnType>
 
-export declare function makeDialog<
+export declare function create<
   Arg1 = any,
   Arg2 = any,
   Arg3 = any,
@@ -104,7 +112,7 @@ export declare function makeDialog<
   prop4: string
 ): (arg1: Arg1, arg2: Arg2, arg3: Arg3, arg4: Arg4) => DialogPromise<ReturnType>
 
-export declare function makeDialog<
+export declare function create<
   Arg1 = any,
   Arg2 = any,
   Arg3 = any,
@@ -121,7 +129,7 @@ export declare function makeDialog<
   prop5: string
 ): (arg1: Arg1, arg2: Arg2, arg3: Arg3, arg4: Arg4, arg5: Arg5) => DialogPromise<ReturnType>
 
-export declare function makeDialog<
+export declare function create<
   PropsDef extends object = {},
   ReturnType = any
 > (
@@ -132,10 +140,5 @@ export declare function makeDialog<
 /** Dialogs wrapper component */
 export declare const DialogsWrapper: ExtendedVue<Vue, {}, {}, {}, {}>
 
-export interface ModalDialogsInstance {
-  /** Install `vue-modal-dialogs` into Vue */
-  install (vue: typeof _Vue): void
-}
-
-declare const modalDialogs: ModalDialogsInstance
-export default modalDialogs
+/** Install `vue-modal-dialogs` into Vue */
+export function install (vue: typeof _Vue): void
