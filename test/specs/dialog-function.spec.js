@@ -3,13 +3,13 @@
 import Vue from 'vue'
 import * as sinon from 'sinon'
 import * as VueTest from 'vue-test-utils'
-import { wrappers } from 'vue-modal-dialogs/dialogs-wrapper'
+import { wrappers } from 'vue-modal-dialogs/wrapper'
 import TestComponent from '../components/test.vue'
-import { makeDialog, DialogsWrapper } from 'vue-modal-dialogs'      // eslint-disable-line no-unused-vars
+import { create, DialogsWrapper } from 'vue-modal-dialogs'      // eslint-disable-line no-unused-vars
 
 describe('Dialog function', function () {
   let wrapper
-  const testFunction = makeDialog(TestComponent, 'title', 'content')
+  const testFunction = create(TestComponent, 'title', 'content')
 
   function nextTick () {
     // Wait 20ms to ensure the component promise is resolved
@@ -98,7 +98,7 @@ describe('Dialog function', function () {
     })
 
     it(`'default'`, async function () {
-      makeDialog({
+      create({
         wrapper: 'default',
         component: TestComponent
       })()
@@ -109,7 +109,7 @@ describe('Dialog function', function () {
     })
 
     it(`'another'`, async function () {
-      makeDialog({
+      create({
         wrapper: 'another',
         component: TestComponent
       })()
@@ -124,7 +124,7 @@ describe('Dialog function', function () {
     const rejectSpy = sinon.spy()
     const resolveSpy = sinon.spy()
 
-    makeDialog({
+    create({
       wrapper: 'invalid',
       component: TestComponent
     })().then(resolveSpy, rejectSpy)
@@ -164,7 +164,7 @@ describe('Dialog function', function () {
 
     it('data object', async function () {
       const component = Vue.extend({ props: ['title', 'content'], extends: TestComponent })
-      makeDialog(component)({ title: 'title', content: 'content' })
+      create(component)({ title: 'title', content: 'content' })
       await nextTick()
 
       const props = getDialogComponentVm()._props
@@ -179,7 +179,7 @@ describe('Dialog function', function () {
 
   describe('should not override the original props definition of the dialog component if the props are defined by', function () {
     it('an array', async function () {
-      const dialogFunction = makeDialog({
+      const dialogFunction = create({
         props: ['title', 'content'],
         render: h => <div />
       }, 'title')
@@ -193,7 +193,7 @@ describe('Dialog function', function () {
     })
 
     it('an object', async function () {
-      const dialogFunction = makeDialog({
+      const dialogFunction = create({
         props: {
           title: {
             type: String,
@@ -213,7 +213,7 @@ describe('Dialog function', function () {
     })
 
     it('@Prop decorator from vue-property-decorator', async function () {
-      const dialogFunction = makeDialog(require('../components/test-ts.vue').default, 'title')
+      const dialogFunction = create(require('../components/test-ts.vue').default, 'title')
 
       dialogFunction()
       await nextTick()

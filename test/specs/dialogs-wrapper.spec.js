@@ -2,9 +2,9 @@
 
 import * as sinon from 'sinon'
 import * as VueTest from 'vue-test-utils'
-import { wrappers } from 'vue-modal-dialogs/dialogs-wrapper'
+import { wrappers } from 'vue-modal-dialogs/wrapper'
 import TestComponent from '../components/test.vue'
-import { makeDialog, DialogsWrapper } from 'vue-modal-dialogs'
+import { create, DialogsWrapper } from 'vue-modal-dialogs'
 
 function delay (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -91,7 +91,7 @@ describe('Dialogs wrapper', function () {
       }
     })
 
-    const promise = makeDialog(TestComponent)()
+    const promise = create(TestComponent)()
     await delay(100)
     await promise.close()
     await delay(100)

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import TestTsx from '../components/test-tsx'
-import VueModalDialogs, { makeDialog, DialogComponent } from 'vue-modal-dialogs'
+import * as ModalDialogs from 'vue-modal-dialogs'
 
 declare const describe: any
 declare const it: any
@@ -13,16 +13,16 @@ describe('TypeScript', function () {
       return (arg: T) => {}
     }
 
-    Vue.use(VueModalDialogs)
+    Vue.use(ModalDialogs)
 
     const vm = new TestTsx()
     vm.$close         // Do not call $close since 'vm' is not in a dialog context
     vm.dialogId
     vm.arguments
 
-    makeDialog(TestTsx)().then(noop<boolean>(), noop)
-    makeDialog<boolean, boolean>(TestTsx, 'test')(true).then(noop<boolean>(), noop)
-    makeDialog<{ test: string }>({
+    ModalDialogs.create(TestTsx)().then(noop<boolean>(), noop)
+    ModalDialogs.create<boolean, boolean>(TestTsx, 'test')(true).then(noop<boolean>(), noop)
+    ModalDialogs.create<{ test: string }>({
       template: '<div></div>',
       props: {
         test: String
