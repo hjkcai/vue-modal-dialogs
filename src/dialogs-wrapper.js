@@ -70,7 +70,7 @@ export default {
     wrappers[this.name] = this
   },
   beforeDestroy () {
-    delete wrappers[this.name]
+    wrappers[this.name] = undefined
   },
   render (createElement) {
     const on = Object.assign({}, this.$listeners)
