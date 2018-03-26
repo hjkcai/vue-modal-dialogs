@@ -44,7 +44,7 @@ export default function makeDialog (options, ...props) {
   }
 
   // Dialog component and props
-  const dialogOptions = {
+  const dialogData = {
     props,
 
     // Inject a `$close` function and pre-defined props into dialog component
@@ -53,8 +53,8 @@ export default function makeDialog (options, ...props) {
       extends: component.default || component,
       props: diff(['dialogId', 'arguments', ...props], Object.keys(component.props || (component.options && component.options.props) || [])),
       created () {
-        // See dialogs-wrapper.js:130
-        dialogOptions.createdCallback(this)
+        // Resolves componentPromise that is created in DialogsWrapper.add()
+        dialogData.createdCallback(this)
       },
       methods: {
         $close (data) {
@@ -71,7 +71,7 @@ export default function makeDialog (options, ...props) {
   return function dialogFunction (...args) {
     if (wrappers[wrapper]) {
       // Add dialog component into dialogsWrapper component
-      return wrappers[wrapper].add(dialogOptions, args)
+      return wrappers[wrapper].add(dialogData, args)
     } else {
       if (process.env.NODE_ENV !== 'production') {
         console.error(`[vue-modal-dialogs] Wrapper ${wrapper} is not found. Make sure that you have added <dialogs-wrapper wrapper-name="${wrapper}" /> component somewhere in your project.`)

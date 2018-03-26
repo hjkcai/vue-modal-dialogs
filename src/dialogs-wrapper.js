@@ -74,11 +74,10 @@ export default {
   },
   render (createElement) {
     const on = Object.assign({}, this.$listeners)
-    let afterLeave = on['after-leave'] || (() => { /* noop */ })
 
-    // Modify the 'after-leave' event
+    // Modify the 'after-leave' event for the transition promise
+    const afterLeave = on['after-leave'] || (() => { /* noop */ })
     on['after-leave'] = el => {
-      // Resolve the transition promise
       el.$afterLeave()
       afterLeave(el)
     }
@@ -108,56 +107,58 @@ export default {
   },
   methods: {
     /**
-     * Add a new dialog into this wrapper
+     * Add a new dialog component into this wrapper
      *
      * @private
-     * @param {Object} dialogOptions Dialog options created in the `makeDialog` function
+     * @param {object} dialogData Data passed from the `makeDialog` function
      * @param {any[]} args Arguments from the dialog function
      */
-    add (dialogOptions, args) {
+    add (dialogData, args) {
       const id = this.id++
       let resolve, reject
 
       // This promise will be resolved when 'close' function is called
-      const userPromise = new Promise((res, rej) => { resolve = res; reject = rej })
-        // Remove the dialog after it is closed
+      const dataPromise = new Promise((res, rej) => { resolve = res; reject = rej })
         .then(data => {
-          this.$delete(this.dialogs, id)
+          this.remove(id)
           return data
         })
 
       // This promise will be returned to user
-      const promise = dialogOptions.component.then(() => userPromise)
+      const promise = dialogData.component.then(() => dataPromise)
 
-      // Get Vue component instance for full control of the dialog component
-      const componentPromise = new Promise(res => { dialogOptions.createdCallback = res })
-      promise.getComponent = () => componentPromise
+      const close = data => { resolve(data); return promise }
+      const error = data => { reject(data); return promise }
+      const componentPromise = new Promise(res => { dialogData.createdCallback = res })
 
-      // Create a promise that resolves after its transition ends
-      promise.transition = componentPromise
+      // Create a promise that resolves after the dialog's leave transition ends
+      const transitionPromise = componentPromise
         .then(component => new Promise(res => { component.$el.$afterLeave = res }))
         .then(() => promise)
 
-      // Magic 'resolve' and 'reject' outside the promise
-      const close = promise.close = data => resolve(data) || promise
-      const error = promise.error = data => reject(data) || promise
-
-      // Prepare the props of the dialog component
       const propsData = Object.assign({
         dialogId: id,
         arguments: args
-      }, collectProps(dialogOptions.props, args))
+      }, collectProps(dialogData.props, args))
 
-      // Wait until async component is resolved
-      dialogOptions.component.then(component => {
-        // Build detailed render options
-        const renderOptions = Object.freeze({ id, propsData, component, close, error })
-
+      // Render after the async component is resolved
+      dialogData.component.then(component => {
         // Use Object.freeze to prevent vue from observing renderOptions
+        const renderOptions = Object.freeze({ id, propsData, component, close, error })
         this.$set(this.dialogs, id, renderOptions)
       })
 
-      return promise
+      return Object.assign(promise, {
+        close,
+        error,
+        transition: transitionPromise,
+        getComponent: () => componentPromise
+      })
+    },
+
+    /** Remove a dialog component from the wrapper */
+    remove (id) {
+      this.$delete(this.dialogs, id)
     }
   }
 }
