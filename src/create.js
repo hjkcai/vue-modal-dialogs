@@ -1,7 +1,39 @@
 'use strict'
 
 import { wrappers } from './wrapper'
-import { isComponentCtor, generateDialogData } from './utils'
+import {
+  noop,
+  CLOSE_EVENT,
+  ERROR_EVENT,
+  isComponentCtor,
+  filterUndefinedProps
+} from './utils'
+
+function generateDialogData (props, component) {
+  let dialogData
+
+  // eslint-disable-next-line no-return-assign
+  return dialogData = {
+    props,
+    createdCallback: noop,
+    component: Promise.resolve(component).then(component => ({
+      extends: component.default || component,
+      props: filterUndefinedProps(['dialogId', 'arguments', ...props], component),
+      created () {
+        // Resolves componentPromise that is created in DialogsWrapper.add()
+        dialogData.createdCallback(this)
+      },
+      methods: {
+        $close (data) {
+          this.$emit(CLOSE_EVENT, data)
+        },
+        $error (data) {
+          this.$emit(ERROR_EVENT, data)
+        }
+      }
+    }))
+  }
+}
 
 /** Create a dialog function */
 export function create (options, ...props) {
