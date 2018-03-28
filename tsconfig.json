@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["dom", "es5", "es2015"],
     "target": "es5",
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,

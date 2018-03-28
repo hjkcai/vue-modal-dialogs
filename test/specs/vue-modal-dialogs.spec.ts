@@ -13,26 +13,26 @@ describe('TypeScript', function () {
       return (arg: T) => {}
     }
 
-    Vue.use(ModalDialogs)
+    async function neverCalled () {
+      Vue.use(ModalDialogs)
 
-    const vm = new TestTsx()
-    vm.$close         // Do not call $close since 'vm' is not in a dialog context
-    vm.dialogId
-    vm.arguments
+      const vm = new TestTsx()
+      vm.$close(true)
+      vm.$error('any reason')
+      vm.dialogId
+      vm.arguments
 
-    ModalDialogs.create(TestTsx)().then(noop<boolean>(), noop)
-    ModalDialogs.create<boolean, boolean>(TestTsx, 'test')(true).then(noop<boolean>(), noop)
-    ModalDialogs.create<{ test: string }>({
-      template: '<div></div>',
-      props: {
-        test: String
-      },
-      methods: {
-        test () {
-          const s: string = this.test
-          this.$close(true)
-        }
-      }
-    })({ test: '' }).then(noop<boolean>(), noop)
+      ModalDialogs.create<boolean, boolean>(TestTsx, 'test')(true).then(noop<boolean>(), noop)
+      ModalDialogs.create<{ test: string }, boolean>(import('../components/test-tsx'))({ test: '' }).then(noop<boolean>(), noop)
+
+      const dialog = ModalDialogs.create(TestTsx)()
+      dialog.then(noop<boolean>(), noop)
+      dialog.close(true)
+      dialog.error('any reason')
+      dialog.transition().then(noop<boolean>(), noop)
+
+      const dialogVm = await dialog.getInstance<TestTsx>()
+      dialogVm.title
+    }
   })
 })
