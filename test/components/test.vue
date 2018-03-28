@@ -1,7 +1,9 @@
 <template>
-  <div class="test" @click="$close">
+  <div class="test">
     <span class="title">{{ title }}</span>
     <span class="content">{{ content }}</span>
+    <button id="resolve" @click="$close(title)"></button>
+    <button id="reject" @click="$error(title)"></button>
   </div>
 </template>
 
