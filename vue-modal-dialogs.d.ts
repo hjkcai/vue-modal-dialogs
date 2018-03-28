@@ -27,10 +27,16 @@ export interface DialogComponentConstructor<ReturnType> {
   new (): DialogComponent<ReturnType>
 }
 
-export type Component<ReturnType, PropsDef> = (
+export type NormalComponent<ReturnType, PropsDef> = (
   DialogComponentConstructor<ReturnType> |
-  ComponentOptions<DialogComponent<ReturnType> & PropsDef> |
   VueConstructor
+)
+
+export type AsyncComponent<ReturnType, PropsDef> = Promise<NormalComponent<ReturnType, PropsDef>>
+
+export type Component<ReturnType, PropsDef> = (
+  NormalComponent<ReturnType, PropsDef> |
+  AsyncComponent<ReturnType, PropsDef>
 )
 
 /** Options to build a dialog function */
