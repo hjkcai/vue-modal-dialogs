@@ -35,19 +35,28 @@ export function collectProps (props, args) {
   }, {})
 }
 
-export function isVueConstructor (obj) {
+export function isComponentCtor (obj) {
   if (obj != null) {
     const type = typeof obj
     if (type === 'object') {
-      return typeof obj.then === 'function' ||
-        typeof obj.render === 'function' ||
-        typeof obj.template === 'string'
-    } else if (type === 'function') {
-      return isVueConstructor(obj.options)
-    }
+      return (
+        // Accept any thenable object
+        // because we have no idea about what is in that promise
+        typeof obj.then === 'function' ||
 
-    return false
+        // Accept component options (typically a single file component)
+        typeof obj.render === 'function' ||
+
+        // Accept user-written component options (not recommended)
+        typeof obj.template === 'string'
+      )
+    } else if (type === 'function') {
+      // All vue constructor has a `cid` property
+      return typeof obj.cid === 'number'
+    }
   }
+
+  return false
 }
 
 export function filterUndefinedProps (props, component) {

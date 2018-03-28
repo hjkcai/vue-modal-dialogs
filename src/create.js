@@ -1,7 +1,7 @@
 'use strict'
 
 import { wrappers } from './wrapper'
-import { isVueConstructor, generateDialogData } from './utils'
+import { isComponentCtor, generateDialogData } from './utils'
 
 /** Create a dialog function */
 export function create (options, ...props) {
@@ -16,11 +16,11 @@ export function create (options, ...props) {
   let wrapper = 'default'
   let component = options
 
-  if (isVueConstructor(options.component)) {
+  if (isComponentCtor(options.component)) {
     component = options.component
     wrapper = options.wrapper || wrapper
     props = options.props || []
-  } else if (!isVueConstructor(options)) {
+  } else if (!isComponentCtor(options)) {
     if (process.env.NODE_ENV !== 'production') {
       console.error('[vue-modal-dialogs] No Vue component constructor is passed into makeDialog function')
     }
