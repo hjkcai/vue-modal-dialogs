@@ -32,10 +32,15 @@ export type NormalComponent<ReturnType, PropsDef> = (
   VueConstructor
 )
 
-export type AsyncComponent<ReturnType, PropsDef> = Promise<NormalComponent<ReturnType, PropsDef>>
+export type ESModuleComponent<ReturnType, PropsDef> = (
+  NormalComponent<ReturnType, PropsDef> |
+  { default: NormalComponent<ReturnType, PropsDef> }
+)
+
+export type AsyncComponent<ReturnType, PropsDef> = Promise<ESModuleComponent<ReturnType, PropsDef>>
 
 export type Component<ReturnType, PropsDef> = (
-  NormalComponent<ReturnType, PropsDef> |
+  ESModuleComponent<ReturnType, PropsDef> |
   AsyncComponent<ReturnType, PropsDef>
 )
 
