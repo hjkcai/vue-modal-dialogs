@@ -6,7 +6,7 @@ export interface DialogPromise<ReturnType> extends Promise<ReturnType> {
   close (data: ReturnType): void,
   error (reason: any): void,
   transition (): Promise<ReturnType>,
-  getInstance (): Promise<DialogComponent<ReturnType>>
+  getInstance<T extends DialogComponent<ReturnType>> (): Promise<T>
 }
 
 export declare class DialogComponent<ReturnType> extends Vue {
