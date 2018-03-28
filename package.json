@@ -77,12 +77,12 @@
     "ts-loader": "^3.2.0",
     "typescript": "^2.6.2",
     "uglify-js": "^3.1.0",
-    "vue": "^2.5.2",
-    "vue-loader": "^13.3.0",
+    "vue": "^2.5.16",
+    "vue-loader": "^14.2.2",
     "vue-property-decorator": "^6.0.0",
     "vue-style-loader": "^3.0.3",
-    "vue-template-compiler": "^2.5.2",
-    "vue-test-utils": "^1.0.0-beta.3",
+    "vue-template-compiler": "^2.5.16",
+    "vue-test-utils": "^1.0.0-beta.11",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   }
