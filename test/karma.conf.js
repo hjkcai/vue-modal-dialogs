@@ -13,7 +13,8 @@ module.exports = function (config) {
     },
     webpack: require('../webpack.config'),
     webpackMiddleware: {
-      noInfo: true
+      logLevel: 'error',
+      stats: 'errors-only'
     }
   })
 }
