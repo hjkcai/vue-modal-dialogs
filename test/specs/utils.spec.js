@@ -2,6 +2,7 @@
 
 import Vue from 'vue'
 import * as utils from 'vue-modal-dialogs/utils'
+import TestTsxComponent from '../components/test-tsx'
 
 describe('utils', () => {
   describe('collectProps', () => {
@@ -176,6 +177,11 @@ describe('utils', () => {
         }))
 
         expect(result).to.be.deep.equal([])
+      })
+
+      it('@Prop decorator', () => {
+        const result = utils.filterUndefinedProps(['title', 'content', 'a', 'b'], TestTsxComponent)
+        expect(result).to.be.deep.equal(['a', 'b'])
       })
     })
   })
