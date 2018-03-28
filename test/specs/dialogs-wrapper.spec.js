@@ -1,7 +1,7 @@
 'use strict'
 
 import * as sinon from 'sinon'
-import * as VueTest from 'vue-test-utils'
+import * as VueTest from '@vue/test-utils'
 import { wrappers } from 'vue-modal-dialogs/wrapper'
 import TestComponent from '../components/test.vue'
 import { create, DialogsWrapper } from 'vue-modal-dialogs'
@@ -63,10 +63,12 @@ describe('Dialogs wrapper', function () {
       type: 'type'
     }
 
-    // Using 'propsData' options will only pass component data into defined props.
-    // But most properties are not defined.
-    // So I use 'attrs' and 'propsData' together to send data into DialogsWrapper.
-    const { vm } = VueTest.mount(DialogsWrapper, { attrs: propsData, propsData })
+    const { vm } = VueTest.mount(DialogsWrapper, {
+      propsData,
+      stubs: {
+        'transition-group': false
+      }
+    })
 
     const transformedPropsData = Object.assign({}, propsData, { name: propsData.transitionName })
     delete transformedPropsData.transitionName
@@ -88,6 +90,9 @@ describe('Dialogs wrapper', function () {
         'leave': spy,
         'after-enter': spy,
         'after-leave': spy
+      },
+      stubs: {
+        'transition-group': false
       }
     })
 

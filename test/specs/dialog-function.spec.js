@@ -2,7 +2,7 @@
 
 import Vue from 'vue'
 import * as sinon from 'sinon'
-import * as VueTest from 'vue-test-utils'
+import * as VueTest from '@vue/test-utils'
 import { wrappers } from 'vue-modal-dialogs/wrapper'
 import TestComponent from '../components/test.vue'
 import { create, DialogsWrapper } from 'vue-modal-dialogs'      // eslint-disable-line no-unused-vars
