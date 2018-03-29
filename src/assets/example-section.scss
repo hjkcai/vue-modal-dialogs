@@ -1,0 +1,30 @@
+.example-card {
+  .el-card__body {
+    padding: 0;
+  }
+
+  .demo {
+    padding: 20px;
+  }
+
+  .el-collapse-item__header {
+    padding: 0 10px 0 20px;
+  }
+
+  .el-collapse-item__content {
+    padding: 0 20px;
+  }
+
+  .el-collapse-item__content {
+    padding-bottom: 20px;
+  }
+
+  .el-collapse-item:last-child .el-collapse-item__header {
+    border-bottom: 0;
+  }
+
+  code {
+    font-family: Inconsolata, monospace;
+    font-size: 14px;
+  }
+}

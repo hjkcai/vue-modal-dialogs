@@ -7,10 +7,13 @@ const sourceMapEnabled = isProduction
   : config.dev.cssSourceMap
 
 module.exports = {
-  loaders: utils.cssLoaders({
-    sourceMap: sourceMapEnabled,
-    extract: isProduction
-  }),
+  loaders: {
+    md: 'markdownit-loader',
+    ...utils.cssLoaders({
+      sourceMap: sourceMapEnabled,
+      extract: isProduction
+    })
+  },
   cssSourceMap: sourceMapEnabled,
   cacheBusting: config.dev.cacheBusting,
   transformToRequire: {
