@@ -36,7 +36,7 @@ export default {
     }
   },
   created () {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'development') {
       if (wrappers[this.name]) {
         console.error(`[vue-modal-dialogs] The wrapper '${this.name}' is already exist. Please make sure that every wrapper has a unique name.`)
       }

@@ -38,7 +38,7 @@ function generateDialogData (props, component) {
 /** Create a dialog function */
 export function create (options, ...props) {
   if (options == null) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'development') {
       console.error('[vue-modal-dialogs] Dialog options cannot be null or undefined')
     }
 
@@ -53,7 +53,7 @@ export function create (options, ...props) {
     wrapper = options.wrapper || wrapper
     props = options.props || []
   } else if (!isComponentCtor(options)) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'development') {
       console.error('[vue-modal-dialogs] No Vue component constructor is passed into makeDialog function')
     }
 
@@ -66,7 +66,7 @@ export function create (options, ...props) {
       // Add dialog component into dialogsWrapper component
       return wrappers[wrapper].add(dialogData, args)
     } else {
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV === 'development') {
         console.error(`[vue-modal-dialogs] Wrapper ${wrapper} is not found. Make sure that you have added <dialogs-wrapper wrapper-name="${wrapper}" /> component somewhere in your project.`)
       }
 
