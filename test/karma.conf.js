@@ -11,7 +11,7 @@ module.exports = function (config) {
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
-    webpack: require('../webpack.config'),
+    webpack: require('./webpack.config'),
     webpackMiddleware: {
       logLevel: 'error',
       stats: 'errors-only'
