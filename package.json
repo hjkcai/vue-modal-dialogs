@@ -12,8 +12,8 @@
     "build": "NODE_ENV=production npm run lint && npm run build:lib && npm run build:example",
     "build:lib": "NODE_ENV=production buble --no modules src -o dist",
     "lint": "eslint src test",
-    "test": "NODE_ENV=production BABEL_ENV=test karma start test/karma.conf.js --single-run",
-    "test:debug": "NODE_ENV=production BABEL_ENV=test DEBUG=1 karma start test/karma.conf.js --single-run=false --debug"
+    "test": "NODE_ENV=test BABEL_ENV=test karma start test/karma.conf.js --single-run",
+    "test:debug": "NODE_ENV=test BABEL_ENV=test DEBUG=1 karma start test/karma.conf.js --single-run=false --debug"
   },
   "repository": {
     "type": "git",
