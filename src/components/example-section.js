@@ -20,7 +20,17 @@ function loadSource (id, name) {
 export default Vue.extend({
   props: {
     id: String,
-    description: String
+    sources: {
+      type: Array,
+      default: () => [
+        { id: 'demo', title: 'Source code' },
+        { id: 'dialog', title: 'Dialog component' }
+      ]
+    },
+    moreSources: {
+      type: Array,
+      default: () => []
+    }
   },
   data: () => ({
     activeTab: 0
@@ -28,8 +38,13 @@ export default Vue.extend({
   render (h) {
     const Demo = loadDemo(this.id)
     const Content = loadContent(this.id)
-    const DemoSource = loadSource(this.id, 'demo')
-    const DialogSource = loadSource(this.id, 'dialog')
+
+    const sources = this.sources
+      .concat(this.moreSources)
+      .map(source => {
+        source.Source = loadSource(this.id, source.id)
+        return source
+      })
 
     return (
       <section id={this.id} class="example">
@@ -39,12 +54,11 @@ export default Vue.extend({
         <Card class="example-card">
           <Demo class="demo"></Demo>
           <Collapse>
-            <CollapseItem title="Source code">
-              <DemoSource></DemoSource>
-            </CollapseItem>
-            <CollapseItem title="Dialog component">
-              <DialogSource></DialogSource>
-            </CollapseItem>
+            { sources.map(({ id, title, Source }) => (
+              <CollapseItem title={title} key={id}>
+                <Source></Source>
+              </CollapseItem>
+            )) }
           </Collapse>
         </Card>
       </section>
