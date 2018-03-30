@@ -1,29 +1,24 @@
 <template>
   <article id="app">
-    <header>
-      <h1>vue-modal-dialogs</h1>
-      <p style="margin: -12px 0 32px">Promisify dialogs!</p>
-      <div class="github-buttons">
-        <a class="github-button" href="https://github.com/hjkcai/vue-modal-dialogs" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star hjkcai/vue-modal-dialogs on GitHub">Star</a>
-        <a class="github-button" href="https://github.com/hjkcai/vue-modal-dialogs/fork" data-icon="octicon-repo-forked" data-size="large" aria-label="Fork hjkcai/vue-modal-dialogs on GitHub">Fork</a>
-      </div>
-    </header>
+    <the-header></the-header>
     <foreword></foreword>
     <example-section id="message-box"></example-section>
-    <footer>
-      <p>Made with ❤️ by <a href="https://github.com/hjkcai">hjkcai</a></p>
-    </footer>
+    <the-footer></the-footer>
   </article>
 </template>
 
 <script>
   import Foreword from './components/foreword'
+  import TheHeader from './components/the-header'
+  import TheFooter from './components/the-footer'
   import ExampleSection from './components/example-section'
 
   export default {
     name: 'App',
     components: {
       Foreword,
+      TheHeader,
+      TheFooter,
       ExampleSection
     }
   }

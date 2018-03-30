@@ -1,4 +1,4 @@
-<template lang="md">
+<template lang="md" functional>
 
 ## Introduction
 
