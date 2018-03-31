@@ -4,6 +4,7 @@
     <foreword></foreword>
     <example-section id="message-box"></example-section>
     <the-footer></the-footer>
+    <dialogs-wrapper tag="div" transition-name="fade"></dialogs-wrapper>
   </article>
 </template>
 

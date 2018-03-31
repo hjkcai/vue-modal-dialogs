@@ -35,6 +35,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.vue', '.json'],
     alias: {
       '@': resolve('src'),
+      'vue-modal-dialogs': resolve('../vue-modal-dialogs')
     }
   },
   module: {
