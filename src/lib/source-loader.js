@@ -65,7 +65,7 @@ var renderVueTemplate = function (html, wrapper) {
 }
 
 module.exports = function (source) {
-  this.cacheable && this.cacheable()
+  this.cacheable(false)
 
   var parser, preprocess
   var params = loaderUtils.getOptions(this) || {}
