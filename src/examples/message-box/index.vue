@@ -2,6 +2,11 @@
 
   ## Message box
 
-  It is an amazing message box
+  A simple and nice message box! Type whatever you want in the text box below.
+
+  Clicking on the mask or the 'OK' button closes the message box. As you can see
+  in the message box's source code (Click 'Source code' or 'Dialog component' to
+  show the source code), both the mask and the button have the event handler
+  `@click="$close"`.
 
 </template>

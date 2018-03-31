@@ -1,0 +1,42 @@
+.dialog-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.33);
+}
+
+.dialog-content {
+  padding: 20px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  color: #303133;
+
+  p, .el-button {
+    font-size: inherit;
+  }
+
+  .el-button {
+    flex: 1;
+    border: 0;
+    color: #409EFF;
+    appearance: none;
+  }
+
+  footer {
+    display: flex;
+    margin-top: 24px;
+  }
+}
+
+.message-box .dialog-content {
+  min-width: 240px;
+  text-align: center;
+  font-size: 16px;
+}
