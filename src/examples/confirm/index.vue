@@ -4,11 +4,11 @@
 
   When `$close` function is called with some data,
   the data will be returned to the caller of the dialog function.
-
   In this example, 'Yes' yields `true`, and 'No' yields `false`.
   Clicking on the mask also yields `false`.
 
   It is super easy to control multiple dialogs with async functions.
+  Use `.tranition()` to wait until the transition ends before the data is returned.
 
 </template>
 
