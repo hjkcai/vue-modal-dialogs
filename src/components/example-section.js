@@ -29,7 +29,7 @@ export default Vue.extend({
     const Content = loadContent(this.id)
 
     const sources = [{ id: 'demo', title: 'Source code' }]
-      .concat(Content.sources)
+      .concat(Content.sources || [])
       .map(source => {
         source.Source = loadSource(this.id, source.id)
         return source
