@@ -2,7 +2,8 @@
   "name": "vue-modal-dialogs",
   "version": "2.0.0",
   "description": "A Promise-based modal dialog helper for Vue.js",
-  "main": "dist/index.js",
+  "main": "dist/vue-modal-dialogs.cjs.js",
+  "module": "dist/vue-modal-dialogs.esm.js",
   "typings": "vue-modal-dialogs.d.ts",
   "files": [
     "dist",
@@ -10,7 +11,7 @@
     "vue-modal-dialogs.d.ts"
   ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm",
+    "build": "npm run lint && npm run build:cjs && npm run build:esm",
     "build:cjs": "NODE_ENV=production rollup -c build/cjs.js", 
     "build:esm": "NODE_ENV=production rollup -c build/esm.js",
     "lint": "eslint src test",
