@@ -13,7 +13,7 @@
 <script>
   export default {
     sources: [
-      { id: 'dialog', title: 'Message box component' }
+      { id: 'dialog', title: '<MessageBox> component' }
     ]
   }
 </script>
