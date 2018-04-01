@@ -5,8 +5,8 @@
         <p>{{ content }}</p>
       </div>
       <footer>
-        <el-button type="text" size="mini" @click="$close(true)">{{ yes || 'Yes' }}</el-button>
-        <el-button type="text" size="mini" @click="$close(false)">{{ no || 'No' }}</el-button>
+        <el-button type="text" size="mini" @click="$close(true)">Yes</el-button>
+        <el-button type="text" size="mini" @click="$close(false)">No</el-button>
       </footer>
     </div>
   </div>

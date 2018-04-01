@@ -10,7 +10,7 @@
   import MessageBox from '../message-box/dialog'
   import { create } from 'vue-modal-dialogs'
 
-  const confirm = create(Confirm, 'content', 'yes', 'no')
+  const confirm = create(Confirm, 'content')
   const messageBox = create(MessageBox, 'content')
 
   export default {
@@ -19,11 +19,11 @@
         window.open('https://github.com/hjkcai/vue-modal-dialogs', '_blank')
       },
       noStar () {
-        messageBox('Feel free to star it later.')
+        messageBox('Feel free to do it later.')
       },
       async ask () {
         if (await confirm('Do you like this project?')) {
-          if (await confirm('Please star this project at Github. Thank you!', 'Take me to Github', 'Maybe later')) {
+          if (await confirm('Could you please star this project at Github now?')) {
             this.star()
           } else this.noStar()
         } else {
