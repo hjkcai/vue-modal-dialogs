@@ -5,11 +5,22 @@
     font-family: Inconsolata, monospace;
     font-size: 14px;
   }
+
+  p > code {
+    display: inline-block;
+    padding: 1px 4px;
+    border-radius: 4px;
+    background-color: #ecf8ff;
+  }
 }
 
 .example-card {
   .el-card__body {
     padding: 0;
+  }
+
+  pre {
+    overflow: auto;
   }
 
   .demo {
