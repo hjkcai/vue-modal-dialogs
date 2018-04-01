@@ -19,18 +19,7 @@ function loadSource (id, name) {
 
 export default Vue.extend({
   props: {
-    id: String,
-    sources: {
-      type: Array,
-      default: () => [
-        { id: 'demo', title: 'Source code' },
-        { id: 'dialog', title: 'Dialog component' }
-      ]
-    },
-    moreSources: {
-      type: Array,
-      default: () => []
-    }
+    id: String
   },
   data: () => ({
     activeTab: 0
@@ -39,8 +28,8 @@ export default Vue.extend({
     const Demo = loadDemo(this.id)
     const Content = loadContent(this.id)
 
-    const sources = this.sources
-      .concat(this.moreSources)
+    const sources = [{ id: 'demo', title: 'Source code' }]
+      .concat(Content.sources)
       .map(source => {
         source.Source = loadSource(this.id, source.id)
         return source
