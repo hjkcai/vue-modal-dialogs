@@ -6,11 +6,13 @@
   "typings": "vue-modal-dialogs.d.ts",
   "files": [
     "dist",
+    "src",
     "vue-modal-dialogs.d.ts"
   ],
   "scripts": {
-    "build": "NODE_ENV=production npm run lint && npm run build:lib && npm run build:example",
-    "build:lib": "NODE_ENV=production buble --no modules src -o dist",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "NODE_ENV=production rollup -c build/cjs.js", 
+    "build:esm": "NODE_ENV=production rollup -c build/esm.js",
     "lint": "eslint src test",
     "test": "NODE_ENV=test BABEL_ENV=test karma start test/karma.conf.js --single-run",
     "test:debug": "NODE_ENV=test BABEL_ENV=test DEBUG=1 karma start test/karma.conf.js --single-run=false --debug"
@@ -61,12 +63,8 @@
     "karma-webpack": "^3.0.0",
     "mocha": "^4.0.1",
     "puppeteer": "^0.12.0",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-buble": "^0.15.0",
-    "rollup-plugin-commonjs": "^8.2.1",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^2.0.0",
+    "rollup": "^0.57.1",
+    "rollup-plugin-buble": "^0.19.2",
     "sinon": "^4.0.2",
     "sinon-chai": "^2.14.0",
     "style-loader": "^0.13.1",
