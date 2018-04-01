@@ -19,6 +19,12 @@
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   color: #303133;
 
+  header {
+    margin: 10px 0 26px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
   p, .el-button {
     font-size: inherit;
   }
