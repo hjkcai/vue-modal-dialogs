@@ -8,6 +8,7 @@
     <example-section id="loading"></example-section>
     <the-footer></the-footer>
     <dialogs-wrapper tag="div" transition-name="fade"></dialogs-wrapper>
+    <dialogs-wrapper tag="div" name="loading"></dialogs-wrapper>
   </article>
 </template>
 

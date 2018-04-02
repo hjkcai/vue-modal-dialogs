@@ -1,6 +1,6 @@
 <template lang="md" functional>
 
-  ## A complex confirmation
+  ## Using data object
 
   When the dialog is getting complex, you might get a super long argument list.
   Using an data object in this situation is more appropriate. In this case you

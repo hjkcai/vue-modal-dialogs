@@ -2,15 +2,18 @@
 
 ## Introduction
 
-Dialogs are a typical and essential user interaction in interactive applications.
-But implementing dialogs are not an easy thing in front-end web development.
+A typical and essential type of user interaction is dialogs.
+Dialogs are somehow similar to Promise. A dialog will eventually close. A
+Promise will eventually resolve. A dialog returns some data when it closes.
+So does Promise. It is time to put them together.
 
-vue-modal-dialogs is a super light-weighted library aimed to
-help developers to easily use dialogs by the advantage of [Vue.js](https://vuejs.org),
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and
-[async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
+vue-modal-dialogs has the magic to turn dialogs into Promises.
+Developers can build and control dialogs a lot easier in Vue.js applications.
+Especially in some complicated situations like controlling multiple dialogs,
+nested dialogs, etc.
 
-This example will walk you through all features and all available usages of vue-modal-dialogs. Feel free to submit an issue or PR if you have any ideas.
+This guide will walk you through all features and all available usages of
+vue-modal-dialogs. Feel free to submit an issue or PR if you have any ideas.
 
 **Tip: Open Vue Devtool to see what is happening.**
 

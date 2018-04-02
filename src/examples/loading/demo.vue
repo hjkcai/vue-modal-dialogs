@@ -8,7 +8,10 @@
   import Loading from './dialog'
   import { create } from 'vue-modal-dialogs'
 
-  const startLoading = create(Loading)
+  const startLoading = create({
+    component: Loading,
+    wrapper: 'loading'
+  })
 
   export default {
     methods: {
