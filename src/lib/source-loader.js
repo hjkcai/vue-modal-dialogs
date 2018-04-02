@@ -74,6 +74,10 @@ module.exports = function (source) {
 
   opts = Object.assign(opts, params) // assign attributes
 
+  if (/\.js$/.test(this.resourcePath)) {
+    opts.lang = 'javascript'
+  }
+
   // convert everything into markdown code
   source = '```' + (opts.lang || 'html') + '\n' + source
 

@@ -14,7 +14,7 @@ function loadContent (id) {
 }
 
 function loadSource (id, name) {
-  return require(`!!vue-loader!../lib/source-loader!../examples/${id}/${name}.vue`).default
+  return require(`!!vue-loader!../lib/source-loader!../examples/${id}/${name}`).default
 }
 
 export default Vue.extend({
