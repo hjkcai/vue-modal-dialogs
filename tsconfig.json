@@ -9,9 +9,13 @@
     "importHelpers": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "vue-modal-dialogs": ["src/lib/vue-modal-dialogs.d.ts"]
+    }
   },
   "include": [
-    "src"
+    "src/**/*"
   ]
 }

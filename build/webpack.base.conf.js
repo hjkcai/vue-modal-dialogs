@@ -22,7 +22,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    app: './src/main.ts'
   },
   output: {
     path: config.build.assetsRoot,
@@ -32,7 +32,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.vue', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.json'],
     alias: {
       '@': resolve('src'),
       'vue-modal-dialogs': resolve('src/lib/vue-modal-dialogs.esm.js')
