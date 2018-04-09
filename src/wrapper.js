@@ -107,7 +107,6 @@ export default {
 
       const finalPromise = dialogData.component.then(component => {
         const propsData = {
-          dialogId: id,
           arguments: args,
           ...collectProps(dialogData.props, args)
         }

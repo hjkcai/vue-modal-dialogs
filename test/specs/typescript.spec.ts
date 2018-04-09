@@ -19,7 +19,6 @@ describe('TypeScript', function () {
       const vm = new TestTsx()
       vm.$close(true)
       vm.$error('any reason')
-      vm.dialogId
       vm.arguments
 
       ModalDialogs.create<boolean, boolean>(TestTsx, 'test')(true).then(noop<boolean>(), noop)

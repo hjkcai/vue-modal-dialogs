@@ -10,9 +10,6 @@ export interface DialogPromise<ReturnType> extends Promise<ReturnType> {
 }
 
 export declare class DialogComponent<ReturnType> extends Vue {
-  /** The unique id of this dialog */
-  readonly dialogId: number
-
   /** The arguments array passed into the dialog function */
   readonly arguments: any[]
 

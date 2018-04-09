@@ -18,7 +18,7 @@ function generateDialogData (props, component) {
     createdCallback: noop,
     component: Promise.resolve(component).then(component => ({
       extends: component.default || component,
-      props: filterUndefinedProps(['dialogId', 'arguments', ...props], component),
+      props: filterUndefinedProps(['arguments', ...props], component),
       created () {
         // Resolves componentPromise that is created in DialogsWrapper.add()
         dialogData.createdCallback(this)

@@ -129,7 +129,6 @@ describe('Dialog component', () => {
 
   it('should have injected methods and properties', async () => {
     const instance = await testFunction().getInstance()
-    expect(instance.dialogId).to.be.a('number')
     expect(instance.arguments).to.be.an('array')
     expect(instance.$close).to.be.a('function')
     expect(instance.$error).to.be.a('function')
