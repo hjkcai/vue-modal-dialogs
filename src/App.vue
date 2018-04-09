@@ -6,6 +6,7 @@
     <example-section id="confirm"></example-section>
     <example-section id="complex-confirm"></example-section>
     <example-section id="loading"></example-section>
+    <example-section id="typescript-confirm"></example-section>
     <the-footer></the-footer>
     <dialogs-wrapper tag="div" transition-name="fade"></dialogs-wrapper>
     <dialogs-wrapper tag="div" name="loading"></dialogs-wrapper>

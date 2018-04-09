@@ -3,3 +3,4 @@
 /dist/
 /*.js
 /src/lib/vue-modal-dialogs.esm.js
+/src/examples/typescript-confirm/demo.vue

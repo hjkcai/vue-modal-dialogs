@@ -74,8 +74,10 @@ module.exports = function (source) {
 
   opts = Object.assign(opts, params) // assign attributes
 
-  if (/\.js$/.test(this.resourcePath)) {
+  if (/\.jsx?$/.test(this.resourcePath)) {
     opts.lang = 'javascript'
+  } else if (/\.tsx?$/.test(this.resourcePath)) {
+    opts.lang = 'typescript'
   }
 
   // convert everything into markdown code
