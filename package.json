@@ -1,7 +1,7 @@
 {
   "name": "vue-modal-dialogs",
-  "version": "2.0.0",
-  "description": "A Promise-based modal dialog helper for Vue.js",
+  "version": "3.0.0",
+  "description": "Promisify dialogs in Vue.js",
   "main": "dist/vue-modal-dialogs.cjs.js",
   "module": "dist/vue-modal-dialogs.esm.js",
   "typings": "vue-modal-dialogs.d.ts",
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "npm run lint && npm run build:cjs && npm run build:esm",
-    "build:cjs": "NODE_ENV=production rollup -c build/cjs.js", 
+    "build:cjs": "NODE_ENV=production rollup -c build/cjs.js",
     "build:esm": "NODE_ENV=production rollup -c build/esm.js",
     "lint": "eslint src test",
     "test": "NODE_ENV=test BABEL_ENV=test karma start test/karma.conf.js --single-run",
@@ -27,7 +27,8 @@
     "modal",
     "dialog",
     "dialogs",
-    "promise"
+    "promise",
+    "promisify"
   ],
   "author": "Jingkun Hua <huajingkun1214@gmail.com>",
   "license": "MIT",
