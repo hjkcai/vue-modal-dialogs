@@ -12,8 +12,9 @@ Developers can build and control dialogs a lot easier in Vue.js applications.
 Especially in some complicated situations like controlling multiple dialogs,
 nested dialogs, etc.
 
-This guide will walk you through all features and all available usages of
-vue-modal-dialogs. Feel free to submit an issue or PR if you have any ideas.
+This guide will walk you through *most* features of vue-modal-dialogs.
+For detailed usages, see the API documentation.
+Feel free to submit an issue or PR if you have any ideas.
 
 **Tip: Open Vue Devtool to see what is happening.**
 

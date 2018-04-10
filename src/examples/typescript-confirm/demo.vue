@@ -17,7 +17,7 @@
 
   // .vue modules contain no type infomation
   // You have to declare everything by yourself
-  // (arg1: string, arg2: string) => boolean
+  // (prop1: string, prop2: string) => boolean
   const confirmVue = create<string, string, boolean>(Confirm, 'title', 'content')
 
   // TsConfirm is subtype of DialogComponent<boolean>
