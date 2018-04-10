@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- lts/*
+
+script:
+- yarn build
+
+deploy:
+  provider: pages
+  github-token: $GITHUB_TOKEN
+  local-dir: dist
+  on:
+    branch: examples
+
+cache: yarn
