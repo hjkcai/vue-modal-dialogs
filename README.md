@@ -1,38 +1,20 @@
-[Check demo here!](https://hjkcai.github.io/vue-modal-dialogs) |
+[Guide & Demo](https://hjkcai.github.io/vue-modal-dialogs) |
+[2.x docs](https://github.com/hjkcai/vue-modal-dialogs/blob/62eadbb4683d4b4f3bfdbb783a7eb0aab9363174/README.md) |
 [1.x docs](https://github.com/hjkcai/vue-modal-dialogs/blob/c0fcd99961f2cc118c2fbadc73efc4e384ab2593/README.md)
 
 # Introduction
 
-**Promisify dialogs! Every dialog is just a promise!**
+**Promisify dialogs!**
 
-Dialogs are a typical and essential user interaction in interactive applications.
-But implementing dialogs are not an easy thing in front-end web development.
+A typical and essential type of user interaction is dialogs. Dialogs are somehow similar to Promise. A dialog will eventually close. A Promise will eventually resolve. A dialog returns some data when it closes. So does Promise. It is time to put them together.
 
-`vue-modal-dialogs` is a super light-weighted library aimed to
-help developers to easily use dialogs by the advantage of [Vue.js](https://vuejs.org),
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and
-[async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
+vue-modal-dialogs has the magic to turn dialogs into Promises. Developers can build and control dialogs a lot easier in Vue.js applications. Especially in some complicated situations like controlling multiple dialogs, nested dialogs, etc.
 
 Feel free to open an issue or PR if you have any questions, problems, or new ideas.
 
-# Features
-
-* ✅ Light weighted (~2kb min+gzip)
-* ✅ Promise based
-* ✅ Functional programming
-* ✅ Full customizable
-* ✅ Place everything you want into that dialog
-
-Features below is *not* provided. You can achieve them by yourself:
-
-* ❌ Pre-defined dialog style
-* ❌ Shortcut function in Vue's prototype
-* ❌ Lock the scroll bar
-* ❌ Anything but promisify dialogs
-
 # Installation
 
-Install via [npm](https://npmjs.com) or [yarn](https://yarnpkg.com) (recommended)
+Install via [npm](https://npmjs.com) or [yarn](https://yarnpkg.com)
 
 ```bash
 # Use npm
@@ -42,268 +24,203 @@ npm install vue-modal-dialogs --save
 yarn add vue-modal-dialogs
 ```
 
-# Quick glance
+Then import and install vue-modal-dialogs as a Vue plugin:
 
 ```javascript
-// main.js
-
-import Vue from 'vue'
-import ModalDialogs from 'vue-modal-dialogs'
-import MessageComponent from 'components/message.vue'
-
-// Initialization
-Vue.use(ModalDialogs)
-
-// Make a dialog function called 'message' with two arguments: 'title' and 'content'
-const message = ModalDialogs.makeDialog(MessageComponent, 'title', 'content')
-
-// Now you are able to call `message` with 'title' as the first argument,
-// and 'content' as the second argument.
-// It returns a Promise so you can easily use it in an async function.
-new Vue({
-  template: '<button @click="removeEverything">Click Me!</button>',
-  methods: {
-    async removeEverything () {
-      if (await message('Warning', 'Are you sure to remove everything from your computer?')) {
-        // boom!
-      }
-    }
-  }
-})
-```
-
-In MessageComponent, just call `this.$close` with some data when you are done.
-It can be done even in component's template.
-
-```html
-<!-- MessageComponent.vue -->
-
-<template>
-  <div class="message">
-    <h1>{{ title }}</h1>
-    <p>{{ content }}</p>
-    <button @click="$close(true)">confirm</button>
-    <button @click="cancel">cancel</button>
-  </div>
-</template>
-
-<script>
-  export default {
-    methods: {
-      cancel () {
-        this.$close(false)
-      }
-    }
-  }
-</script>
-```
-
-That's all!
-
-# Guide & API
-
-## Initialization
-
-Firstly install `ModalDialogs` as a plugin into Vue.
-
-```javascript
+import * as ModalDialogs from 'vue-modal-dialogs'
 Vue.use(ModalDialogs)               // No options
 ```
 
-Then add a `<dialogs-wrapper>` component into the root component of your project
-(typically `App.vue`). See details below.
+# Guide & Demo
 
-## Dialogs wrapper
+[Guide & demo is here!](https://hjkcai.github.io/vue-modal-dialogs)
 
-A dialogs wrapper is nothing but a slightly modified `<transition-group>` component.
+# API
 
-There are two props:
+## ModalDialogs.create
 
-1. `name`: The name of the wrapper. The name must be unique throughout the entire project.
-    The default value is `default`.
+`ModalDialogs.create` creates a dialog function.
+A dialog function is nothing but a function that returns a dialog promise.
+The dialog function's arguments depends on the options you passed in the
+`ModalDialogs.create` function.
 
-2. `transition-name`: Alias to the `name` prop of the `<transition-group>` component.
-
-Everything other than these two props, including event listeners,
-will be directly passed into the underlying `<transition-group>` component.
-You are free to use full-featured `<transition-group>` component.
-
-I strongly recommend that put the wrapper in the root component of your project
-(typically `App.vue`). Because, in this case, the wrapper component will never be re-created.
-Otherwise there may be wired behaviors of the dialogs.
-
-You can create multiply wrappers at the same time.
-Dialogs will go into the wrapper you specifies when calling `makeDialog` function
-(see the following section). Usually one wrapper with a default name is enough for most cases.
-
-## Dialog function
-
-A dialog function is nothing but a function that returns a Promise.
-
-Call `makeDialog` function to make a dialog function.
-You can call it by `ModalDialogs.makeDialogs` or import `makeDialog` function like this:
-
-```javascript
-import { makeDialog } from 'vue-modal-dialogs'
-```
-
-Here are the definitions of the `makeDialog` function:
+### Declaration
 
 ```typescript
-function makeDialog (component: VueComponent, ...props: string[]): DialogFunction
-function makeDialog (options: DialogOptions): DialogFunction
+function create (component: VueComponent, ...props: string[]): DialogFunction
+function create (options: DialogOptions): DialogFunction
 ```
 
-Here are the options:
+### Options
 
-```typescript
-interface DialogOptions {
-  /** A Vue component that will be the 'dialog component' */
-  component: DialogComponent,
+#### `component: VueConstructor | Promise<VueConstructor>`
 
-  /** An array that maps the argument list to props */
-  props: string[]
+The `component` option is the Vue component constructor for the dialog component.
+It can be a Promise resolves with a Vue component constructor for supporting
+async component.
 
-  /** The wrapper that the dialog will be added into */
-  wrapper: string
-}
-```
+#### `props: string[]`
 
-### `component`
-
-The `component` option is the place where to pass your dialog component into.
-
-### `props`
-
-**The `props` option maps the arguments of the dialog function to the props of the dialog component**.
-For example, if you call the dialog function like this:
+The `props` option maps the arguments of the dialog function to the properties of
+the dialog component. For example, if you call the dialog function like this:
 
 ```javascript
 // The props option is ['title', 'content']
-const dialogFunction = makeDialog(SomeComponent, 'title', 'content')
+const dialogFunction = create(SomeComponent, 'title', 'content')
 dialogFunction('This is title', 'This is content', 'Extra argument')
 ```
 
-The dialog component will receive these props:
+The dialog component will receive these properties:
 
 ```javascript
 {
   title: 'This is title',       // 1st argument
   content: 'This is content',   // 2nd argument
-  dialogId: 0,                  // A unique ID of current dialog
 
   // Stores all arguments
   arguments: ['This is title', 'This is content', 'Extra argument']
 }
 ```
 
-If you just leave the `props` option **an empty array**, the dialog function can
-still pass props into dialog components. In this case it will not map the arguments.
-It retrieves the first argument as `propsData`, in another word, a 'data object',
-if the first argument is an object. For example:
+If you just leave the `props` option empty, the dialog function's first argument
+will become a 'data object' stores all the properties to pass into
+the dialog component.
 
 ```javascript
 // The props option is [] (an empty array)
-const dialogFunction = makeDialog(SomeComponent)
+const dialogFunction = create(SomeComponent)
 dialogFunction({
   title: 'This is title',
   content: 'This is content'
 }, 'Extra argument')
 ```
 
-The dialog component will receive these props:
+The dialog component will receive these properties:
 
 ```javascript
 {
   title: 'This is title',       // Data from the first argument
   content: 'This is content',
-  dialogId: 0,                  // A unique ID of current dialog
 
   // Stores all arguments
   arguments: [{ title: 'This is title', content: 'This is content'}, 'Extra argument']
 }
 ```
 
-This is useful when you have lots of props to pass into the dialog component.
+This is useful when you have lots of properties.
 It is better to use an object instead of a long list of arguments.
-If you want to pass props in this way,
-**remember to define props in the dialog component**!
+**Remember to define all the properties in the dialog component**!
+Otherwise no property will be received.
 
-The first argument will be treated as the data object
-**only when `props` option is empty**! If you want to mix those two usages,
-do it yourself.
+#### `wrapper: string`
 
-### `wrapper`
+The `wrapper` option specifies which dialogs wrapper to render the dialog component.
+The default value is `'default'`. In most cases you do not need to set this option.
 
-The `wrapper` option specifies which dialogs wrapper to put the dialog component into.
-The default value is `default` (it is the same to the default value of the `name` prop
-of the dialogs wrapper component). In most cases you do not need to set this option.
+The dialog promise will *reject* when the specified wrapper is not found.
 
-The promise from the dialog function will reject only when the specified wrapper is not found.
+## &lt;dialogs-wrapper> component
 
-Note that `makeDialog` function is a *pure function* and a *higher-order function*.
-It does not modify the original component but generate a new components that
-*extends* the original one. You can use the original component everywhere else as-is.
-See [https://vuejs.org/v2/api/#extends](https://vuejs.org/v2/api/#extends) for more information.
+A dialogs wrapper is nothing but a slightly modified `<transition-group>` component.
+
+`<dialogs-wrapper>` component should be placed into the root component of your
+project (typically `App.vue`), in order to make sure the component will never be
+destroied.
+
+It have two main properties:
+
+1. `name`: The name of the wrapper. It *MUST* be unique throughout the project.
+    The default value is `default`.
+
+2. `transition-name`: Alias to the `name` property of the `<transition-group>`
+    component.
+
+Everything other than these two properties, including event listeners,
+will be directly passed into the underlying `<transition-group>` component.
+You are free to use full-featured `<transition-group>` component.
+
+You can create multiply wrappers at the same time. Dialogs will go into the
+wrapper you specifies when calling `create` function (see the following section).
+Usually one wrapper with a default name is enough for most cases.
 
 ## Dialog component
 
-Dialog components will be shown later when you call the dialog function.
-Here you need to decide how your dialog looks like.
+Dialog components will be rendered into the dialogs wrapper when you call the dialog function.
 
-Typically there are some arguments passed into the dialog function.
-They can be easily retrieved from props. These props will be defined *automatically*.
-If you want to [validate these props](https://vuejs.org/v2/guide/components#Prop-Validation),
-just define them by yourself with some validation.
+### Optional property definitions
 
-However, if you would like to use data objects to pass props,
-**you need to manually define all props** in the component.
-Otherwise the data will be *never* received in the component.
+Property definitions are *optional* since you have defined them in
+`ModalDialogs.create`, unless you want to [validate these properties](https://vuejs.org/v2/guide/components#Prop-Validation).
+Just define them inside the dialog component like other components.
 
-```javascript
-export default {
-  props: {
-    title: String,
-    content: String
-  },
-  ...
-}
-```
+However, if you would like to use data objects to pass properties,
+you *must* manually define all props in the dialog component.
 
-Additionally, one method and two props will always be available in every dialog component.
-You can always omit the declaration of them:
+### Injections
 
-1. `$close`: A 'callback'. Call this method when you are done (e.g. user pressing the OK button),
-    with the data you want to send back. It will close the current dialog component,
-    and resolve the previous created Promise.
+There are some additional properties and methods available in the dialog component:
 
-    ```javascript
-    this.$close(data)       // data is optional
-    ```
+1. `$close()`: A 'callback'. Call this method when it is time to close the dialog,
+    with the data you want to send back. It will resolve the dialog promise.
+2. `$error()`: It is the same to `$close` but it rejects the Promise.
+3. `arguments`: An array contains everything you passed in the dialog function.
 
-2. `arguments`: This is an array containing everything you passed in the dialog function.
-    See examples in the previous section.
+## Dialog promise
 
-3. `dialogId`: A unique ID of current dialog. This is an internal data of `vue-modal-dialogs`.
-    This might be useful when you need an auto-increment index.
+A dialog promise is a promise with some additional methods for controlling the
+dialog outside.
 
-The same component can be used many many times for creating dialog functions,
-since the component will *never* be modified.
+1. `close()`, `error()`: The same to the `$close()` and `$error()` in the dialog
+    component.
+2. `transition()`: Returns a promise that resolves after the dialog's transition
+    with the same value as the dialog promise.
+3. `getInstance()`: Returns a promise that resolves with the dialog component
+    instance.
 
-## TypeScript
+# Integrate with TypeScript
 
 vue-modal-dialogs have *partial* support for TypeScript.
-If you want to use TypeScript, you must use Vue 2.5 or above.
-And [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator)
-are recommended.
+Vue.js 2.5 or above is *required* if you are using TypeScript.
 
-Dialog components can be defined by extending the base class `DialogComponent<ReturnType>`:
+## ModalDialogs.create
+
+Specify argument types and the return type through generic:
 
 ```typescript
-import { DialogComponent } from 'vue-modal-dialogs'
-import { Prop, Component } from 'vue-property-decorator'
+import SomeComponent from './comp.vue'
 
-@Component({})
+interface ConfirmData {
+  title: string,
+  content: string
+}
+
+// (prop1: string, prop2: string) => Promise<any>
+create<string, string>(SomeComponent, 'title', 'content')
+
+// (prop1: string, prop2: string) => Promise<boolean>
+create<string, string, boolean>(SomeComponent, 'title', 'content')
+
+// (data: ConfirmData) => Promise<any>
+create<ConfirmData>(SomeComponent)
+
+// (data: ConfirmData) => Promise<boolean>
+create<ConfirmData, boolean>(SomeComponent)
+```
+
+## Dialog component
+
+Dialog components can be defined by extending the base class
+`DialogComponent<ReturnType>` with the help of
+[vue-property-decorator](https://github.com/kaorun343/vue-property-decorator).
+
+The `ReturnType` generic argument indicates the type that the promise resolves.
+TypeScript can infer this generic argument in `ModalDialogs.create`.
+
+```tsx
+import { Prop, Component } from 'vue-property-decorator'
+import { create, DialogComponent } from 'vue-modal-dialogs'
+
+@Component
 export default class SomeComponent extends DialogComponent<boolean> {
   @Prop() title: string
   @Prop() content: string
@@ -313,62 +230,25 @@ export default class SomeComponent extends DialogComponent<boolean> {
   }
 
   render (h) {
-    return (
-      <div onClick={ this.ok }>
-        <div>{ this.title }</div>
-        <div>{ this.content }</div>
-      </div>
-    )
+    // ...
   }
 }
+
+// (data: ConfirmData) => Promise<boolean>
+create<ConfirmData>(SomeComponent)
 ```
 
-Argument types of the dialog function is unknown.
-Manually specify via the `makeDialog` generic:
 
-```typescript
-// returns (prop1: string, prop2: string) => Promise<boolean>
-makeDialog<string, string>(SomeComponent, 'title', 'content')
-```
 
-If you want to use 'data object' as the first argument, you need to define
-what to pass into the dialog function by using object type definitions or interfaces.
+# Migration
 
-```typescript
-interface ConfirmData {
-  title: string,
-  content: string
-}
+## from 2.x
 
-// returns (data: ConfirmData) => Promise<boolean>
-makeDialog<ConfirmData>(SomeComponent)
+1. `makeDialog` is renamed to `create`.
+2. The `dialogId` property is removed and kept internally. You might need to
+    find another way to implement your requirement without `dialogId`.
 
-// returns (data: { title: string, content: string }) => Promise<boolean>
-makeDialog<{ title: string, content: string }>(SomeComponent)
-```
-
-Unfortunately, if `SomeComponent` is defined in a `.vue` file, the type of
-`SomeComponent` will be `VueConstructor` instead of `DialogComponent<boolean>`.
-This results in unknown return type of the dialog function (it becomes to `any`).
-You have to annotate it yourself:
-
-```typescript
-import SomeComponent from './comp.vue'
-
-// returns (prop1: string, prop2: string) => Promise<any>
-makeDialog<string, string>(SomeComponent, 'title', 'content')
-
-// returns (prop1: string, prop2: string) => Promise<boolean>
-makeDialog<string, string, boolean>(SomeComponent, 'title', 'content')
-
-// returns (data: ConfirmData) => Promise<any>
-makeDialog<ConfirmData>(SomeComponent)
-
-// returns (data: ConfirmData) => Promise<boolean>
-makeDialog<ConfirmData, boolean>(SomeComponent)
-```
-
-# Migration from 1.x
+## from 1.x
 
 Here are two major breaking changes:
 
@@ -383,29 +263,3 @@ Here are two major breaking changes:
 2. CSS z-index control are completely removed. If you need to control it,
     do it yourself. The `dialogId` prop can be used as an auto-increment z-index
     value. Bind it to your dialog component.
-
-# Contribution
-
-## Run development server
-
-Run example in development mode:
-
-```bash
-# use npm
-npm run dev
-
-# use yarn
-yarn dev
-```
-
-## Build production version
-
-The built file will be generated in the `dist` folder.
-
-```bash
-# use npm
-npm run build
-
-# use yarn
-yarn build
-```
