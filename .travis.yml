@@ -7,7 +7,9 @@ script:
 
 deploy:
   provider: pages
+  skip-cleanup: true
   github-token: $GITHUB_TOKEN
+  keep-history: true
   local-dir: dist
   on:
     branch: examples
