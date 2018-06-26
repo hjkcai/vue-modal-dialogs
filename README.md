@@ -244,8 +244,9 @@ create<ConfirmData>(SomeComponent)
 
 ## from 2.x
 
-1. `makeDialog` is renamed to `create`.
-2. The `dialogId` property is removed and kept internally. You might need to
+1. Instead of using the default export (`import ModalDialogs from "vue-modal-dialogs";`) with `Vue.use` use the import all syntax (`import * as ModalDialogs from "vue-modal-dialogs";`)
+2. `makeDialog` is renamed to `create`.
+3. The `dialogId` property is removed and kept internally. You might need to
     find another way to implement your requirement without `dialogId`.
 
 ## from 1.x
