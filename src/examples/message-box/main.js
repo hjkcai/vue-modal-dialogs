@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import ModalDialogs from 'vue-modal-dialogs'
+import * as ModalDialogs from 'vue-modal-dialogs'
 
 // Install vue-modal-dialogs
 Vue.use(ModalDialogs)
