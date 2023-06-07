@@ -2,6 +2,12 @@
 [2.x docs](https://github.com/hjkcai/vue-modal-dialogs/blob/62eadbb4683d4b4f3bfdbb783a7eb0aab9363174/README.md) |
 [1.x docs](https://github.com/hjkcai/vue-modal-dialogs/blob/c0fcd99961f2cc118c2fbadc73efc4e384ab2593/README.md)
 
+# PROJECT DISCONTINUED
+
+This project will be no longer maintained. Its features are stable enough and works perfectly in Vue 2.x.
+
+**For those who are looking for a Vue 3.x version, try https://github.com/rlemaigre/vue3-promise-dialog**
+
 # Introduction
 
 **Promisify dialogs!**
